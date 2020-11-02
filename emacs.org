@@ -1,0 +1,10 @@
+disable YAS on comment?
+- https://emacs.stackexchange.com/questions/44724/how-to-remove-empty-lines-of-a-selected-region-of-code-in-emacs
+- https://www.masteringemacs.org/article/introduction-to-ido-mode
+- https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project
+- https://twitter.com/emacs_gifs/status/761217627830181889
+- http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
+- http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
+- ibuffer
+- 804101
+

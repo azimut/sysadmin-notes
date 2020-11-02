@@ -1,0 +1,3 @@
+* curl tor socks5
+https://tor.stackexchange.com/questions/1596/using-curl-over-a-normal-tor-installation-not-tor-browser-bundle-on-debian-whe
+$ curl --socks5-hostname 127.0.0.1:9050 https://www.torproject.org/

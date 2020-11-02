@@ -1,0 +1,5 @@
+* unpack .exe folder
+innoextract -m setup.exe
+* unpack .iso
+isoinfo -l -i asda.iso
+isoinfo -d -i asda.iso

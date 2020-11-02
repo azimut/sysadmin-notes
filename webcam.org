@@ -1,0 +1,12 @@
+https://wiki.archlinux.org/index.php/Webcam_setup
+- mpv drops support for v4l directly, now uses ffmpeg
+  https://github.com/mpv-player/mpv/issues/7120
+- Get format with *v4l-info*
+- Commands
+#+begin_src
+> ffplay -f video4linux2 -framerate 15 -video_size 640x480 /dev/video0
+> mpv /dev/video0 # deprecated
+> cheese -d /dev/video0
+> LD_PRELOAD=/usr/lib64/libv4l/v4l2convert.so xawtv -c /dev/video0
+> fswebcam -d /dev/video0
+#+end_src

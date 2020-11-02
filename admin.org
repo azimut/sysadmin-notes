@@ -1,0 +1,12 @@
+- https://medium.com/baseds
+- Distributed Systems
+  https://www.youtube.com/playlist?list=PLOE1GTZ5ouRPbpTnrZ3Wqjamfwn_Q5Y9A
+- CSE138 Distributed systems
+  https://www.youtube.com/channel/UCekZUWSJkX9kHuvfPbt_gvg
+- MIT 6.824: Distributed Systems
+  https://www.youtube.com/channel/UC_7WrbZTCODu1o_kfUMq88g/
+
+- CNCF https://www.youtube.com/c/cloudnativefdn/videos
+https://n-o-d-e.net/
+https://github.com/kodekloudhub/certified-kubernetes-administrator-course
+https://github.com/mxssl/sre-interview-prep-guide

@@ -1,0 +1,13 @@
+- https://blog.apnic.net/2019/09/16/detecting-ipv6-network-scans/
+  on ipv4 there are "honeypot" aka "darknet" aka "telescope" subnetworks that have no legitimate hosts and that can detect mass ipv4 scans
+  "a /16 darknet (65,536 IPs) detects one packet from a 10,000 packet per second (pps) random scan in 6.6 seconds."
+  on ipv6 a /48 network becomes impossible to detect by the same mean
+  so instead we watch for reverse PTR requests as the victims of the scan will eventually try to resolve the ip of the attackers (?
+  with that data and heuristics (? we can identify attackers
+- https://searchsecurity.techtarget.com/tip/How-to-use-DNS-reverse-mapping-to-scan-IPv6-addresses
+  https://searchsecurity.techtarget.com/tip/DNS-reverse-address-mapping-Exploiting-the-scanning-technique
+  usage of reverse PTR dns to get available ipv6 addresses
+  implemented in:
+  - dns-ip6-arpa-scan.nse - sudo nmap --script-trace --script dns-ip6-arpa-scan --script-args=prefix=2001:0DB8::/48 --dns-server 8.8.4.4
+  - dnsrevenum6 8.8.4.4 2802:8000::/24 - https://tools.kali.org/information-gathering/thc-ipv6
+

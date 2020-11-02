@@ -1,0 +1,44 @@
+* problems 31 to 32
+** Packages
+ Problem 1: package PyChess-1.0.1-1.py37.noarch requires python(abi) = 3.7, but none of the providers can be installed
+  - python3-3.7.9-1.fc31.x86_64 does not belong to a distupgrade repository
+  - problem with installed package PyChess-1.0.1-1.py37.noarch
+ Problem 2: package cheat-zsh-completion-2.5.1-4.fc31.noarch requires cheat = 2.5.1-4.fc31, but none of the providers can be installed
+  - cheat-2.5.1-4.fc31.noarch does not belong to a distupgrade repository
+  - problem with installed package cheat-zsh-completion-2.5.1-4.fc31.noarch
+ Problem 3: problem with installed package sixad-1.5.1-18.4.x86_64
+  - package sixad-1.5.1-18.4.x86_64 requires python-qt4, but none of the providers can be installed
+  - PyQt4-4.12.3-7.fc31.x86_64 does not belong to a distupgrade repository
+ Problem 4: problem with installed package qtsixa-1.5.1-18.4.x86_64
+  - package qtsixa-1.5.1-18.4.x86_64 requires sixad, but none of the providers can be installed
+  - package sixad-1.5.1-18.4.x86_64 requires python-qt4, but none of the providers can be installed
+  - package PyQt4-4.12.3-7.fc31.x86_64 requires python2-dbus, but none of the providers can be installed
+  - python2-dbus-1.2.8-6.fc31.x86_64 does not belong to a distupgrade repository
+(try to add '--skip-broken' to skip uninstallable packages)
+** modules
+ Problem 1: conflicting requests
+  - nothing provides module(platform:f31) needed by module minetest:5:3120191217165623:f636be4b-0.x86_64
+ Problem 2: conflicting requests
+  - nothing provides module(platform:f31) needed by module newsboat:latest:3120190728140405:22d7e2a5-0.x86_64
+ Problem 3: conflicting requests
+  - nothing provides module(platform:f31) needed by module ninja:latest:3120190304180949:f636be4b-0.x86_64
+ Problem 4: conflicting requests
+  - nothing provides module(platform:f31) needed by module ripgrep:latest:3120190803131619:22d7e2a5-0.x86_64
+
+* Upgrade Major Release
+
+http://mirror.uta.edu.ec/rpmfusion/free/fedora/updates/32/x86_64/f/ffmpeg-libs-4.2.4-1.fc32.x86_64.rpm
+http://mirror.uta.edu.ec/rpmfusion/free/fedora/updates/32/x86_64/v/VirtualBox-6.1.14-2.fc32.x86_64.rpm
+- dnf system-upgrade clean
+- sudo dnf
+  upgrade --refresh
+
+  install dnf-plugin-system-upgrade
+
+  system-upgrade download --releasever=31
+
+  module list
+  module list --enabled
+  module disable maven
+
+  system-upgrade reboot

@@ -1,0 +1,3 @@
+* Memory
+- lshw -C memory -short
+- dmidecode -t memory

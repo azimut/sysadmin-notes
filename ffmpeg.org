@@ -1,0 +1,6 @@
+https://github.com/leandromoreira/ffmpeg-libav-tutorial
+- mono
+  https://github.com/mpv-player/mpv/issues/6697
+  mpv --af "lavfi=[pan=1c|c0=1*c0+1*c1]"
+  <keybind> af toggle "lavfi=[pan=1c|c0=1*c0+1*c1]" ; show-text "Audio mix set to Mono"
+- video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849

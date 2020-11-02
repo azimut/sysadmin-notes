@@ -1,0 +1,37 @@
+* ppt  to pdf
+- https://askubuntu.com/questions/11130/how-can-i-convert-a-ppt-to-a-pdf-from-the-command-line
+  unoconv -f pdf file.ppt
+* djvu to pdf
+https://wiki.archlinux.org/index.php/PDF,_PS_and_DjVu#DjVu_tools
+- ddjvu --format=pdf some.djvu some.pdf
+* rotate
+https://stackoverflow.com/questions/3136610/pdftk-rotating-pages-problem
+- pdftk in.pdf cat
+  pdftk not in fedora repo
+https://unix.stackexchange.com/questions/394065/command-line-how-do-you-rotate-a-pdf-file-90-degrees
+- convert -rotate 270 -density 200 in.pdf out.pdf
+  ... convert is sloooooooow and lowres
+- qpdf in.pdf out.pdf --rotate=270
+* crop
+https://askubuntu.com/questions/124692/command-line-tool-to-crop-pdf-files
+"it looks as if pdfcrop only modifies the bounding boxes. It doesn't remove data"
+BUG: It also seems that converts widescreen pages to normal pages...
+- dnf install texlive-pdfcrop texlive-pdftex
+  pdfcrop --margins "<left> <top> <right> <bottom>" in.pdf out.pdf
+* grayscale
+https://unix.stackexchange.com/questions/93959/how-to-convert-a-color-pdf-to-black-white
+gs -sOutputFile=output.pdf \
+   -q -dNOPAUSE -dBATCH -dSAFER \
+   -sDEVICE=pdfwrite \
+   -dCompatibilityLevel=1.3 \
+   -dPDFSETTINGS=/screen \
+   -dEmbedAllFonts=true \
+   -dSubsetFonts=true \
+   -sColorConversionStrategy=/Mono \
+   -sColorConversionStrategyForImages=/Mono \
+   -sProcessColorModel=/DeviceGray \
+   $1
+https://unix.stackexchange.com/questions/327697/convert-pdf-font-colors-to-monochrome-black
+./gs907 -sDEVICE=psmono -o out.ps -f in.pdf
+Note: the PSMono device will flatten your file and make the content text not selectable.
+> convert -monochrome in.pdf out.pdf # eats memory/CPU
