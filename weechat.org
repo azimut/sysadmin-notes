@@ -1,3 +1,23 @@
+* IRC Freenode search channels
+  https://superuser.com/questions/619771/how-do-i-search-for-channel-names-in-weechat
+  #+begin_src
+  /msg alis list *python*
+  /msg alis list * -topic *python*
+  /msg alis help list
+  #+end_src
+* Bitlbee
+** debug logs
+https://wiki.bitlbee.org/Debugging
+-v
+BITLBEE_DEBUG=1
+** (weechat) login
+http://thedarnedestthing.com/weechat%20+%20bitlbee
+> /set irc.server.im.command "/msg &bitlbee identify <PASSWORD>"
+** telegram
+https://github.com/ars3niy/tdlib-purple
+account add telegram-tdlib +5411...
+account telegram-tdlib set nick_format %full_name
+* Weechat
 - manual
   https://weechat.org/files/doc/stable/weechat_user.en.html
   https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
@@ -6,40 +26,30 @@
   https://gist.github.com/noromanba/df3d975613713f60e6ae
 - Freenode Tor connect
   https://szorfein.github.io/weechat/tor/configure-weechat/
-- rust
+- rust bindings
   https://github.com/poljar/rust-weechat
   https://github.com/poljar/ripgrep-weechat/
-* bitlbee login
-http://thedarnedestthing.com/weechat%20+%20bitlbee
-> /set irc.server.im.command "/msg &bitlbee identify <PASSWORD>"
-* disable autoload some plugins
+** disable autoload some plugins
   - default *
   - https://github.com/hashbang/dotfiles/issues/2
   /set logger.file.auto_log off
   /set weechat.plugin.autoload "*,!logger,!tcl,!lua,!ruby,!xfer"
-* nil part/quit messages
+** nil part/quit messages
 - https://wiki.gentoo.org/wiki/WeeChat
   /set irc.server_default.msg_part ""
   /set irc.server_default.msg_quit ""
-* buffer search
+** buffer search
   https://blog.weechat.org/post/2013/08/17/Search-with-regex-and-text-emphasis
   CTR+r - start search
   ALT+c - case sensitivity
   TAB   - toggle pre/msg
   CTR+g - with grep_filter.py
-* buffer merge
+** buffer merge
   https://blog.weechat.org/post/2009/06/10/Merge-of-buffers
   /buffer merge #otherchat
   /buffer unmerge
   CTRL-x - to switch which one you are talking
-* search channels
-  https://superuser.com/questions/619771/how-do-i-search-for-channel-names-in-weechat
-  #+begin_src
-  /msg alis list *python*
-  /msg alis list * -topic *python*
-  /msg alis help list
-  #+end_src
-* theming
+** theming
 - https://guides.fixato.org/weechat/
 - https://github.com/weechat/weechat/wiki/buflist
 - https://gist.github.com/Valeyard1/f5f37b6883d25226177012efd7b548eb
@@ -53,4 +63,3 @@ http://thedarnedestthing.com/weechat%20+%20bitlbee
   #+begin_src
   /set weechat.look.buffer_time_format “%H:%M”
   #+end_src
-

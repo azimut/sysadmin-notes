@@ -1,3 +1,6 @@
+* Add .repo
+https://docs.fedoraproject.org/en-US/Fedora/23/html/System_Administrators_Guide/sec-Managing_DNF_Repositories.html
+> dnf config-manager --add-repo URL
 * problems 31 to 32
 ** Packages
  Problem 1: package PyChess-1.0.1-1.py37.noarch requires python(abi) = 3.7, but none of the providers can be installed
