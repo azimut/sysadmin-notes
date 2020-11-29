@@ -1,3 +1,6 @@
+* unpack .msi
+dnf install msitools
+msiextract FILE.msi
 * unpack .exe folder
 innoextract -m setup.exe
 * unpack .iso
