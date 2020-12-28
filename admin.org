@@ -8,6 +8,9 @@
 
 - CNCF https://www.youtube.com/c/cloudnativefdn/videos
 https://n-o-d-e.net/
-https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
-https://github.com/kodekloudhub/certified-kubernetes-administrator-course
-https://github.com/mxssl/sre-interview-prep-guide
+
+- https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
+  https://github.com/kodekloudhub/certified-kubernetes-administrator-course
+  https://github.com/mxssl/sre-interview-prep-guide
+
+
