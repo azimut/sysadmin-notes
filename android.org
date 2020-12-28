@@ -1,0 +1,15 @@
+
+#+begin_src
+> adb shell
+> sm list-disks
+disk:179,128 // HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
+> sm set-force-adoptable true // IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
+> sm partition disk:179,64 mixed 60 // IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
+> sm set-force-adoptable false
+#+end_src
+
+** Move data to internal storage
+https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
+Go to Settings and then Storage.
+Select the microSD card listed at the internal storage section and tap to enter it.
+Inside the above menu browse to the bottom and choose to move all the data to the new card.

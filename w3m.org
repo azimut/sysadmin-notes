@@ -1,0 +1,10 @@
+* flags
+-M     monochrome display
+** Text pager options
+-l num number of lines preserved internally when  receiving  plain  text  from  stdin
+          (default 10,000)
+-r use  caret notation to display special escape characters (such as ANSI escapes
+   or nroff-style backspaces for bold and underlined characters) instead of  pro‐
+   cessing them
+-s squeeze multiple blank lines into one
+-t num set tab width to num columns. No effect on stdout
