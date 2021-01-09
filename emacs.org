@@ -1,3 +1,5 @@
+- Video: Emacs Tutorial 19 - Completion - Company for C/C++ https://www.youtube.com/watch?v=XeWZfruRu6k
+- https://tuhdo.github.io/c-ide.html helm
 disable YAS on comment?
 - https://emacs.stackexchange.com/questions/44724/how-to-remove-empty-lines-of-a-selected-region-of-code-in-emacs
 - https://www.masteringemacs.org/article/introduction-to-ido-mode

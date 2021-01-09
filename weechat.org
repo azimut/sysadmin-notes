@@ -18,6 +18,17 @@ https://github.com/ars3niy/tdlib-purple
 account add telegram-tdlib +5411...
 account telegram-tdlib set nick_format %full_name
 * Weechat
+https://seankhliao.com/blog/12020-08-06-updated-weechat/
+https://gist.github.com/pascalpoitras/8406501
+https://ruleoftech.com/2016/starting-with-weechat
+- plugins:
+  - buffer_autoclose.py
+    go.py /key bind meta-g /go
+    perlexec.pl
+    grep.py
+    grep_filter.py
+    urlview.py
+    wee_slack.py
 - manual
   https://weechat.org/files/doc/stable/weechat_user.en.html
   https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
@@ -63,3 +74,44 @@ account telegram-tdlib set nick_format %full_name
   #+begin_src
   /set weechat.look.buffer_time_format “%H:%M”
   #+end_src
+** Toggle nicklist
+  /key bind meta-n /bar toggle nicklist
+** hide buffers
+- Uses triggers, perlexec.pl
+  https://www.bfoliver.com/2017/07/15/weechat/
+  https://github.com/weechat/weechat/wiki/Triggers#hide-buffers-after-100-seconds-of-inactivity-if-they-arent-on-the-hotlist-requires-perlexecpl
+  https://weechat.org/files/doc/stable/weechat_user.en.html#trigger_plugin
+#+begin_src
+/trigger addreplace windowswitch       signal window_switch               "" "" "/perlexec weechat::buffer_set(weechat::window_get_pointer('${tg_signal_data}','buffer'), 'hotlist', -1);"
+/trigger add        bufferswitch       signal buffer_switch               "" "" "/perlexec weechat::buffer_set(weechat::hdata_get_list(weechat::hdata_get('buffer'),'gui_buffer_last_displayed'), 'unread', 0)\;"
+/trigger add        force_redraw       signal window_switch;buffer_switch "" "" "/wait 1ms /redraw"
+/trigger addreplace detach             timer  10000;0;0                   "" "" "/allchan /eval /perlexec weechat::command('', '/command -buffer irc.\${server}.\${channel} core /buffer hide') if ((${date:%s} - \${buffer[\${info:irc_buffer,\${server},\${channel}}].lines.last_line.data.date}) > 100 && '\${window.buffer.full_name}' !~ 'irc.\${server}.\${channel}' && '\${buffer[\${info:irc_buffer,\${server},\${channel}}].hotlist}' eq '0x0')"
+/trigger addreplace reattach           print  ""                          "${buffer.hidden} == 1 && ${tg_tag_notify} == message" "" "/command -buffer irc.$server.$channel core /buffer unhide"
+/trigger addreplace reattach_on_switch signal buffer_switch               "${buffer[${tg_signal_data}].hidden} == 1"             "" "/command -buffer ${buffer[${tg_signal_data}].full_name} core /buffer unhide"
+detach
+  "/allchan /eval /perlexec
+    weechat::command('', '/command -buffer irc.\${server}.\${channel} core /buffer hide')
+           if ((${date:%s} - \${buffer[\${info:irc_buffer,\${server},\${channel}}].lines.last_line.data.date}) > 100
+                && '\${window.buffer.full_name}' !~ 'irc.\${server}.\${channel}'
+                && '\${buffer[\${info:irc_buffer,\${server},\${channel}}].hotlist}' eq '0x0')"
+
+reattach "${buffer.hidden} == 1 && ${tg_tag_notify} == message"
+  "/command -buffer irc.$server.$channel core /buffer unhide"
+#+end_src
+** notify only on messages
+/set weechat.look.buffer_notify_default message
+** max nick length
+/set weechat.look.prefix_align_max 15
+** rename bot relayed messages
+*** Plugins  https://www.thecliguy.co.uk/2018/11/18/weechat-format-bridge-bot-output-script/
+*** Trigger https://github.com/weechat/weechat/wiki/Triggers#relaybot
+<botnick> <foo> message --> <foo> message
+/set plugins.var.trigger.relaybot.nick ^relaybot*$
+/trigger add relaybot modifier "weechat_print" "${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}" "/^([^\t]*)\t[[<]([^]>]+)(\]|>)\s?(.*)$/${color:red}→${info:nick_color,${re:2}}${re:2}\t${re:4}/" "" "" "none"
+/trigger add relaybot_action modifier "weechat_print" "${tg_tags} =~ ,irc_action, && ${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}" "/^[^\t]*\t(\S*)\s[[<]([^]>]+)(\]|>)\s?(.*)$/${tg_prefix}\t${color:red}→${info:nick_color,${re:2}}${re:2}${color:reset} ${re:4}/" "" "" "none"
+** more nick_colors
+/set weechat.color.chat_nick_colors 1,2,3,4,6,7,9,10,11,12,13,14,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,69,70,182,183,184,224,225,226,227
+** Enable 256 colors
+check with:
+> weechat -c # to display colors
+> weechat -a # to not connect and just open it
