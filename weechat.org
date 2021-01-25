@@ -13,6 +13,13 @@ BITLBEE_DEBUG=1
 ** (weechat) login
 http://thedarnedestthing.com/weechat%20+%20bitlbee
 > /set irc.server.im.command "/msg &bitlbee identify <PASSWORD>"
+** slack
+https://github.com/dylex/slack-libpurple
+To login enter your email address as the *username*
+and <workspace>.slack.com as the *host*
+
+IN -> username%host
+
 ** telegram
 https://github.com/ars3niy/tdlib-purple
 account add telegram-tdlib +5411...
@@ -29,6 +36,7 @@ https://ruleoftech.com/2016/starting-with-weechat
     grep_filter.py
     urlview.py
     wee_slack.py
+    urlbuf.py
 - manual
   https://weechat.org/files/doc/stable/weechat_user.en.html
   https://weechat.org/files/doc/stable/weechat_plugin_api.en.html
@@ -115,3 +123,14 @@ reattach "${buffer.hidden} == 1 && ${tg_tag_notify} == message"
 check with:
 > weechat -c # to display colors
 > weechat -a # to not connect and just open it
+* Chat
+- Chain/hide/tree @ mentions
+- list links
+- list social media links
+- Dynamic grep of chat msgs
+- Get History of msgs
+  - Merge chats
+  - hightlight common (highly popular) themes
+  - display hightly popular themes
+- Textonly:
+  - Delete emotes
