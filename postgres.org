@@ -1,0 +1,21 @@
+* non default port, Selinux
+- Listen on non default port (5433)
+#+begin_src
+[root@localhost audit]# grep postmaster audit.log
+type=AVC msg=audit(1611139642.653:23799): avc:  denied  { name_bind } for  pid=1061793 comm="postmaster" src=5433 scontext=system_u:system_r:postgresql_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=AVC msg=audit(1611139642.653:23800): avc:  denied  { name_bind } for  pid=1061793 comm="postmaster" src=5433 scontext=system_u:system_r:postgresql_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+#+end_src
+audit2allow -M mypol -i /var/log/audit/audit.log
+semodule -i mypol.pp
+
+* Separate Instance, Fedora
+  Default Port: 5432
+
+  sudo postgresql-new-systemd-unit
+  --unit=postgresql@chatlogs
+  --datadir=/var/lib/pgsql/chatlogs
+
+  sudo postgresql-setup
+  --port 5432
+  --unit=postgresql@recon
+  --initdb

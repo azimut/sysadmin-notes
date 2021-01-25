@@ -1,0 +1,2 @@
+- alternative rss reader https://retro-freedom.nz/tech-101-snownews.html
+- atom2rss https://retro-freedom.nz/tech-101-snownews.html
