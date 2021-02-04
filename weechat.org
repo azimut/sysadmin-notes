@@ -48,6 +48,10 @@ https://ruleoftech.com/2016/starting-with-weechat
 - rust bindings
   https://github.com/poljar/rust-weechat
   https://github.com/poljar/ripgrep-weechat/
+** keybind
+*** scroll
+/key bind meta-J /window scroll_down
+/key bind meta-K /window scroll_up
 ** disable autoload some plugins
   - default *
   - https://github.com/hashbang/dotfiles/issues/2
