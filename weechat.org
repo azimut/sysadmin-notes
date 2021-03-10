@@ -64,8 +64,8 @@ https://ruleoftech.com/2016/starting-with-weechat
 ** buffer search
   https://blog.weechat.org/post/2013/08/17/Search-with-regex-and-text-emphasis
   CTR+r - start search
-  ALT+c - case sensitivity
-  TAB   - toggle pre/msg
+    ALT+c - case sensitivity
+    TAB   - toggle pre/msg
   CTR+g - with grep_filter.py
 ** buffer merge
   https://blog.weechat.org/post/2009/06/10/Merge-of-buffers

@@ -35,3 +35,18 @@ https://unix.stackexchange.com/questions/327697/convert-pdf-font-colors-to-monoc
 ./gs907 -sDEVICE=psmono -o out.ps -f in.pdf
 Note: the PSMono device will flatten your file and make the content text not selectable.
 > convert -monochrome in.pdf out.pdf # eats memory/CPU
+* merge with Index
+https://unix.stackexchange.com/questions/368415/merge-pdf-files-and-automatically-create-a-table-of-contents-with-each-file-as-a
+#+begin_src bash
+#!/bin/bash
+set -exuo pipefail
+tp="tmp.pdf"
+td="data"
+for i in *.pdf; do
+    echo "Bookmarking $i"
+    printf "BookmarkBegin\nBookmarkTitle: %s\nBookmarkLevel: 1\nBookmarkPageNumber: 1\n" "${i%.*}"> "$td"
+    pdftk "$i" update_info "$td" output "$tp"
+    mv "$tp" "$i"
+done
+pdftk *.pdf cat output myBook.pdf
+#+end_src
