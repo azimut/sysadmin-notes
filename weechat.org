@@ -117,16 +117,72 @@ reattach "${buffer.hidden} == 1 && ${tg_tag_notify} == message"
 ** rename bot relayed messages
 *** Plugins  https://www.thecliguy.co.uk/2018/11/18/weechat-format-bridge-bot-output-script/
 *** Trigger https://github.com/weechat/weechat/wiki/Triggers#relaybot
+Does NOT work with wrapped same-nick messages option.
 <botnick> <foo> message --> <foo> message
-/set plugins.var.trigger.relaybot.nick ^relaybot*$
+**** relaybot
+- change tg_tag_host for tg_tag_nick if needed
+- second trigger is for DMs
+#+begin_src
+/trigger add relaybot modifier weechat_print "${tg_tag_host} == ~bot@botmask" "/.*<([^>]+)> (.*)/${re:1}\t${re:2}/"
+/trigger add relaybot modifier weechat_print
+ "${tg_tag_host} == ~bot@botmask"
+ "/.*<([^>]+)> (.*)/${re:1}\t${re:2}/"
+
+/trigger add relaybot2 modifier "irc_in2_privmsg" "${nick} == botnick" "/^(:)(botnick)(!\S+@\S+ )(PRIVMSG #channel :)<(\S+)> (.*)/${re:1}${re:5}${re:3}${re:4}${re:6}/" ""
+/trigger add relaybot2 modifier "irc_in2_privmsg"
+ "${nick} == botnick"
+ "/^(:)(botnick)(!\S+@\S+ )(PRIVMSG #channel :)<(\S+)> (.*)/${re:1}${re:5}${re:3}${re:4}${re:6}/"
+ ""
+#+end_src
+**** relaybot2
+- /set plugins.var.trigger.relaybot.nick ^relaybot*$
+#+begin_src
 /trigger add relaybot modifier "weechat_print" "${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}" "/^([^\t]*)\t[[<]([^]>]+)(\]|>)\s?(.*)$/${color:red}→${info:nick_color,${re:2}}${re:2}\t${re:4}/" "" "" "none"
+/trigger add relaybot modifier "weechat_print"
+ "${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}"
+ "/^([^\t]*)\t[[<]([^]>]+)(\]|>)\s?(.*)$/${color:red}→${info:nick_color,${re:2}}${re:2}\t${re:4}/"
+ ""
+ ""
+ "none"
+
 /trigger add relaybot_action modifier "weechat_print" "${tg_tags} =~ ,irc_action, && ${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}" "/^[^\t]*\t(\S*)\s[[<]([^]>]+)(\]|>)\s?(.*)$/${tg_prefix}\t${color:red}→${info:nick_color,${re:2}}${re:2}${color:reset} ${re:4}/" "" "" "none"
+/trigger add relaybot_action modifier "weechat_print"
+ "${tg_tags} =~ ,irc_action, && ${buffer.full_name} != perl.highmon && ${tg_tag_nick} =~ ${plugins.var.trigger.relaybot.nick}"
+ "/^[^\t]*\t(\S*)\s[[<]([^]>]+)(\]|>)\s?(.*)$/${tg_prefix}\t${color:red}→${info:nick_color,${re:2}}${re:2}${color:reset} ${re:4}/"
+ ""
+ ""
+ "none"
+#+end_src
 ** more nick_colors
 /set weechat.color.chat_nick_colors 1,2,3,4,6,7,9,10,11,12,13,14,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,69,70,182,183,184,224,225,226,227
 ** Enable 256 colors
 check with:
 > weechat -c # to display colors
 > weechat -a # to not connect and just open it
+** logger only a few channels
+http://www.futurile.net/2020/11/29/weechat-configuration-for-irc-and-slack/
+#+begin_src haskell
+# don't log the core weechat application
+/set logger.level.core.weechat 0
+# log all channels and messages for work slack
+/set logger.level.python.xxxx.slack.com 1
+# log channels and messages to me
+/set logger.level.irc 1
+# don't log the ##news channel
+/set logger.level.irc.freenode.##news 0
+#+end_src
+** Disable notifications for .server. buffer
+https://lug.oregonstate.edu/blog/weechat-advanced/
+/buffer notify [level]
+** Connect to ZNC specific network
+   https://wiki.znc.in/Connecting_to_ZNC
+   https://wiki.znc.in/Weechat
+   /server add znctwitch/12345 -username=USERNAME/NETWORK -password=PASSWORD
+** ZNC tor
+- socat https://wiki.znc.in/Tor (ssl port 6697)
+- configure modules: cert, sasl
+- fingerprint must be added already https://wiki.znc.in/Cert
+  > openssl x509 -sha1 -noout -fingerprint -in user.pem | sed -e 's/^.*=//;s/://g;y/ABCDEF/abcdef/'  
 * Chat
 - Chain/hide/tree @ mentions
 - list links

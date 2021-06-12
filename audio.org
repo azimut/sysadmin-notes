@@ -1,2 +1,11 @@
 - Pulseaudio
   https://wiki.ubuntu.com/Audio/PositionReporting
+* Disable automatic mute of speakers
+- Disable it on alsamixer
+* Disable automatic switch of devices
+Like when we have a HDMI cable connected but we want to keep
+https://askubuntu.com/questions/1061414/how-to-disable-pulseaudio-automatic-device-switch
+    - edit the file /etc/pulse/default.pa
+    - comment the line:
+      load-module module-switch-on-port-available
+    - pulseaudio -k
