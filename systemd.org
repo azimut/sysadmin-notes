@@ -1,0 +1,15 @@
+* Disable services
+| iio-sensor-proxy   | dbus extension for sensors (light, rotation, speed) |
+| switcheroo-control | dbus extension for 2 gpu cards                      |
+| cups               | printer support                                     |
+| ModemManager       | 2G/3G/4G usb modem support                          |
+| bluetooth          |                                                     |
+| multipathd         | remote disk?                                        |
+| mdmonitor          | raid                                                |
+| dmraid-activation  | raid                                                |
+| iscsi              |                                                     |
+
+* Other services
+| vmtoolsd | vmware tools      |
+| vboxdrv  | virtual box tools |
+|          |                   |
