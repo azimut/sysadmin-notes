@@ -1,0 +1,5 @@
+* git-lfs
+https://git-lfs.github.com/
+1. git lfs install
+2. git lfs track ".psd"
+3. git add .gitattributes
