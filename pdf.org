@@ -1,3 +1,6 @@
+* evince keep zoom
+  https://askubuntu.com/questions/213820/how-to-keep-zoomlevel-in-evince-constant-after-clicking-a-link
+  > gsettings set org.gnome.Evince allow-links-change-zoom false
 * html to pdf
 pandoc input.html -t latex -o output.pdf
 * ppt  to pdf

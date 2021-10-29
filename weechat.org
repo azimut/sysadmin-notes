@@ -24,6 +24,11 @@ IN -> username%host
 https://github.com/ars3niy/tdlib-purple
 account add telegram-tdlib +5411...
 account telegram-tdlib set nick_format %full_name
+** discord
+https://github.com/sm00th/bitlbee-discord
+> chat add discord !1 #mydiscordchannel
+> chan #mydiscordchannel set auto_join true
+> /join #mydiscordchannel
 * Weechat
 https://seankhliao.com/blog/12020-08-06-updated-weechat/
 https://gist.github.com/pascalpoitras/8406501
