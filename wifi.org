@@ -1,0 +1,2 @@
+* get password from Networkmanager
+  # nmcli --show-secrets connection show id Speedy-Fibra-carlos
