@@ -10,8 +10,41 @@ disable YAS on comment?
 - http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
 - ibuffer
 - 804101
-* replace-string new line
+,* replace-string new line
 https://stackoverflow.com/questions/613022/how-to-replace-a-character-with-a-newline-in-emacs
 M-x replace-string
 STRINGTOREPLACE
 C-q C-j
+* Video: 2018 - It's Magit!
+  https://www.youtube.com/watch?v=j-k-lkilbEs
+  - using 1,2,3,4 to toggle details (display levels)
+  - using -,+,and region selection to commit exact hunks of code
+  - g,G refresh, refresh ALL
+  - magit-save-repository-buffers
+    magit-auto-revert-mode
+  - C-x C-j magit dired jump
+  - d to open a separate buffer for the diff
+  - C-C C-t, (on a diff) viewing the history of a definition from a diff
+  - C-C C-e, (on a diff) edit line
+  - E (Ediff) current (HEAD), index, actual file
+  - E s (Ediff to stage changes)
+        If done on a file that needs a merge resolution:
+        It will be 4, current, index, actual file, common ancestor
+  - global-magit-file-mode
+  - Magit dispatcher (suggested C-x M-g)
+  - i , to add to .gitignore or .gitinfo?
+  - K , untrack
+  - x/X, Reset (soft/hard)
+    x HEAD^ (to pop a commit)
+  - b s - create a new spin-off
+    When you make commits to master locally, but then decide
+    that you won't push it. But instead put it on a different branch.
+  - % worktrees
+    different branch in a different directory, sharing the same repo
+  - $ process buffer
+    k kill process in buffer
+  - M-p (on a commit window) to scroll down on old commit msgs
+    useful when you x the commit
+  - o Submodules
+  - O Subtree (the commits go into their own repo)
+  - 33:00
