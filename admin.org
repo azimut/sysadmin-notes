@@ -1,3 +1,4 @@
+- AWS https://github.com/livialima/linuxupskillchallenge
 - https://medium.com/baseds
 - Distributed Systems
   https://www.youtube.com/playlist?list=PLOE1GTZ5ouRPbpTnrZ3Wqjamfwn_Q5Y9A

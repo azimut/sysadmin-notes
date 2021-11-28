@@ -19,3 +19,10 @@ semodule -i mypol.pp
   --port 5432
   --unit=postgresql@recon
   --initdb
+* new user
+  https://ubiq.co/database-blog/create-user-postgresql/
+#+begin_src sql
+CREATE USER user_name WITH ENCRYPTED PASSWORD 'mypassword';
+GRANT ALL PRIVILEGES ON DATABASE sample_db TO user_name;
+GRANT INSERT,SELECT ON some_table TO user_name;
+#+end_src
