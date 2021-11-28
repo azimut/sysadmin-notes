@@ -1,0 +1,8 @@
+- https://stackoverflow.com/questions/7498190/troubles-with-implicit-declaration-static-compiling-customized-mupdf-library
+  Function used without declaration assumes dynamic function
+    #+begin_src
+...the function fmt_array_custom is called without prior declaration. So the compiler implicitly assumes a declaration (non-static).
+Later in line 304, it sees the actual function declaration/definition which is static.
+This is a conflict.
+For fixing this you can add a declaration before line 191. Just copy the function proto-type (without the body) from line 304.
+  #+end_src
