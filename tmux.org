@@ -1,0 +1,24 @@
+- https://github.com/tmux/tmux/wiki/Clipboard#common-issues---xclip1
+  There seems to be some troubleshooting with some TERMs and copymode
+- https://github.com/tmux/tmux/wiki/Getting-Started
+  https://man.openbsd.org/tmux#WINDOWS_AND_PANES
+  set -g mode-keys emacs
+  Copy mode differerences between modes (incomplete!)
+* Book: Painless Tmux by Nate Dickson
+  Session>Window>Pane
+  Sessions are for projects
+  Windows are for context
+  Aliases are like macros (?)
+  <prefix> w list windows/sessions
+  <prefix> s list sessions
+  <prefix> ( prev session
+  <prefix> ) next session
+  <prefix> , rename window
+  <prefix> $ rename session
+  <prefix> [ enter copy-mode
+  <prefix> ] paste
+  <prefix> :choose-buffer
+  <prefix> = (choose-buffer)
+  <prefix> :capture-pane; save-buffer ~/buffer.txt
+  - bind C-s run "tmux capture-pane && save-buffer ~/buffer.txt"
+  - TODO: Chapter 9 finesse
