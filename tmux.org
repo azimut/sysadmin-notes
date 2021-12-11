@@ -1,3 +1,4 @@
+- https://github.com/rothgar/awesome-tmux
 - https://github.com/tmux/tmux/wiki/Clipboard#common-issues---xclip1
   There seems to be some troubleshooting with some TERMs and copymode
 - https://github.com/tmux/tmux/wiki/Getting-Started
@@ -9,6 +10,7 @@
   Sessions are for projects
   Windows are for context
   Aliases are like macros (?)
+  <prefix> z zoom current pane
   <prefix> w list windows/sessions
   <prefix> s list sessions
   <prefix> ( prev session
