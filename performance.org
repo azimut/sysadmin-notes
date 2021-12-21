@@ -1,1 +1,77 @@
-perf record --call-graph dwarf && hotspot perf.data
+$ perf record --call-graph dwarf && hotspot perf.data
+* 2018 - MIT 6.172 Performance Engineering and Software Systems
+https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
+** DONE 1 Introduction and Matrix Multiplication
+- Peak Performance
+  (2.9 * 10^9) * 2 * 9 * 16 = 836 GFLOPS
+  (2.9 * 10^9) = 2.9 Ghz
+  * 2          = 2 cores
+  * 9          = 9 per process chip
+  * 16         = 8 float point operations, per core, per cycle
+- Summary
+|-----------------------+---------+------+---------+-----------|
+|                       | Time(s) | Time |  GFLOPS | % of Peak |
+|-----------------------+---------+------+---------+-----------|
+| Python                |   21041 | 6h   |   0.007 |     0.001 |
+| Java                  |    2387 | 46m  |   0.058 |     0.007 |
+| C                     |    1155 | 19m  |   0.119 |     0.014 |
+| + swap loops          |     177 | 3m   |   0.774 |     0.093 |
+| + opt flags           |      54 | 1m   |   2.516 |     0.301 |
+| + cilk_for            |       3 | 3s   |  45.211 |     5.408 |
+| + tiled (32)          |    1.79 | 2s   |  76.782 |     9.184 |
+| + parallel d&c        |     1.3 | 1s   | 104.722 |    12.646 |
+| + compiler vector opt |     0.7 | 1s   | 192.341 |    23.486 |
+| + AVX manually        |    0.39 | 0s   | 352.408 |    41.677 |
+| Intel MKL             |    0.41 | 0s   | 335.217 |    40.098 |
+|-----------------------+---------+------+---------+-----------|
+- JIT, detects which parts would benefit from compiling, and does it
+- Cache Locallity can affect runtime (!!!)
+- Matrixes are allocated in memory in *row-major-order*
+  - In fortran are *column-major-order*
+- Goal is improve =spatial locality= for all variables in your computation
+  - Having 2 good ones and 1 very good one is better than
+- Cache Misses can be measured with
+  $ valgrind --tool=cachegrind ./mm
+- Rule of thumb: Parallelize outer loop  rather than inner loops
+- Tiled Matrix Multiplication:
+  Processing different tiles (nXn) of the result matrix at the time
+  If the operations I am doing can fit into cache, I would be doing less compute.
+- clang -O3 -std=99 mm.c -o mm -Rpass=vector
+  -Rpass=vector, will tell you what is vectorized
+  -O2 already uses vectorization, but is conservative with CPU flags compatibility
+  -mavx
+  -mavx2
+  -mfma
+  -march=<string>
+  -march=native
+  -ffast-math, also changes the order of associativity
+** 2 Bentley Rules for Optimizing Work
+- Work: the sum of all the operations executed by the program
+- http://www.new-npac.org/projects/cdroms/cewes-1999-06-vol1/nhse/hpccsurvey/orgs/sgi/bentley.html
+- New Bentley Rules
+  1. Data Structures
+     * Packing and Encoding: moving less data
+     * Augmentation
+     * Precomputation
+     * Compile-time initialization
+     * Caching
+     * Lazy evaluation
+     * Sparsity
+  2. Loops
+     * Hoisting
+     * Sentinels
+     * Loop unrolling
+     * Loop fusion
+     * Eliminating wasted iterations
+  3. Logic
+     * Constant folding and propagation
+     * Common-subexpression elimination
+     * Algebraic identities
+     * Short-circuiting
+     * Ordering tests
+     * Creating a fast path
+     * Combining tests
+  4. Functions
+     * Inlining
+     * Tail-recursion elimination
+     * Coarsening recursion
