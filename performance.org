@@ -1,6 +1,20 @@
+$ perf stat
 $ perf record --call-graph dwarf && hotspot perf.data
-* 2018 - MIT 6.172 Performance Engineering and Software Systems
-https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
+- Diagrams https://www.brendangregg.com/linuxperf.html
+* Article: 2014 - strace Wow Much Syscall
+  https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html
+- ptrace() pauses the process for each syscall, for strace to read state.
+  When it begins and when it ends.
+- ioctl, set I/O properties, or other...
+- brk, extend the heap pointer
+- getdents, reads directory entries
+- lgetxattr, reads extended attributes
+- you can bypass 1 *stat()* syscall by doing
+  TZ=US/Pacific ls -l /etc
+* 2018 - MIT 6.172 Performance Engineering of Software Systems
+aka software performance enginnering
+2018 https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
+2010 https://www.youtube.com/watch?v=JzpkXLH9zLQ
 ** DONE 1 Introduction and Matrix Multiplication
 - Peak Performance
   (2.9 * 10^9) * 2 * 9 * 16 = 836 GFLOPS
@@ -45,7 +59,7 @@ https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
   -march=<string>
   -march=native
   -ffast-math, also changes the order of associativity
-** 2 Bentley Rules for Optimizing Work
+** DONE 2 Bentley Rules for Optimizing Work
 - Work: the sum of all the operations executed by the program
 - http://www.new-npac.org/projects/cdroms/cewes-1999-06-vol1/nhse/hpccsurvey/orgs/sgi/bentley.html
 - New Bentley Rules
@@ -75,3 +89,245 @@ https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
      * Inlining
      * Tail-recursion elimination
      * Coarsening recursion
+*** Data Structures
+- Sparcity
+  "The idea of exploiting sparcity is to avoid storing and computing zeroes"
+  "The fastest way to compute s not to compute at all"
+  - Dense matrix-vector multiplication performs n^2
+  - Checking each element to know if is zero, is still slow
+  - C.S.R: Compressed Sparse Row (a datastructure), we have 3 arrays
+    1) rows:
+       length = number of rows + 1
+       entries, contains an offsets into the columns array
+    2) cols:
+       entries, indexes of non-zero entries in each of the rows
+    3) vals:
+       length = to the cols array
+       entries, the values
+  - Sparse Graph, 2 arrays, can run BFS or PageRank algos easily
+    - offsets:
+      analogous to the rows array
+      we store for each vertex, where the neightbour star on the edges
+    - edges: analogous to the cols array
+      we write the indexes of their neightbours
+    - weights: optional
+      analogous to the vals
+      lenght = number of edges
+      store weights
+    - More efficiently would be *interleave* the weights with the edges
+      Storing the weight right next the edge
+      Create an array of twice number of edges (BETTER CACHE LOCALLITY)
+*** Logic
+- Constant Folding & Propagation (compile time calculation)
+  - Compiler can do it with enough optimization -O?
+- Common Subexpression Elimination, compile time remove of redundant expressions
+  - Compiler can do it
+- Algebraic Identities, math tricks
+  - Be careful with float point numbers
+- Short-circuiting, exit before finish
+  - Can be slower, an extra test is done
+- Ordering tests, put tests more likely to happen or cheaper first
+- Fast-path, example: bounding box test for circumference collision
+- Combining Tests:
+  Example: bitshifing 3 ints, into 1 int and do the tests
+*** Loops
+- Hoisting, aka *loop invariant code*, take the invariant part outside the loop.
+  - Sometimes the compiler might figure it out
+- Sentinels, special dummy values placed in data structures
+  to simplify the logic of boundary conditions, the handlong of loop-exit tests.
+  Example: reduce the number of checks done in a loop.
+- Loop Unrolling
+  - Full: Write all the lines of code. However having a lot of instructions, will pollute the *instruction cache*
+  - Partial: Reduce the iteration by some factor.
+- Loop Fusion aka jamming, combining different (non-nested) loops
+  - reduces the overhead of *loop control*
+  - better *cache locality*
+- Eliminating Wasted Iteration
+  Example: like in nested loop, changing the control variables
+*** Functions
+- Inlining, compilers can do it
+  #+begin_src c
+  static inline double square(double x) {
+    return x*x;
+  }
+  #+end_src
+- Tail-Recursion Elimination
+- Coarsening Recursion
+** TODO 3 Bit Hacks
+41:00
+- C: *__restrict* tells the compiler that this is the ONLY pointer that can point to this data.
+- Branch Predictability: a branch that "most" of the time return the same aswer.
+  If is UNpredictable, it can't do pre-fetching efficiently
+  NOTE: on modern compilers with -O3, the branchless version is slower.
+- To know the value of 0b11111111, we need to resolve a Geometric Series
+  #+begin_src
+  x + ~x = -1
+      -x = ~x + 1
+  #+end_src
+- Bitwise Operators
+  #+begin_src
+  & AND
+  | OR
+  ^ XOR
+  ~ NOT
+  << shift left
+  >> shift right
+  #+end_src
+- Idioms: 1 << k, gives us a *mask* with only 1 exactly on the k position
+  1) Set the kth bit:     y = x | (1 << k)
+  2) Clear the kth bit:   y = x & ~(1 << k)
+  3) Toggle the kth bit:  y = x ^ (1 << k)
+  4) Extract a Bit Field: (x & mask) >> shift
+  5) Set a bit field: x=(x & ~mask) | (y << shift)
+                      x=(x & ~mask) | ((y << shift) & mask)
+  6) No-Temp Swap (of variables)
+     x = x ^ y;
+     y = x ^ y;
+     x = x ^ y;
+     NOTE: performance poor at exploiting *instruction-level parallelism (ILP)*
+  7) Min of Two Integers:
+     - Normal if or ternary operator:
+       performance: a mispredicted branch empties the processor pipeline
+       caveat: the compiler is usually smart to optimize away unpredictable branch, but not always
+     - No-Branch Minimum
+       r = y ^ ((x ^ y) & ~(x < y));
+       - Uses the trick that C languages use TRUE/1 and FALSE/0
+       - ~(x < y), could be -1 or 0
+*** Examples:
+1) Modular Addition: (x+y) mod n
+   - r = (x+y) % n;
+     Division is expensive, unless is by a power of 2
+   - z = x + y;
+     r = (z < n) ? z : z-n;
+     Unpredictable branch is expensive
+   - z = x + y;
+     r = z - (n & ~(z >= n));
+2) Round up to a power of 2: 2^(log 2 n)
+   --n;
+   n |= n >> 1;
+   n |= n >> 2;
+   n |= n >> 4;
+   n |= n >> 8;
+   n |= n >> 16;
+   n |= n >> 32;
+   ++n;
+** DONE 4 Assembly Language & Computer Architecture
+- Compiling
+  1) Preprocess
+  2) Compiling
+  3) Assembly
+  4) Linking
+- If you want to understand something, understand the level that is necessary and then one level below that.
+*** ASM
+- XMM(SSE), YMM(AVX) are vector registers
+- AH, AL, AX, EAX, RAX (8,8,16,32,64 bit version of registers)
+- Intel vs AT&T syntax
+  - Intel 2nd operand is the destination
+  - AT&T 1st operand is the destination
+- "move" leaves things behind
+- on "quad word" there are 8 words
+- Some operations between different type/lengths zero out the remaining, others don't
+- It takes a couple 100-ths cycles to fetch something from memory. If not in cache already.
+- Idioms
+  |-------------------+---------------------|
+  | Description       | ASM                 |
+  |-------------------+---------------------|
+  | zero the register | xor eax eax         |
+  | jump if zero      | test %rcx, %rcx     |
+  |                   | je 400c0a <mm+0xda> |
+  | move if zero      | test %rax, %rax     |
+  |                   | cmovne %rax, %r8    |
+  |-------------------+---------------------|
+- NOP, NOP A, DATA16 are all no-operation instructions
+*** Floating Point & Vector Hardware
+- With SSE, AVX support single/double fp
+  Also include vector instructions.
+- With x87 support single/double/extended fp
+- Vector Hardware.
+  Instructions are given to all the units (in lock-step)
+  *Instruction decode and sequencing* happens across all of them.
+  On some archs the vectors need to be *aligned* (the address must be amultiple fo the vector width)
+  #+begin_src artistic
+  Memory and caches
+          |
+  Vector Load/Store Unit
+    |     |     |    |
+  lane0 lane1 lane2 lane3
+   ALU   ALU   ALU   ALU
+  word0 word1 word2 word3
+     Vector Registers
+  #+end_src
+*** CPU Instructions
+- A simple 5-Stage Processor
+  - (IF) Instruction Fetch
+  - (ID) Instruction Decode
+  - (EX) Execute
+  - (MA) Memory
+  - (WB) Write Back
+- Other Design Features
+  - Superscalar processing: executing multiple things at the time (micro-ops), sometimes things like the "xor eax eax"
+  - Out-of-order execution: if you think it as a graph, you can run out of order (using "scorebording")
+  - Branch prediction: aka speculative execution
+- 2 general ways to make a processor go faster
+  - exploiting parallelism, ILP, vectorization, multicore
+  - exploiting locality, to minimize data movement (cache)
+- Pipeline execution in practice hapens with *pipeline stalls*
+  - Due "Hazards" (race condition or dependency)
+    - Structural Hazard: two instructions attempt to use the same functional unit at the same time
+    - Data Hazard: data dependency, you need some previous data to operata
+      Either RAW, WAR, WAW which are true,anti,output dependances
+    - Control Hazard: data dependency on jump
+
+** TODO 5 C to Assembly
+- 17:54
+- knowing assembly might help to know when -O3 bugs the code
+- Compilation Pipeline (CLANG/LLVM)
+  | pre-processor       | .i  | pre-processed source |
+  | code generator      | .ll | llvm ir              |
+  | llvm optimizer      | .ll | opt llvm ir          |
+  | llvm code generator | .s  | assembly             |
+- LLVM IR
+  - simliar to ASM
+  - less instruction than ASM
+  - infinite number of registers (aka variables)
+  - no rflags, no conditions, no stackpointer or frame pointer
+** 6 Multicore Programming
+- Multicore Processors
+  - many cores have access to shared memory and cache.
+  - Access to the same *memory controller*
+- Transistors count (Moore Law) still increasing
+  - BUT clock speed has plateu up to 4Ghz
+  - "Leakage current" became the issue that stopped clock speed
+  - Not longer being able to increase power denstity by just increasing the clock
+    - As smaller transistors require less voltage
+  - New transistors were added then to new cores
+- Abstract Arquitecture of Multicore Processors
+  CMP (Chip Multiprocessor)
+  $ = Cache
+  #+begin_src artistic
+  Memory   I/O
+    |       |
+<=== Network ===>
+     | |  | |
+     $ $  $ $
+     P P  P P
+  #+end_src
+- Fibonacci:
+  - there is a O(n)   time algorithm that computes it "from the bottom up"
+  - there is a O(log) time algorithm based on squared matrices
+  - there is a O(2^n) time that is the recursive one
+- Platforms: handles synchronization, load balancing
+  1) Pthreads, diy parallelism
+  2) Intel Threading Bulding Blocks
+  3) OpenMP
+  4) Cilk Plus
+- *Cache lines* are of 64 bytes of size
+- Cache Coeherence: Between Processors/Cache
+  - MSI Protocol:
+    each cache block (cache lines) is labeled with a state.
+    Modified, no other cache can contain this block (on M or S)
+    Sharing, other caches can have the block on S state
+    Invalid, cache not being in the cache
+    - First invalidates the cache block on all other caches
+    - "Invalidation storm" might happen when multiple process try to modify the same value
+
