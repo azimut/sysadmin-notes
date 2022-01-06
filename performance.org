@@ -316,8 +316,14 @@ aka software performance enginnering
   - there is a O(n)   time algorithm that computes it "from the bottom up"
   - there is a O(log) time algorithm based on squared matrices
   - there is a O(2^n) time that is the recursive one
+- Coarsening: in parallel programming, is to avoid parallelism under certain conditions
+  like if it will take longer to initialize threds than do some computation
+- C: when we pass a cast of (void*) to a function is because,
+  its a *generic function*. Inside the function we should know the actual type of it.
 - Platforms: handles synchronization, load balancing
-  1) Pthreads, diy parallelism
+  1) Pthread
+     - diy parallelism
+     - Threads communicate through shared memory
   2) Intel Threading Bulding Blocks
   3) OpenMP
   4) Cilk Plus
