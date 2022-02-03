@@ -1,3 +1,8 @@
+- Resources http://0pointer.de/blog/projects/resources.html
+* Suspension log
+  journalctl -t systemd-sleep
+* XORG
+  journalctl _COMM=Xorg
 * Disable services
 | iio-sensor-proxy   | dbus extension for sensors (light, rotation, speed) |
 | switcheroo-control | dbus extension for 2 gpu cards                      |
@@ -8,6 +13,9 @@
 | mdmonitor          | raid                                                |
 | dmraid-activation  | raid                                                |
 | iscsi              |                                                     |
+| *packagekit        | UI for OS package removal                           |
+
+packagekit needs mask besides disable
 
 * Other services
 | vmtoolsd | vmware tools      |
