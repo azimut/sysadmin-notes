@@ -1,3 +1,24 @@
+* Disable GDM login
+  https://help.gnome.org/admin/system-admin-guide/stable/login-userlist-disable.html.en
+
+    Create the gdm profile which contains the following lines:
+    /etc/dconf/profile/gdm
+
+    user-db:user
+    system-db:gdm
+    file-db:/usr/share/gdm/greeter-dconf-defaults
+
+    gdm is the name of a dconf database.
+
+    Create a gdm keyfile for machine-wide settings in /etc/dconf/db/gdm.d/00-login-screen:
+
+    [org/gnome/login-screen]
+    # Do not show the user list
+    disable-user-list=true
+
+    Update the system databases:
+
+    # dconf update
 * Add .repo
 https://docs.fedoraproject.org/en-US/Fedora/23/html/System_Administrators_Guide/sec-Managing_DNF_Repositories.html
 > dnf config-manager --add-repo URL
@@ -45,3 +66,6 @@ http://mirror.uta.edu.ec/rpmfusion/free/fedora/updates/32/x86_64/v/VirtualBox-6.
   module disable maven
 
   system-upgrade reboot
+* COREOS Add kernel arguments, mitigations=off
+https://docs.fedoraproject.org/en-US/fedora-coreos/kernel-args/
+$ sudo rpm-ostree kargs --replace=mitigations=auto,nosmt=off

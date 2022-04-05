@@ -1,6 +1,16 @@
 - https://www.youtube.com/watch?v=Uszj_k0DGsg
 - https://stackoverflow.com/questions/14352932/view-a-files-history-in-magit
   ~magit-log-buffer-file~, view log for file
+* Github Altenatives
+- Gitlab
+- Bitbucket
+- https://sourcehut.org/
+  - aka sr.ht
+  - has ci
+  - kingcons uses it
+  - free while on alpha
+  - OS: linux, bsd
+    https://man.sr.ht/builds.sr.ht/compatibility.md
 * Video: 2020 - Emacs: introduction to VC (version control framework)
   https://www.youtube.com/watch?v=SQ3Beqn2CEc
   C-x v v - will do the first logical action, 1) initialize git repo, 2) commit file
@@ -107,8 +117,8 @@ git log --oneline -1 $revision
     like saving the build output
     "mutable metadata"
 - git bisect, works best/easily with master branches were only things that pass CI are commited
-- ~vc-annotate~ shows the blame besides the line
 - ~magit-blame~, use "c" to cycle to next style
+- ~vc-annotate~ shows the blame besides the line
 - ~vc-revision-other-window~ C-u C-x v ~, to view how the file looks on another branch
   ~vc-diff~                  C-x v =, to diff the file with master
 - https://hackage.haskell.org/package/git-monitor

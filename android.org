@@ -1,15 +1,64 @@
+- sudo root https://github.com/topjohnwu/Magisk
+- https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md
+- Standalone toolchains (obsolete)
+  https://developer.android.com/ndk/guides/standalone_toolchain
+- Use the NDK with other build systems (>r19)
+  https://developer.android.com/ndk/guides/other_build_systems
+  - Works with CMake & ndk-build
+- Android
+  https://wiki.gentoo.org/wiki/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android
+  https://wiki.gentoo.org/wiki/Android/SharkBait/Clang_toolchain_with_sanitizers_support_for_Android
+  2011 https://devjlanza.wordpress.com/2011/09/02/compile-a-native-c-android-application/
+  2017 https://github.com/skanti/Android-Manual-Build-Command-Line
+  https://github.com/facebookexperimental/ExtendedAndroidTools
+  https://github.com/borodust/aw-filament/blob/master/.github/workflows/build.yaml
+- https://developer.android.com/guide/topics/sensors/sensors_motion
+- nim, apk building
+  https://github.com/akavel/dali
+  https://www.youtube.com/watch?v=wr9X5NCwPlI
+* aapt
+|--------------+---------------------------------------------------------+---|
+| CMD          | ARGS                                                    |   |
+|--------------+---------------------------------------------------------+---|
+| dump badging | some.apk                                                |   |
+| package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
+|              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
+* adb
+|--------------------+-----------------------------------------+---------------------------------------|
+| CMD                | ARGS                                    | Desc                                  |
+|--------------------+-----------------------------------------+---------------------------------------|
+| tcpip              | 5555                                    | wireless pair after usb connected     |
+| install            | -r some.apk                             | install apk                           |
+| uninstall          | PACKAGE.NAME                            | uninstall apk                         |
+| shell am start     | -n PACK.NAME/android.app.NativeActivity | run package                           |
+| logcat             |                                         | tailf of system logs                  |
+| exec-out screencap | -p > screen.png                         | pipe to display or feh --scale-down - |
+|--------------------+-----------------------------------------+---------------------------------------|
+* TODO build APK
+  - 
+* Using Sockets
+https://stackoverflow.com/questions/6033581/using-socket-in-android-ndk
+<uses-permission android:name="android.permission.INTERNET"/>
+outside the application tag in your AndroidManifest.xml
+  #+begin_src c
+#include <sys/socket.h>
+#include <errno.h>
 
-#+begin_src
+void testSocket()
+{
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    int err = errno;
+}
+#+end_src
+* Move data to internal storage
+https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
+  #+begin_src shell
 > adb shell
-> sm list-disks
-disk:179,128 // HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
-> sm set-force-adoptable true // IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
-> sm partition disk:179,64 mixed 60 // IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
+> sm list-disks disk:179,128 # HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
+> sm set-force-adoptable true # IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
+> sm partition disk:179,64 mixed 60 # IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
 > sm set-force-adoptable false
 #+end_src
-
-** Move data to internal storage
-https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
 Go to Settings and then Storage.
 Select the microSD card listed at the internal storage section and tap to enter it.
 Inside the above menu browse to the bottom and choose to move all the data to the new card.

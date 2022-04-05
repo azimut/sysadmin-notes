@@ -20,13 +20,185 @@ https://github.com/michael-kehoe/sre-interview/
 https://github.com/trimstray/test-your-sysadmin-skills
 
 https://dingdingsherrywang.medium.com/system-design-instagram-4658eeb0423a
+- https://tc.gts3.org/cs3210/2020/spring/info.html
+  #+begin_src
+  In this course, we are going to build an operating system in Rust
+  programming language. The operating system that we will build
+  targets AArch64 (ARM) architecture, and it will run on Raspberry
+  Pi 3.
+  #+end_src
 * Distributed
+- https://henryr.github.io/distributed-systems-readings/
 - https://medium.com/baseds
 - https://github.com/rShetty/awesome-distributed-systems
 - https://github.com/aphyr/distsys-class
 - Distributed Systems
   https://www.youtube.com/playlist?list=PLOE1GTZ5ouRPbpTnrZ3Wqjamfwn_Q5Y9A
-- CSE138 Distributed systems
+- (2020/2021) CSE138 Distributed systems - Lindsey Kuper
   https://www.youtube.com/channel/UCekZUWSJkX9kHuvfPbt_gvg
-- MIT 6.824: Distributed Systems
+- Distributed Systemd - Cambridge - Martin Kleppmann
+  https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB
+  https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf
+  https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/materials.html
+* (2020) MIT 6.824: Distributed Systems - Rober Morris
   https://www.youtube.com/channel/UC_7WrbZTCODu1o_kfUMq88g/
+  https://github.com/arindas/mit-6.824-distributed-systems
+  Schedule/Labs https://pdos.csail.mit.edu/6.824/schedule.html
+  Lab 1 https://pdos.csail.mit.edu/6.824/labs/lab-mr.html
+  Lab 2 https://pdos.csail.mit.edu/6.824/labs/lab-raft.html
+** 1 Introduction / MapReduce
+   Notes https://pdos.csail.mit.edu/6.824/notes/l01.txt
+   Paper https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf
+   Wiki https://en.wikipedia.org/wiki/MapReduce
+- 30:00 - Fault tolerance: "With a 1000, that means you are going to have 3 computer failures a day."
+  - Availability
+  - Recoverability
+- 52:00
+  - map() receives a key/value pair, returns a prop list,
+  - reduce() receives all the data, from 1 key, returns a key/value pair
+- job (the whole map/reduce), tasks (each of the maps)
+- There is a "distributed filesystem" as part of the map/reduce
+  solution. Named GFS.
+  To attempt to make most operations locally, on replicated data previous to the work execution.
+- *Shuffle* the transformation of the data from row form (in the map) to row form (for the reduce)
+** 2 RPC & Threads (and go routines)
+Notes https://pdos.csail.mit.edu/6.824/notes/l-rpc.txt
+FAQ https://pdos.csail.mit.edu/6.824/papers/tour-faq.txt
+- GC & Threads
+  Avoids any type of book keeping for when a piece of data won't be used by any other thread anymore,
+  and you can free the data. (reference counting?)
+- Why?
+  1) I/O Concurrency
+  2) Parallelism
+  3) Convenience (ex: timers)
+- VS Event-Driven, this one has a *single loop* that waits for new events
+- Atomic operations, refers to the ASM operations as executed by the CPU,
+  some acting against the same memory addr might be atomic, depending of the CPU
+- Mutex Lock:
+  - helps making the operation within, atomic
+  - You do not specify, which variable is "locked"
+- Threads Challenges
+  1) Race Conditions
+  2) Deadlock
+- Threads Cordination
+  1) Channels, IO between threads
+  2) Sync.cond, conditional variables, other threads tell you when to start
+  3) WaitGroup
+- Go Routines semantics, are weird
+  - The values passed to a go routine, not closured, are those that change between executions
+  - Otherwise, the routine will get the different values from outside it
+  - =go= func(){}()
+  #+begin_src go
+  for _, u := range urls {
+    done.Add(1)
+    go func(u string) {
+      defer done.Done()
+      ConcurrentMutex(u, fetcher, f)
+    }(u)
+  }
+  done.Wait()
+  #+end_src
+- go build -race ./...
+- Upper bound concurrency limit: there is not one for a WaitGroup & Mutex approach
+  #+NAME: crawler.go
+  #+begin_src go
+type fetchState struct {
+    mu      sync.Mutex
+    fetched map[string]bool
+}
+
+func ConcurrentMutex(url string, fetcher Fetcher, f *fetchState) {
+    f.mu.Lock()
+    already := f.fetched[url]
+    f.fetched[url] = true
+    f.mu.Unlock()
+
+    if already {
+        return
+    }
+
+    urls, err := fetcher.Fetch(url)
+    if err != nil {
+        return
+    }
+    var done sync.WaitGroup
+    for _, u := range urls {
+        done.Add(1)
+        go func(u string) {
+            defer done.Done()
+            ConcurrentMutex(u, fetcher, f)
+        }(u)
+    }
+    done.Wait()
+    return
+}
+
+func makeState() *fetchState {
+    f := &fetchState{}
+    f.fetched = make(map[string]bool)
+    return f
+}
+  #+end_src
+- With channels there is no shared memory
+  Replacing WaitGroup with a counter?
+  #+NAME: crawler.go
+  #+begin_src go
+func worker(url string, ch chan []string, fetcher Fetcher) {
+    urls, err := fetcher.Fetch(url)
+    if err != nil {
+        ch <- []string{}
+    } else {
+        ch <- urls
+    }
+}
+
+func coordinator(ch chan []string, fetcher Fetcher) {
+    n := 1
+    fetched := make(map[string]bool)
+    for urls := range ch {
+        for _, u := range urls {
+            if fetched[u] == false {
+                fetched[u] = true
+                n += 1
+                go worker(u, ch, fetcher)
+            }
+        }
+        n -= 1
+        if n == 0 {
+            break
+        }
+    }
+}
+
+func ConcurrentChannel(url string, fetcher Fetcher) {
+    ch := make(chan []string)
+    go func() {
+        ch <- []string{url}
+    }()
+    coordinator(ch, fetcher)
+}
+#+end_src
+- A for/range loop over a channel, does not read all the contents of the channel and iterates
+  - It reads one value at the time, blocking
+** 3 GFS
+   FAQ https://pdos.csail.mit.edu/6.824/papers/gfs-faq.txt
+   Paper (2003) https://pdos.csail.mit.edu/6.824/papers/gfs.pdf
+   Notes https://pdos.csail.mit.edu/6.824/notes/l-gfs.txt
+   Wiki https://en.wikipedia.org/wiki/Google_File_System
+- Topic: Big Storage
+- CAP
+- Bad replication design:
+  - Have the clients write directly to all the servers
+    - Because of time, they might receiving in different order
+    - Leading to inconsistency
+- GFS
+  - Does not guarantee consistency
+  - Single Master (but there can be replicas; inactive masters?)
+  - Master Data: some can be recreated from the chunk servers
+    - Filename -> array of ChunkHandles
+    - ChunkHandle
+      - list of ChunkServers
+      - version
+      - primary-p
+      - lease expiration
+    - Log, Checkpoint -> Disk

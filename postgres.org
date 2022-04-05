@@ -1,3 +1,5 @@
+- triggers https://ctodive.com/hooks-the-secret-feature-powering-the-postgres-ecosystem-f05b3b82e0ba
+- Scheme migrations with views https://fabianlindfors.se/blog/schema-migrations-in-postgres/
 * non default port, Selinux
 - Listen on non default port (5433)
 #+begin_src
