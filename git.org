@@ -1,3 +1,7 @@
+- VSCODE
+  https://github.com/gitkraken/vscode-gitlens
+  https://github.com/DonJayamanne/gitHistoryVSCode
+- https://ohshitgit.com/
 - https://www.youtube.com/watch?v=Uszj_k0DGsg
 - https://stackoverflow.com/questions/14352932/view-a-files-history-in-magit
   ~magit-log-buffer-file~, view log for file
@@ -53,10 +57,13 @@ git log --oneline -1 $revision
 * DONE Video: 2018 - It's Magit! by John Wiegley
   https://www.youtube.com/watch?v=j-k-lkilbEs
 - Interface copied from =Darcs=, a cvs like git
-- using 1,2,3,4 to toggle details (visibility levels)
-- On diff
+- using 1,2,3,4 to toggle detail levels
+  using M-1234 to apply global instead per section
+- On diff section
   - n,p move by blocks in a diff
   - using -,+, and region selection to commit exact hunks of code
+  - select a region and "s" to stage that region
+  - S,U un/stage everything
 - g,G refresh, refresh ALL
 - ~magit-save-repository-buffers~
   ~magit-auto-revert-mode~ (reverts all the files that were modifying those things)

@@ -3,3 +3,9 @@
   https://github.com/mpv-player/mpv/issues/6697
   mpv --af "lavfi=[pan=1c|c0=1*c0+1*c1]"
   <keybind> af toggle "lavfi=[pan=1c|c0=1*c0+1*c1]" ; show-text "Audio mix set to Mono"
+- Add shell command keybinding
+  https://unix.stackexchange.com/questions/648256/is-it-possible-to-make-keybindings-for-mpv-to-run-shell-scripts
+ #+NAME: input.conf
+ #+begin_src conf
+ y run "/bin/sh" "-c" "printf %s ${=time-pos} | wl-copy"
+ #+end_src

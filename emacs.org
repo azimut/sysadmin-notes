@@ -1,3 +1,4 @@
+- https://marcohassan.github.io/bits-of-experience/pages/emacs/
 - /sudo::/etc/thisfile
 - Video: Emacs Tutorial 19 - Completion - Company for C/C++ https://www.youtube.com/watch?v=XeWZfruRu6k
 - https://tuhdo.github.io/c-ide.html helm
