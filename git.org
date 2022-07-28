@@ -1,3 +1,4 @@
+- https://dev.to/yonkeltron/is-it-time-to-look-past-git-ah4
 - VSCODE
   https://github.com/gitkraken/vscode-gitlens
   https://github.com/DonJayamanne/gitHistoryVSCode
