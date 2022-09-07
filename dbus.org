@@ -1,0 +1,88 @@
+- /org/mpris/MediaPlayer2.org.mpris.MediaPlayer2.Player
+- https://wiki.archlinux.org/title/MPRIS
+- Firefox does NOT have support for Position
+  https://github.com/FichteFoll/discordrp-mpris/issues/18
+* get browser player position
+https://stackoverflow.com/questions/70737550/how-to-connect-to-mediaplayer2-player-playbackstatus-signal-using-pygtk
+- qdbus org.mpris.MediaPlayer2.firefox.instance682367 /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player Position
+- dbus-send --print-reply --dest=org.mpris.MediaPlayer2.firefox.instance682367 /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Position'
+- get all props
+  #+begin_src shell
+  $ busctl --user list | grep -i MediaPlayer2
+   org.mpris.MediaPlayer2.firefox.instance62995  62995 GeckoMain
+  $ busctl --user tree org.mpris.MediaPlayer2.firefox.instance62995
+   └─/org
+     └─/org/mpris
+       └─/org/mpris/MediaPlayer2
+  $ busctl --user introspect org.mpris.MediaPlayer2.firefox.instance62995 /org/mpris/MediaPlayer2
+  #+end_Src
+- code
+  #+begin_src python
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gio, Gtk
+
+PLAYER_IFACE = 'org.mpris.MediaPlayer2.Player'
+
+class MainApp(Gtk.Window):
+
+    def __init__(self):
+        super().__init__(title="Player Status")
+        self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        self.add(self.box)
+        self.lbl_status = Gtk.Label(label='Status Here')
+        self.box.pack_start(self.lbl_status, True, True, 0)
+        self.lbl_artist = Gtk.Label(label='Artist Here')
+        self.box.pack_start(self.lbl_artist, True, True, 0)
+
+    def update_label(self, proxy, changed_props, invalidated_props):
+        props = changed_props.unpack()
+        print(props)
+        status = props.get('PlaybackStatus')
+        artist = props.get('Metadata', {}).get('xesam:title')
+        if status:
+            self.lbl_status.set_text(status)
+        if artist:
+            self.lbl_artist.set_text(artist)
+
+
+def find_player():
+    """
+    Find the first `org.mpris.MediaPlayer2` name in list
+    """
+    names = Gio.DBusProxy.new_for_bus_sync(
+            bus_type=Gio.BusType.SESSION,
+            flags=Gio.DBusProxyFlags.NONE,
+            info=None,
+            name='org.freedesktop.DBus',
+            object_path='/org/freedesktop/DBus',
+            interface_name='org.freedesktop.DBus',
+            cancellable=None).ListNames()
+    for name in names:
+        if name.startswith('org.mpris.MediaPlayer2'):
+            return name
+
+
+def player_proxy(media_name):
+    """
+    Provide proxy for comfortable and pythonic method calls
+    """
+    return Gio.DBusProxy.new_for_bus_sync(
+            bus_type=Gio.BusType.SESSION,
+            flags=Gio.DBusProxyFlags.NONE,
+            info=None,
+            name=media_name,
+            object_path='/org/mpris/MediaPlayer2',
+            interface_name=PLAYER_IFACE,
+            cancellable=None)
+
+
+if __name__ == "__main__":
+    print("running application")
+    app = MainApp()
+
+    player_name = find_player()
+    player = player_proxy(player_name)
+    # Connect signal to callback
+    player.connect('g-properties-changed', app.update_label)
+  #+end_src

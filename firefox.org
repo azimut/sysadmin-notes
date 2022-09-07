@@ -1,0 +1,4 @@
+* Trydactyl
+** disable on domain
+- autocmd DocStart monkeytype.com mode ignore
+- autocmddelete DocStart monkeytype.com mode ignore
