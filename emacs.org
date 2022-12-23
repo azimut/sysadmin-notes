@@ -1,3 +1,18 @@
+- https://emacs.stackexchange.com/questions/3513/starting-slime-in-a-pop-up-frame
+  (setq display-buffer-alist
+      (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
+         (nil)))))
+- https://www.emacswiki.org/emacs/HideModeLine
+  (setq mode-line-format nil)
+- https://superuser.com/questions/77314/how-to-do-select-column-then-do-editing-in-gnu-emacs
+  Vertical Select
+  C-x SPC
+  down down
+  C-t bar RET
+- https://www.emacswiki.org/emacs/RecentFiles
+  recentf-mode
+  keeps track of recent closed files/buffers?
+  need to add a C-S-t to open most recent
 - https://marcohassan.github.io/bits-of-experience/pages/emacs/
 - /sudo::/etc/thisfile
 - Video: Emacs Tutorial 19 - Completion - Company for C/C++ https://www.youtube.com/watch?v=XeWZfruRu6k

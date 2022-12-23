@@ -1,3 +1,15 @@
+* extract pages
+https://linuxhint.com/extract-pdf-pages-linux/
+pdftk adv_bash_scripting.pdf cat 3-8 output
+53-103
+1032-1171
+1624-1933
+2332-2418
+2506-2539
+2965-3212
+3500-3538
+3755-3817
+4185
 * evince keep zoom
   https://askubuntu.com/questions/213820/how-to-keep-zoomlevel-in-evince-constant-after-clicking-a-link
   > gsettings set org.gnome.Evince allow-links-change-zoom false

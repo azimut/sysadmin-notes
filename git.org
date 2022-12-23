@@ -1,3 +1,4 @@
+- https://www.boringcactus.com/2021/02/22/can-we-please-move-past-git.html
 - https://dev.to/yonkeltron/is-it-time-to-look-past-git-ah4
 - VSCODE
   https://github.com/gitkraken/vscode-gitlens
@@ -6,6 +7,8 @@
 - https://www.youtube.com/watch?v=Uszj_k0DGsg
 - https://stackoverflow.com/questions/14352932/view-a-files-history-in-magit
   ~magit-log-buffer-file~, view log for file
+- git-gutter-fringe font
+  https://ianyepan.github.io/posts/emacs-git-gutter/
 * Github Altenatives
 - Gitlab
 - Bitbucket
