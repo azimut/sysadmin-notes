@@ -1,0 +1,295 @@
+* Channels
+- https://www.youtube.com/c/FreeBSDProject/videos
+- https://www.youtube.com/c/EuroBSDcon/videos
+- https://www.youtube.com/c/OpenZFStalks/videos
+- https://www.youtube.com/c/BsdcanOrg/videos
+- vBSDcon https://www.youtube.com/channel/UCvcdrOSlYOSzOzLjv_n1_GQ/videos
+- https://www.youtube.com/c/TheOpenBSDguy/videos
+- https://www.youtube.com/c/teetechtm/videos
+- RootBSD https://www.youtube.com/channel/UCbpe1SYzZKG4RswEnxxSRZQ/videos
+* Video: 2019 | ZFS for Newbies | Langille
+https://www.youtube.com/watch?v=3oG-1U5AI9A
+- "you are gonna run out of hardware before you run out of addressable space"
+- How
+  - redundancy
+  - drives are put in a *zpool*, a fs is part of it
+  - create mirrors from 2..N drives
+  - create *raidz*[1..3], where the number is the ammount of drives you can lose before you lose some data
+    - need at least 4 drives for it
+- "think of it as *buying you time* to replace a drive"
+- $ zpool create
+  $ zfs list
+  $ zpool replace zroot gpt/disk6 gpt/disk_Z2T4KSTZ6
+  $ zpool list tank_fast zroot
+  $ zfs list tank_fast/poudriere zroot/usr
+- pool vs partition
+  - no more out of space on /var/db but free on /usr
+- do NOT use *dedup* use compression instead
+- =vdev= is a single disk, could be a mirror or a raidz
+  - you create a zpool from a vdev
+- filesystem ~== dataset
+- snapshot, readonly version of the filesystem
+- filesystem properties
+ | compression=lz4 |                                                           |
+ | atime=off       | if you don't when you read something, you write something |
+ | exec=no         | useful for /tmp, to not break IO cage                     |
+ | reservation=10G | keep spare                                                |
+ | quota=5G        | do not let anyone go over 5G                              |
+- use HBA not RAID
+- Why use it? Even when you had only 1 drive
+  - It checksums everything
+  - It puts metadata
+  - It's hierarchical
+- enable =scrubs=: there is no fsck on zfs
+  - scrubs read all the data on disk and check for errors
+  #+begin_src
+    $ grep zfs /etc/periodic.conf
+    daily_scrub_zfs_enable="YES"
+    daily_scrub_zfs_default_threshold="7"
+  #+end_src
+- snapshot
+  - you backup the =snapshots=, not the files
+  - read-only
+  - immutable
+  - snapshots on the same host are NOT backups
+- boot environment (BE)
+  - a zfs environment designed for booting
+  - $ beadm / bectl
+    - saves your current BE
+    - useful to rollback after an upgrade
+  - $ nextboot
+    - boot once on this config
+- disk preparation
+  $ gpart create -s gpt da0
+  $ gpart add -t freebsd-zfs -a 4K -l S3PTNF0JA705A da0
+  $ gpart show da0
+- mirror
+  $ zpool create mydata mirror da0p1 da1p1
+  $ zpool status mydata
+- raidz1
+  $ zpool create mydata raidz1 da0p1 da1p1 da2p1 da3p1
+  $ zpool status system
+- TIP: put OS on a ZFS mirror, data on rest
+  - don't boot from hba
+  - recordsize=1m
+    if you have lots of large files on a dataset
+* Book: 2018 | Absolute FreeBSD | Michael W. Lucas
+words: tetchy, ebbed
+| main                 | https://www.freebsd.org/                          |
+| FAQ                  | https://docs.freebsd.org/en/books/faq/            |
+| Handbook             | https://docs.freebsd.org/en/books/handbook/       |
+| mailing lists        | https://lists.freebsd.org/                        |
+| mailing list archive | https://docs.freebsd.org/mail/                    |
+| forum                | https://forums.freebsd.org/                       |
+|----------------------+---------------------------------------------------|
+| new ports            | https://www.freshports.org/                       |
+| bhyve                | https://en.wikipedia.org/wiki/Bhyve               |
+| Open Solaris fork    | https://illumos.org/                              |
+| magazine             | https://freebsdfoundation.org/our-work/journal/   |
+| openBSD hypervisor   | https://www.openbsd.org/faq/faq16.html            |
+| iso writer           | https://sourceforge.net/projects/win32diskimager/ |
+** Introduction
+- After CSRG funding *ebbed* BSD got released for free
+- The BSD License
+  1) Do NOT claim you wrote this
+  2) Do NOT blame usif it breaks
+  3) Do NOT use our name to promote your product
+- History
+  - 386BSD was used as the core for FreeBSD 1.0 and NetBSD
+  - NetBSD goal is to provide a secure  and easy to port to different hardware OS
+  - OpenBSD branched off from NetBSD in 1996, with the goal of becoming th most secure BSD
+  - macOS (based on), FreeNAS, pfSense, TrueOS (discontinued), OPNSense (fork of pfSense), GhostBSD (desktop)
+  - Oracle Solaris, runs on SPARC hardware which allows hot-swappable memory and mainboards
+    - illumos is a Open Solaris fork https://illumos.org/
+- FreeBSD fully supports 32-bit computers
+- FreeBSD includes 2 file systems: UFS and ZFS
+  - ZFS includes features such as network replication and self-healing
+- bhyve https://en.wikipedia.org/wiki/Bhyve
+  - a type 2 hypervisor
+    - type 1: runs on hardware, aka native or bare-metal hypervisors
+    - type 2: runs on conventional OSs, aka hosted hypervisors
+  - bhyve and KVM runs as a kernel module, and you could say that runs a type 1 hypervisor
+  - hypervisor: aka VMM (virtual machine monitor) aka virtualizer, they present a *virtual operating platform* to the gust OSs
+** 1 Getting More Help
+- Man sections
+  1) General user commands
+  2) System calls and error numbers
+  3) C programming libraries
+  4) Devices and device drivers
+  5) File Formats
+  6) Game instructions
+  7) Miscellaneous information
+  8) System Maintenance commands
+  9) Kernel interfaces
+- apropos (man -k)
+- whatis (man -f)
+- When sending mails wrap up to 72 characters
+  - in plaintext
+  - start asking in FreeBSD-questions@FreeBSD.org
+  - top-posting replies to an email is discouraged
+    make any comments inline with the discussion to retain context
+    - https://en.wikipedia.org/wiki/Posting_style#Top-posting
+      "the original message is included verbatim with the reply above it"
+      aka TOFU (text over, fullquote under)
+** 2 Before You Install
+- *default* files are in a folder named /default/
+  - do NOT copy the default to the main one, things won't work
+  - default contain variables meant to be override
+    eg:
+    /book/loader.conf
+    /boot/default/loader.conf
+- UCL (Universal Configuration Language)
+  - can appear in different formats
+    - variable=value
+    - yaml
+    - json
+- RAID controlers were created when managing storage redundacy was so computing intensive3 that it monopolized th host's processor
+- ZFS exptects to have direct access to the disks
+  - if yo must use a raid controller, disable raid and set it up as JBOD (just-a-bunch-of-disks) or HBA (host-bus-adapter)
+- Once a =kernel module= is loaded, that module has complete access to the entire kernel.
+  It's entirely possible for a video driver kernel module to corrupt your filesystem.
+- one BIOS/EFI task is finding the OS
+  - Basic Input/Output System
+  - Extensible Firmware Interface
+*** File System (UFS/ZFS)
+- UFS
+  - You can choose to optimize a partition
+    - for trillions of tiny files
+    - or a handful of 1TB files
+  - serves small and ebedded systems better than ZFS can
+  - repairing 1TB requires 700MB of RAM
+- ZFS
+  * is NOT and acronym
+  * computes checksum of every block of data or metadata, can use it for error correction
+  * storage is pooled, meaning you can add more disks to an existing ZFS filesystem without recreaging the filesystem
+  * built-inreplication
+  * remove datasets on the fly
+  * recommended to run on systems with >=4GB of ram
+  * eg: storage system for a virtualization server, not right for VMs that use disk images
+  * works best with ECC RAM https://en.wikipedia.org/wiki/ECC_memory
+    Error Correction Code Memory ($$$)
+  * is combination filesystem AND a volume manager (it expects access to raw disks)
+  * self-healing
+*** Encryption (GBDE/GELI)
+- GEOM https://en.wikipedia.org/wiki/GEOM
+  freeBSD's storage framework
+- Block Device-Layer Disk Encryption support
+  1) GBDE (GEOM-Based Disk Encryption) (most secure) https://en.wikipedia.org/wiki/GBDE
+  2) GELI (less secure, recommended) https://en.wikipedia.org/wiki/Geli_(software)
+- "I recommend encrypting either the entire system or none of the system.
+   Partially encrypted disk leave opportunities for skilled intruders to sabotage your system and subvert the encryption."
+*** Partitioning
+- A =partition scheme= is the system for organizing partitiosn on a disk
+- Disk Partitioning (tools: gpart, gptboot, gptzfsboot)
+  - try to use use GPT always
+  - can bludgeon GPT support into a MBR-only disk
+  | MBR | Master Boot Record    | used by older and smaller hardware <2TB | https://en.wikipedia.org/wiki/Master_boot_record   |
+  | GPT | GUID Partition Tables |                                         | https://en.wikipedia.org/wiki/GUID_Partition_Table |
+- freeBSD fits in about half a gigabyte
+- UFS Partition recommendations
+  - 20GB for OS and related programs should be mor than sufficient
+  - /usr /usr/local /var /var/log /home / swap application-data
+  - web content, logs, /home, database
+- IF you have multiple HDs, you should alsmost certainly use them to create some sort of storage *redundacy*
+  - ZFS mirror
+  - RAID-Z
+  - UFS software raid
+- TIP : Put each drive on different *drive controller* for better =redundancy=
+- TIP : SATA *disk controllers* split their =throughput= among all the hard drives connected to them.
+- ~i386 limits memory usage to 512MB~
+*** SWAP
+  - 1GB per 10GB of ram
+  - Should have only enough to perform its task
+  - restrain swap space to the operating system drives
+  - main usage today is to store a memory dump
+    - but you might need to dump the entire kernel content of ram to swap
+      - you can use a partition
+      - or a flash drive on a laptop
+  - The old saying of having twice SWAP as of ram is obsolete and dangerous.
+    As it will increase the life of a program before the kernel kill him.
+*** Images
+- use the .0 image version, it will work
+- you are automatically redirected to the closest mirror site
+- file endings
+  | bootonly      | .iso | downloads over the network                  |
+  | disc1         | .iso | full installer                              |
+  | mini-memstick | .img | for flash drives, download over the network |
+  | memstick      | .img |                                             |
+** 3 Installing
+- There is no *back button*
+- bsdinstall https://wiki.freebsd.org/BSDInstall
+*** Distribution Select, select one or many
+  | base-dbg   | debug symbols for the base system |
+  | doc        |                                   |
+  | kernel-dbg | debug symbols for the kernel      |
+  | lib32-dbg  | debug symbols for 32bit libraries |
+  | lib32      | 32bit libraries                   |
+  | src        | (recommended)                     |
+  | tests      |                                   |
+*** Partition Schemes available:
+  | APM   | Appe Partition Map        |
+  | BSD   | BSD Labels                |
+  | GPT   | GUID Partition Table      |
+  | MBR   | Dos Partitions            |
+  | VTOC8 | Sun VTOC8 Partition Table |
+*** Example: UFS Partions
+  - 512KB freebsd-boot EFI boot partition
+  - 1GB swap
+  - 4GB emergency (memory) dump space (type is swap too)
+  - 1GB root (/)
+  - 512MB /tmp
+  - 2GB /var (for logs)
+  - rest in /usr
+*** ZFS
+  - Use swap mirrored if you have >1 disk
+  - Encrypt SWAP: there's very little performance cost and, in case your hard drives are stolen, potential advantages
+  - Virtual Device Type:
+    | stripe | no redundancy              |
+    | mirror | n-way mirroring            |
+    | raid10 | raid 1+0 n*(2-way mirrors) |
+    | raidz1 | single redundant raid      |
+    | raidz2 | double redundant raid      |
+    | raidz3 | triple redundant raid      |
+*** SLAAC (Stateless Address Autoconfiguration)
+  (aka dhcp for ipv6, there is still dhcp) https://en.wikipedia.org/wiki/IPv6#Stateless_address_autoconfiguration_(SLAAC)
+*** Resolver config
+  - DNS servers IPs
+  - Search Doman
+*** Services
+  | sshd          |                                               |
+  | ntpd          |                                               |
+  | local_unbound | local caching validating resolver             |
+  | moused        | PS/2 mouse pointer on the console             |
+  | powerd        | adjust cpu frequency dynamically if supported |
+  | dumpdev       | enable kernel crash dumps to /var/crash       |
+*** Harderning
+  | hide_uids        | hide processes running as other users                  |
+  | hide_gids        | hide processes running as other groups                 |
+  | hide_jail        | hide processes running in jails                        |
+  | read_msgbuf      | disable reading kernel message buffer for unpriv users |
+  | prog_debug       | disable process debugging facilities for unpriv users  |
+  | random_pid       |                                                        |
+  | clear_tmp        | clear /tmp filesystem on system startup                |
+  | disable_syslogd  | disable opening syslogs *network socket*               |
+  | disable_sendmail |                                                        |
+  | secure_console   | enable console password prompt                         |
+*** Users
+- add the non-root user to the group *wheel* so he can use the root password
+*** Manual Configuration
+- The installer offers to open a shell in the new system to make a final manual modification
+  $ chflags schg /home/xistence/
+** 4 Start Me Up! The Boot Process
+- The boot process itself can be divided into three main parts
+  1) the loader
+  2) single-user startup
+  3) multiuser startup
+*** Power-On
+*** The =Loader=
+*** Single-User Mode
+*** The =Loader= Prompt
+*** =Loader= Configuration
+*** Boot Options
+*** Startup Messages
+*** Multiuser Startup
+*** The rc.d Startup System
+*** Serial Consoles

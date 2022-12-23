@@ -1,0 +1,30 @@
+* square image
+- convert me-aoc7-silver-2.png
+  -trim
+  -background 'rgb(255,255,255)'
+  -virtual-pixel background
+  -set option:distort:viewport
+  "%[fx:max(w,h)]x%[fx:max(w,h)]-%[fx:max((h-w)/2,0)]-%[fx:max((w-h)/2,0)]"
+  -filter point
+  -distort SRT 0
+  me-aoc7-silver-22.png
+* color to trasnparent
+- https://stackoverflow.com/questions/9297967/imagick-changing-a-color-to-be-transparent
+- convert original.jpg
+  -alpha set
+  -channel alpha
+  -fuzz 18%
+  -fill none
+  -floodfill +0+0
+  black
+  transparent-border.png
+* watermark
+https://www.the-art-of-web.com/system/imagemagick-watermark/
+- composite -compose multiply -gravity SouthEast  tt.png me-aoc7-silver-2.png what.jpg
+* remove solid color border
+https://stackoverflow.com/questions/50847360/imagemagick-remove-black-borders
+- can delete the image into a 1x1 easily, keep the fuzz low
+  mogrify -fuzz 4% -define trim:percent-background=0% -trim +repage -format jpg img.jpg
+- more lenient on fuzz
+  mogrify -fuzz 25% -trim +repage -shave 7x7 -format png "${i}"
+  mogrify -fuzz 25% -trim +repage -format png "${i}"
