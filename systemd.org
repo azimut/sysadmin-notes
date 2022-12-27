@@ -1,3 +1,4 @@
+- https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
 - Resources http://0pointer.de/blog/projects/resources.html
 * Suspension log
   journalctl -t systemd-sleep
