@@ -29,6 +29,31 @@ https://github.com/sm00th/bitlbee-discord
 > chat add discord !1 #mydiscordchannel
 > chan #mydiscordchannel set auto_join true
 > /join #mydiscordchannel
+*** dnf
+sudo dnf install json-glib-devel qrencode-devel nss-devel
+*** selinux
+#+begin_src
+type=AVC msg=audit(1672322613.486:5223): avc:  denied  { dac_override } for  pid=79851 comm="bitlbee" capability=1  scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:system_r:bitlbee_t:s0 tclass=capability permissive=0
+type=AVC msg=audit(1672322633.681:5246): avc:  denied  { read } for  pid=79952 comm="bitlbee" name="hpage_pmd_size" dev="sysfs" ino=3008 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:sysfs_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1672322633.786:5247): avc:  denied  { read } for  pid=79952 comm="bitlbee" name="libdiscord.so" dev="dm-0" ino=1452691 scontext=system_u:system_r:bitlbee_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1672321705.741:5006): avc:  denied  { open } for  pid=76685 comm="bitlbee" path="/sys/kernel/mm/transparent_hugepage/hpage_pmd_size" dev="sysfs" ino=3008 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:sysfs_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1672321705.797:5007): avc:  denied  { open } for  pid=76685 comm="bitlbee" path="/usr/lib64/bitlbee/libdiscord.so" dev="dm-0" ino=1452691 scontext=system_u:system_r:bitlbee_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1672322915.513:5352): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322915.513:5353): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322915.602:5354): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322916.795:5355): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322916.796:5356): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322916.898:5357): avc:  denied  { search } for  pid=80397 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322981.300:5378): avc:  denied  { map } for  pid=80793 comm="bitlbee" path="/usr/lib64/bitlbee/libdiscord.so" dev="dm-0" ino=1452691 scontext=system_u:system_r:bitlbee_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file permissive=0
+type=AVC msg=audit(1672322985.615:5379): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322985.617:5380): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322985.624:5381): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322985.725:5382): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322986.901:5383): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322986.902:5384): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672322987.022:5385): avc:  denied  { search } for  pid=80793 comm="bitlbee" name="snapd" dev="dm-0" ino=2498106 scontext=system_u:system_r:bitlbee_t:s0 tcontext=system_u:object_r:snappy_var_lib_t:s0 tclass=dir permissive=0
+type=AVC msg=audit(1672323136.075:5443): avc:  denied  { execute } for  pid=81362 comm="bitlbee" path="/usr/lib64/bitlbee/libdiscord.so" dev="dm-0" ino=1452691 scontext=system_u:system_r:bitlbee_t:s0 tcontext=unconfined_u:object_r:user_home_t:s0 tclass=file permissive=0
+#+end_src
 * Weechat
 https://seankhliao.com/blog/12020-08-06-updated-weechat/
 https://gist.github.com/pascalpoitras/8406501

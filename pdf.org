@@ -1,6 +1,14 @@
+* URL to image
+firefox --screenshot page.png --window-size=1500 https://mysite.com/page.html
+convert page.png -crop 1500x1766 page.tiff
+convert page.tiff page.pdf
+* URL to pdf
+https://bugzilla.mozilla.org/show_bug.cgi?id=1407238
+(incognito makes it faster?)
+chrome --incognito --headless --disable-gpu --print-to-pdf https://bugzilla.mozilla.org
 * extract pages
 https://linuxhint.com/extract-pdf-pages-linux/
-pdftk adv_bash_scripting.pdf cat 3-8 output
+pdftk adv_bash_scripting.pdf cat 3-8 output output.pdf
 53-103
 1032-1171
 1624-1933
@@ -77,3 +85,6 @@ for i in *.pdf; do
 done
 pdftk *.pdf cat output myBook.pdf
 #+end_src
+* remove last page
+https://stackoverflow.com/questions/17705974/remove-the-last-page-of-a-pdf-file-using-pdftk
+pdftk infile.pdf cat 1-r2 output outfile.pdf
