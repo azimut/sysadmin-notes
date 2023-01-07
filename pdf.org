@@ -6,39 +6,43 @@ convert page.tiff page.pdf
 https://bugzilla.mozilla.org/show_bug.cgi?id=1407238
 (incognito makes it faster?)
 chrome --incognito --headless --disable-gpu --print-to-pdf https://bugzilla.mozilla.org
-* extract pages
-https://linuxhint.com/extract-pdf-pages-linux/
-pdftk adv_bash_scripting.pdf cat 3-8 output output.pdf
-53-103
-1032-1171
-1624-1933
-2332-2418
-2506-2539
-2965-3212
-3500-3538
-3755-3817
-4185
 * evince keep zoom
   https://askubuntu.com/questions/213820/how-to-keep-zoomlevel-in-evince-constant-after-clicking-a-link
   > gsettings set org.gnome.Evince allow-links-change-zoom false
 * markdown to pdf
-pandoc --pdf-engine=xelatex \
-    -V pagestyle=empty \
-    -V margin-left=5mm \
-    -V margin-right=5mm \
-    -V margin-top=20mm \
-    -V margin-bottom=10mm \
-    -V papersize=a4 \
-    -V fontsize=12pt  \
-    "${md}" -o pdf/"${md%.*}".pdf
-* html to pdf
+pandoc --pdf-engine=xelatex -V pagestyle=empty -V margin-left=10mm -V margin-right=10mm -V margin-top=10mm -V margin-bottom=10mm -V papersize=letter -V fontsize=12pt "${md}" -o pdf/"${md%.*}".pdf
+** Example
+#+begin_src bash
+#!/bin/bash
+set -exuo pipefail
+
+mkdir -p pdf
+
+for md in p*.md; do
+	title="$(head -n1 "${md}" |
+		sed 's/# Programming for Wa[n]*ab[e]*s[.]* //')"
+	[[ -f pdf/"${title}".pdf ]] && continue
+	pandoc --pdf-engine=xelatex \
+		-V pagestyle=empty \
+		-V margin-left=10mm \
+		-V margin-right=10mm \
+		-V margin-top=10mm \
+		-V margin-bottom=10mm \
+		-V papersize=letter \
+		-V fontsize=12pt \
+		"${md}" -o pdf/"${title}".pdf
+done
+#+end_src
+* html     to pdf
 pandoc input.html -t latex -o output.pdf
-* ppt  to pdf
+* ppt      to pdf
 - https://askubuntu.com/questions/11130/how-can-i-convert-a-ppt-to-a-pdf-from-the-command-line
   unoconv -f pdf file.ppt
-* djvu to pdf
+* djvu     to pdf
 https://wiki.archlinux.org/index.php/PDF,_PS_and_DjVu#DjVu_tools
 - ddjvu --format=pdf some.djvu some.pdf
+* epub     to pdf
+ebook-convert input.epub output.pdf
 * rotate
 https://stackoverflow.com/questions/3136610/pdftk-rotating-pages-problem
 - pdftk in.pdf cat
@@ -88,3 +92,15 @@ pdftk *.pdf cat output myBook.pdf
 * remove last page
 https://stackoverflow.com/questions/17705974/remove-the-last-page-of-a-pdf-file-using-pdftk
 pdftk infile.pdf cat 1-r2 output outfile.pdf
+* extract pages
+https://linuxhint.com/extract-pdf-pages-linux/
+pdftk adv_bash_scripting.pdf cat 3-8 output output.pdf
+53-103
+1032-1171
+1624-1933
+2332-2418
+2506-2539
+2965-3212
+3500-3538
+3755-3817
+4185
