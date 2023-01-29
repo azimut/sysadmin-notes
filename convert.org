@@ -28,3 +28,10 @@ https://stackoverflow.com/questions/50847360/imagemagick-remove-black-borders
 - more lenient on fuzz
   mogrify -fuzz 25% -trim +repage -shave 7x7 -format png "${i}"
   mogrify -fuzz 25% -trim +repage -format png "${i}"
+* compose 2 image - 1 with transparencey - being of the same size
+- composite
+  -compose over
+  -gravity center
+  tranparency-one.png
+  background.jpg
+  output.png

@@ -7,6 +7,8 @@
 |--------------+------------------|
 - https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
+- join video with audio
+  ffmpeg -i video.mp4 -i audio.mp3 -c copy output.mp4
 - concat videos https://stackoverflow.com/questions/7333232/how-to-concatenate-two-mp4-files-using-ffmpeg
   ffmpeg -i opening.mkv -i episode.mkv -i ending.mkv
   -filter_complex "[0:v] [0:a] [1:v] [1:a] [2:v] [2:a] concat=n=3:v=1:a=1 [v] [a]"
