@@ -1,7 +1,3 @@
-- https://emacs.stackexchange.com/questions/3513/starting-slime-in-a-pop-up-frame
-  (setq display-buffer-alist
-      (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
-         (nil)))))
 - https://www.emacswiki.org/emacs/HideModeLine
   (setq mode-line-format nil)
 - https://superuser.com/questions/77314/how-to-do-select-column-then-do-editing-in-gnu-emacs
@@ -14,7 +10,6 @@
   keeps track of recent closed files/buffers?
   need to add a C-S-t to open most recent
 - https://marcohassan.github.io/bits-of-experience/pages/emacs/
-- /sudo::/etc/thisfile
 - Video: Emacs Tutorial 19 - Completion - Company for C/C++ https://www.youtube.com/watch?v=XeWZfruRu6k
 - https://tuhdo.github.io/c-ide.html helm
 disable YAS on comment?
@@ -22,8 +17,6 @@ disable YAS on comment?
 - https://www.masteringemacs.org/article/introduction-to-ido-mode
 - https://emacs.stackexchange.com/questions/2181/ibuffer-how-to-automatically-create-groups-per-project
 - https://twitter.com/emacs_gifs/status/761217627830181889
-- http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
-  C-x C-q - dired editing mode
 - http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
 - ibuffer
 - 804101
@@ -32,4 +25,13 @@ https://stackoverflow.com/questions/613022/how-to-replace-a-character-with-a-new
 M-x replace-string
 STRINGTOREPLACE
 C-q C-j
-
+- https://emacs.stackexchange.com/questions/3513/starting-slime-in-a-pop-up-frame
+  (setq display-buffer-alist
+      (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
+         (nil)))))
+* C-x C-q - dired editing mode
+http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
+* /sudo::/etc/thisfile
+* flush-lines - delete all blank lines
+  https://www.masteringemacs.org/article/removing-blank-lines-buffer
+* shell-command-on-region
