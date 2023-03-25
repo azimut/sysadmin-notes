@@ -88,8 +88,9 @@ git log --oneline -1 $revision
 - ~magit-dispatch~ (suggested C-x M-g) alternative to above
 - i , to add to .gitignore or .gitinfo?
 - K , untrack
-- x/X, Reset (soft/hard)
-  x HEAD^ (to pop a commit)
+- X, Reset (soft/hard) (3/2023 updated)
+  s HEAD^ (to pop a commit) (keeps it staged)
+  h HEAD^ (") (keeps it unstaged????)
 - R rename
 - c f fixup commit message
 - On a commit

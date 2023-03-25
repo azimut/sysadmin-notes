@@ -5,19 +5,21 @@
 * XORG
   journalctl _COMM=Xorg
 * Disable services
-| iio-sensor-proxy   | dbus extension for sensors (light, rotation, speed) |
-| switcheroo-control | dbus extension for 2 gpu cards                      |
-| cups               | printer support                                     |
-| ModemManager       | 2G/3G/4G usb modem support                          |
-| bluetooth          |                                                     |
-| multipathd         | remote disk?                                        |
-| mdmonitor          | raid                                                |
-| dmraid-activation  | raid                                                |
-| iscsi              |                                                     |
-| *packagekit        | UI for OS package removal                           |
-
-packagekit needs mask besides disable
-
+|--------------------+---------------------------------------------------------------------------|
+| bluetooth          |                                                                           |
+| cups               | printer support                                                           |
+| dmraid-activation  | raid                                                                      |
+| iio-sensor-proxy   | *dbus* extension for sensors (light, rotation, speed)                     |
+| iscsi              |                                                                           |
+| mdmonitor          | raid                                                                      |
+| ModemManager       | 2G/3G/4G usb modem support                                                |
+| multipathd         | remote disk?                                                              |
+| *packagekit        | UI for OS package removal                                                 |
+| switcheroo-control | *dbus* extension for 2 gpu cards                                          |
+| *udisks2           | implements *dbus* interfaces used to query and manipulate storage devices |
+|--------------------+---------------------------------------------------------------------------|
+udisks2: > authselect disable-feature with-fingerprint
+packagekit: needs mask besides disable
 * Other services
 | vmtoolsd | vmware tools      |
 | vboxdrv  | virtual box tools |
