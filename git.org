@@ -9,6 +9,10 @@
   ~magit-log-buffer-file~, view log for file
 - git-gutter-fringe font
   https://ianyepan.github.io/posts/emacs-git-gutter/
+- Video:  Advanced Git: Graphs, Hashes, and Compression, Oh My!
+  https://www.youtube.com/watch?v=ig5E8CcdM9g
+- Video:  Git From the Bits Up
+  https://www.youtube.com/watch?v=MYP56QJpDr4
 * Github Altenatives
 - Gitlab
 - Bitbucket
