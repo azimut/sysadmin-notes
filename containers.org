@@ -1,0 +1,72 @@
+- https://fly.io/blog/docker-without-docker/
+  https://fly.io/blog/carving-the-scheduler-out-of-our-orchestrator/
+  https://fly.io/docs/reference/apps/
+- 2015 | KVM kernel api https://lwn.net/Articles/658511/
+- https://github.com/google/gvisor
+  - implements basically all of linux, in userland
+    - processes
+    - devices
+    - tasks
+    - address spaces and page tables
+    - filesystems
+    - tcp/ip
+    - network stack
+  - downside is performance
+- https://github.com/kvmtool/kvmtool
+  - https://elinux.org/images/4/44/Przywara.pdf
+  - Run Linux guests under KVM
+  - complex C codebase
+  - Provide network and block devices (using virtio)
+  - Emulate some platform devices (8250 UART, PS/2, RTC, VGA)
+  - lighter than *kata*
+- Firecracker: AWS reimplementation of QEMU in rust
+  https://www.usenix.org/system/files/nsdi20-paper-agache.pdf
+  - runs on an external jailer https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md
+- Process isolation https://github.com/google/nsjail
+- Orchestration of lightvms (firecracker)
+  https://github.com/kata-containers/kata-containers
+  - you NEED bare metal to run this efficiently, no nested virtualization
+  - gets rid of bios boot overhead
+- 2020 Review of jailing https://fly.io/blog/sandboxing-and-workload-isolation/
+  - kernel bug, exploited in chrome through "waitd" syscall
+    https://salls.github.io/Linux-Kernel-CVE-2017-5123/
+  - WASM sandbox (abandoned) https://github.com/bytecodealliance/lucet
+    succesor https://github.com/bytecodealliance/wasmtime
+- Default syscalls allowed, to filter kernel features
+  https://github.com/moby/moby/blob/master/profiles/seccomp/default.json
+- Capabilities
+  https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities
+  --cap-drop
+  --cap-add
+* AppArmor profile
+- Things that needs and external ACL (access control) beyond what docker/namespaces provide
+- https://github.com/moby/moby/blob/master/profiles/apparmor/template.go
+  #+begin_src
+  network,
+  capability,
+  file,
+  umount,
+  # Host (privileged) processes may send signals to container processes.
+  signal (receive) peer=unconfined,
+  # dockerd may send signals to container processes (for "docker kill").
+  signal (receive) peer={{.DaemonProfile}},
+  # Container processes may send signals amongst themselves.
+  signal (send,receive) peer={{.Name}},
+  deny @{PROC}/* w,   # deny write for all files directly in /proc (not in a subdir)
+  # deny write to files not in /proc/<number>/** or /proc/sys/**
+  deny @{PROC}/{[^1-9],[^1-9][^0-9],[^1-9s][^0-9y][^0-9s],[^1-9][^0-9][^0-9][^0-9/]*}/** w,
+  deny @{PROC}/sys/[^k]** w,  # deny /proc/sys except /proc/sys/k* (effectively /proc/sys/kernel)
+  deny @{PROC}/sys/kernel/{?,??,[^s][^h][^m]**} w,  # deny everything except shm* in /proc/sys/kernel/
+  deny @{PROC}/sysrq-trigger rwklx,
+  deny @{PROC}/kcore rwklx,
+  deny mount,
+  deny /sys/[^f]*/** wklx,
+  deny /sys/f[^s]*/** wklx,
+  deny /sys/fs/[^c]*/** wklx,
+  deny /sys/fs/c[^g]*/** wklx,
+  deny /sys/fs/cg[^r]*/** wklx,
+  deny /sys/firmware/** rwklx,
+  deny /sys/kernel/security/** rwklx,
+  # suppress ptrace denials when using 'docker ps' or using 'ps' inside a container
+  ptrace (trace,read,tracedby,readby) peer={{.Name}},
+  #+end_src
