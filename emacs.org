@@ -29,6 +29,9 @@ C-q C-j
   (setq display-buffer-alist
       (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
          (nil)))))
+* align text on multiple columns (separeted by space)
+https://pragmaticemacs.wordpress.com/2016/01/16/aligning-text/
+C-u M-x align-regexp \(\s-*\)\s- 1 1 y
 * C-x C-q - dired editing mode
 http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
 * /sudo::/etc/thisfile

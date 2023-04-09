@@ -1,3 +1,4 @@
+- https://bytes.zone/posts/modeling-git-internals-in-alloy-part-1-blobs-and-trees/
 - https://www.boringcactus.com/2021/02/22/can-we-please-move-past-git.html
 - https://dev.to/yonkeltron/is-it-time-to-look-past-git-ah4
 - VSCODE
