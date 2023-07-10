@@ -1,0 +1,5 @@
+- heroku is dead
+- https://fly.io/
+- https://glitch.com/pricing node/sqlite/static, "Full-stack apps that sleep after 5 minutes"
+- https://railway.app/
+- https://render.com/

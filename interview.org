@@ -1,0 +1,913 @@
+- https://github.com/bregman-arie/devops-exercises
+  https://github.com/bregman-arie/devops-resources
+  https://github.com/Tikam02/DevOps-Guide
+* Course: System Design Fundamentals | AlgoExpert
+** Introduction
+- More on the *knowledge* side than coding interviews that require *problem solving* skills
+** What are Design Fundamentals?
+- SDI Interviews
+  - Questions are intentionally vague
+    - You should take a prompt like "design uber" and turn it into a 45 minutes discussion
+    - Questions: type system, functionality support, characteristics
+  - Answers are more subjective
+    - You need to justify why your solution took the decisions that it did
+- SDF Categories
+  | Knowledge       | client-server model, network protocols                     |
+  | Characteristics | availability, latency, throughput, redundancy, consistency |
+  | Components      | load balancers, caches, leader election, rate limiter      |
+  | Tech            | Nginx, Zookeeper, Etcd, Redis, S3, Google Cloud Storage    |
+** Client-Server Model/Architecture
+- Client speaks to a Server
+  Server listens for clients and then speaks back
+** Network Protocols
+- ip/tcp/http
+- protocol is an agreed set of rules to interact between each other
+- IP packet
+  - header/data
+  - limited in size, up to 2^16 bytes = 65000 Bytes = 0.065 MB
+  - NO arrival or order guarantees
+- TCP
+  - ordered and arrival guarantess
+  - error free way (uncorrupted)
+- HTTP
+  - Higher level abstraction: Easier to use than TCP/IP
+  - Request-Response paradigm
+  - You can have different methods (GET/POST/PUT/DELETE) band /paths and will respond accordingly
+#+begin_src javascript
+  const express = require('express');
+  const app = express();
+  app.use(express.json());
+  app.listen(3000, () => console.log('Listening on port 3000.'));
+  app.get('/hello', (req, res) => {
+      console.log('req.headers: ', req.headers);
+      console.log('req.method: ', req.method);
+      res.send('Received GET request!\n');
+  });
+  app.post('/hello', (req, res) => {
+      console.log('req.headers: ', req.headers);
+      console.log('req.method: ', req.method);
+      console.log('req.body: ', req.body);
+      res.send('Received POST request\n');
+  });
+#+end_src
+- on *curl* when you specify *--data* request method defaults to POST
+** Storage
+- most system requires some kind of storage
+- A database is just a server.
+  - Have different persistence depending if they persist on disk or on memory
+- "Google Cloud Platform offers 8 different storage products"
+*** Example: simple key-value storage both in memory and in disk
+- JSON object send has to have a "data" field
+> curl localhost:3001/memory/foo \
+  --header 'Content-Type: application/json' \
+  --data '{"data": "this is some data in memory."}'
+> curl localhost:3001/memory/foo \
+  -w "\n" ## adds a new line at the and of the response
+#+begin_src javascript
+  const express = require('express');
+  const fs = require('fs');
+  const DATA_DIR = 'aedb_data';
+  const app = express();
+  app.use(express.json());
+  const hashtable = {};
+  // ------------------------------
+  app.post('/memory/:key', (req, res) => {
+      hashtable[req.param.key] = req.body.data;
+      res.send();
+  });
+  app.get('/memory/:key', (req, res) => {
+      const key = req.params.key;
+      if (key in hashtable) {
+          res.send(hashtable[key]);
+          return;
+      }
+      res.send('null');
+  });
+  // ------------------------------
+  app.post('/disk/:key', (req, res) => {
+    const destinationFile = `${DATA_DIR}/${req.params.key}`;
+      fs.writeFileSync(destinationFile, req.body.data);
+      res.send();
+  });
+  app.get('/disk/:key', (req, res) => {
+      const destinationFile = `${DATA_DIR}/${req.params.key}`;
+      try {
+          const data = fs.readFileSYnc(destinationFile);
+          res.send(data);
+      } catch (err) {
+          res.send('null');
+      }
+  });
+
+  app.listen(3001, () => {
+      console.log('Listening on port 3001');
+  });
+#+end_src
+** Latency and Throughput
+- They are not necesarilly correlated things
+- there are 1M(10^6) "us" in one second
+- Latency is how long it takes to data to traverse the system. From one point to another.
+  - Operation: roundtrip of 1 packet (~1K) from California -> Netherlands = 150000 us
+  - Operations: reading 1 Megabyte sequentially
+   | memory        |   250 | us |
+   | SSD           |  1000 | us |
+   | 1Gbps Network | 10000 | us |
+   | HDD           | 20000 | us |
+- Throughput is how much work a machine can perform in a given period of time.
+** Availability
+- There is some implied level of guarentee in web services
+- Ways to measure availability.
+  - SLA/SLO: explicit availability
+   | Service Level Agreement | explicit agreement between Service Provider and Customers |
+   | Service Level Objective | the components of SLA, eg: %uptime, nr of errors          |
+    - Cloud Spanner SLA - monthly uptime percentage
+      - >= 99.999% - Multi-regional instance
+      - >= 99.99%  - Reginal instance
+      - If they don't comply, they paid back
+    - Some services might require more HA than others
+      - You need to think when you design them
+  - Nines:
+    - Percentage of system uptime on a given year. And all primary functions are satisfied
+    - "five nines" is considered the "gold standard" of availability
+    - Measured with on the ammount of "9", downtime per year
+      | availability | nines | downtime | unit    |
+      |--------------+-------+----------+---------|
+      |          90% | one   |       36 | days    |
+      |          99% | two   |     3.65 | days    |
+      |        99.9% | three |     8.77 | hours   |
+      |       99.99% | four  |    52.60 | minutes |
+      |      99.999% | five  |     5.26 | minutes |
+      |     99.9999% | six   |    31.56 | seconds |
+- Redundancy
+  - Multiplying parts of your system
+    - Adding servers
+    - Adding LBs
+  - No have a SPF (single point of failure)
+  - Types
+    - Passive redundancy: using the excess of capacity(servers) in the case of component failures
+    - Active redundancy: when the components *know* of the failure and start to take the work of the broken component (eg: leader election)
+** Caching
+- In algorithms we use caching to improve the time complexity of them.
+  To avoid redoing the same operations, especially the _computationally_ complex.
+- ~Caching~
+  - is storing data in a location that is different and faster from where the original data is from.
+  - Used to redeuce or improve the =latency= of a system
+- Where
+  - computationaly complex ops
+  - in hardware (L1/L2/L3)
+  - network
+    - on client: cache server requests
+    - on server: cache database results
+    - in between (client/server/database)
+- Types of caches (ME: that deal with invalidation)
+  - ~Writetrough cache~
+    on the same write operation BOTH server cache and database will be writethough
+  - ~Writeback cache~
+    write operation ONLY updates the server cache, database is updated at a later time asynchronously
+- Staleness, caches can become stale if they haven't been updated properly.
+  - For some content it might be acceptable to have stale cache
+- When to use caching?
+  - if you have a single thing reading/writing
+  - if you don't care about consistency or staleness of data
+  - if the *data* you are dealing with is static/immutable
+  - if you are dealing with *data* that is mutable
+    - you are going to add new places where the data would exists
+    - check for data being on sync
+- ~Eviction policy~
+  - Types
+    - LRU: Less Recently Used
+    - LFU: Less Frequency Used
+    - FIFO
+    - Random
+  - Why?
+    - Because we don't have infinite storage
+    - To get ride of stale data
+*** Example: nodejs express cache on a dictionary
+#+NAME: server.js
+#+begin_src js
+  const database = require('./database');
+  const express = require('express');
+  const app = express();
+  const cache = {};
+
+  app.get('/nocache/index.html', (req, res) =>{
+    database.get('index.html', page => {
+      res.send(page);
+    });
+  });
+
+  app.get('/withcache/index.html' , (req, res) => {
+    if ('index.html' in cache) {
+      res.send(cache['index.html']);
+      return;
+    }
+    database.get('index.html', page => {
+      cache['index.html'] = page;
+      res.send(page);
+    });
+  });
+
+  app.listen(3001, () => {
+    console.log('Listening on port 3001');
+  });
+#+end_src
+#+NAME: database.js
+#+begin_src js
+  const database = {
+    ['index.html']: '<html>HelloWorld!</html>',
+  };
+
+  module.exports.get = (key, callback) => {
+    setTimeout(() => {
+      callback(database[key]);
+    }, 3000);
+  };
+#+end_src
+** Proxies
+- Types
+  1) Reverse Proxy:
+     - Act on behalf of the server
+     - The client won't know that the request is going to the reverse proxy.
+     - Features:
+       - Can filter out some requests
+       - Can do logging
+       - Can cache certain things
+       - Can act as a load balancer
+  2) Forward Proxy: most commonly refered to as "proxy"
+     - Acts in behalf of the clients
+     - Can hide the identity of the client that is connecting to the server
+*** Example: nginx + nodejs
+#+NAME: server.js
+#+begin_src js
+  const express = require('express');
+  const app = express();
+  app.listen(300, () => console.log('listening on port 3000.'));
+  app.get('/hello', (req, res) => {
+    console.log(req.headers);
+    res.send('Hello\n');
+  });
+#+end_src
+#+NAME: nginx.conf
+#+begin_src conf
+events { }
+http {
+  upstream nodejs-backend {
+    server localhost:3000;
+  }
+  server {
+    listen 8081;
+    location / {
+      proxy_set_header systemexpert-tutorial true;
+      proxy_pass http://nodejs-backend;
+    }
+  }
+}
+#+end_src
+** Load Balancers
+- Clients -> LB -> Servers
+- There are Software and Hardware LB's
+- Has the job of balancing workloads across resources
+- Helps to /horizontally scale/ our system
+  - better throughput
+  - better response time
+*** Server Selection
+ | Random                 |                                                        |
+ | Round-Robin            | in sequential order                                    |
+ | Weighter-Round-Robin   | it order, but it repeats more those with more "weight" |
+ | Performance/Load based | by doing keeping and doing healthchecks on each server |
+ | IP based               | by hashing the source IP                               |
+ | Path based             | according to the HTTP path, isolates impact of changes |
+- You can use multiple server selections techniques, eg: by using multiple LBs
+*** Example
+#+NAME: server.js
+#+begin_src js
+  const express = require('express');
+  const app = express();
+  const port = process.env.PORT;
+  app.listen(port, () => console.log(`Listening on port ${port}.`));
+  app.get('/hello', (req,res) => {
+    console.log(req.headers);
+    res.send(`Hello from port ${port}.\n`);
+  })
+#+end_src
+- PORT=3000 node server.js
+  PORT=3001 node server.js
+#+NAME: nginx.conf, weighted round robin
+#+begin_src conf
+  events { }
+  http {
+     upstream nodejs-backend {
+        server localhost:300 weight=3;
+        server localhost:3001;
+     }
+     server {
+        listen 8081;
+        location / {
+            proxy_set_header sytemexpert-tutorial true;
+            proxy_pass http://nodejs-backend
+        }
+     }
+  }
+#+end_src
+** Hashing
+- Hashing is transforming some input into some fixed size output
+- Regular LBs strategy can have some particular requests that are too expensive.
+  Caching can fix this.
+  But with round-robin we won't be able to use that cache.
+*** =Simple Hashing=
+  - mod()s the hash number
+  - doesn't work well with architectures that add/remove servers often
+*** =Consistent Hashing=
+  - both servers and clients are hashed and put into a cycle/circle
+  - clients, pick the next server clockwise in the circle
+  - aka mantains consistency between hashes and buckets
+  - additionally to ensure balance,
+    you can hash the servers several times through different hash function and add them all
+    while also you can aso add more locations of a single server
+*** =Rendezvous Hashing=
+- 1996, at the same time of C.H.
+- h() obtains a *list of priorities* for each server, from the input, and it picks the higher one
+- h(Sn, O) = Wn
+  | h() | hash function                         |
+  | Sn  | the servers                           |
+  | O   | origin server, the thing being hashed |
+  | Wn  | a weight or priority                  |
+- https://en.wikipedia.org/wiki/Rendezvous_hashing
+- https://www.youtube.com/watch?v=1TIzPL4878Q
+- You calculate scores for your servers/destinations pick the highest one.
+**** Example
+- We keep consistency. But none of the servers picked are equal.
+#+NAME: hashing_utils.js
+#+begin_src js
+  const utils = require('./hashing_utils');
+  const serverSet1 = [ 'server0', 'server1', 'server2' ];
+  const serverSet2 = [ 'server0', 'server1', ];
+  const usernames = ['username0', 'username1', 'username2'];
+
+  function pickServerSimple(username, servers) {
+    const hash = utils.hashString(username);
+    return servers[hash % servers.length];
+  }
+
+  function pickServerRendezvous(username, servers) {
+    let maxServer = null;
+    let maxScore = null;
+    for(const server of servers) {
+      const score = utils.computeScore(username, server);
+      if (maxScore == null || score > maxScore) {
+        maxScore = score;
+        maxServer = server;
+      }
+    }
+    return maxServer;
+  }
+  console.log('Simple Hashing Strategy:');
+  for(let username of usernames) {
+    const server1 = pickServerSimple(username, serverSet1);
+    const server2 = pickServerSimple(username, serverSet2);
+    const serversAreEqual = server1 === server2;
+    console.log(`${username}: ${server} => ${server2} | equal: ${serversAreEqual}`)
+  }
+
+  console.log('\nRendezvous Hashing Strategy:');
+  for(let username of usernames) {
+    const server1 = pickServerRendezvous(username, serverSet1);
+    const server2 = pickServerRendezvous(username, serverSet2);
+    const serversAreEqual = server1 === server2;
+    console.log(`${username}: ${server} => ${server2} | equal: ${serversAreEqual}`)
+  }
+
+#+end_src
+#+NAME: hashing_example.js
+#+begin_src js
+  function hashString(string) {
+    let hash = 0;
+    if (string.length === 0) return hash;
+    for (let i = 0; i < string.length; i++) {
+      charcode = string.charCodeAt(i);
+      hash = (hash << 5) - hash + charCode;
+      hash |= 0;
+    }
+    return hash;
+  }
+  function computeScore(username, server) {
+    const usernameHash = hashString(username);
+    const serverhash = hashString(server);
+    return (usernameHash * 13 + serverHash * 11) % 67;
+  }
+  module.exports.hashString = hashString;
+  module.exports.computeScore = computeScore;
+#+end_src
+** Relation Databases
+- Google Cloud DataStore: NoSQL database
+  - It provides his own query language (GQL) that might not be able perform some simple queries
+- Tables = Relations
+- Row    = Records
+- Tables are structures imposed that store data. Typically represent a specific entity.
+- Must provide ACID (Atomicity Consistency Isolation Durability)
+  - A: means that the whole *transaction* is a unit, if something fails on it all fails
+  - C: must take into account past *transactions* done on the database, no stale state
+  - I: multiple *transaction* can occur at the same time, in reality they run sequentially
+  - D: effects on the *transaction* are permanent
+- The key benefit of an ~index~ is that you can lookup records/rows from O(n)
+  to O(1) or O(log n) depending of the type of index.
+- 00:30
+  a transaction atomicity can be seen on the CLI, within the transaction you would see the changes
+  but outside (aka on another CLI) you will NOT see the changes.
+- a transactions might lock another one, to ensure isolation
+*** Example create.sql
+#+begin_src sql
+  create table payments (
+    customer_name varchar(128),
+    processed_at date,
+    amount int
+  );
+  create table balances (
+    username varchar(128),
+    balance int
+  );
+  create table large_able (
+    random_int int
+  );
+  insert into payments values ('clement', '2019-12-15', 10);
+  insert into payments values ('antoine', '2020-01-01', 100);
+  insert into payments values ('clement', '2020-01-02', 10);
+  insert into payments values ('antoine', '2020-01-02', 100);
+  insert into payments values ('antoine', '2020-01-03', 100);
+
+  insert into balances values ('antoine', 0);
+  insert into balances values ('clement', 1000);
+
+  insert into large_table (random_int)
+  select round(random()*1000000000)
+    from generate_series(1,50000000) s(i);
+#+end_src
+*** Example queries.sql
+#+begin_src sql
+  -- sum the number of payments for each user
+  select customer_name, count(*)
+    from paymets
+   group by customer_name
+   order by count desc;
+  -- sum the payment amounts for each month
+  select sum(amount), extract(year from processed_at) as year, extract(month from procssed_at) as month
+    from payments
+   group by month, year
+   order by sum desc;
+  -- sum the payments amounts for each month for each user
+  select customer_name, sum(amount), extract(year from processed_at) as year, extract(month from procssed_at) as month
+    from payments
+   group by customer_name, month, year
+   order by sum desc;
+  -- find the largest single-user payments for each month
+  select max(amount), year, month
+    from (
+      select customer_name, sum(amount) as amount, extract(year from processed_at) as year, extract(month from processed_at) as month
+        from payments
+       group by customer_name, month, year
+      ) as montly_sums
+   group by year, month;
+#+end_src
+*** Example transactions.sql
+#+begin_src sql
+  begin transaction;
+  update balances set abalance = balance - 100 where username = 'clement';
+  update balances set balance = balance + 100 where username = 'antoine';
+  commit;
+#+end_src
+** Key-Value Stores
+- One of the most popular NoSQL databases
+- Good for caching or dynamic configuration (eg: etcd)
+*** Example: redis backed key/value cache with key being the page
+#+NAME: server.js
+#+begin_src js
+  const database = require('./database');
+  const express = require('express');
+  const redis = require('redis').createClient();
+  const app = express();
+  app.get('/nocache/index.html', (req,res) => {
+    database.get('index.html', page => {
+      res.send(page);
+    });
+  });
+  app.get('/withcache/index.html', (req,res) => {
+    redis.get('index.html', (err, redisRes) => {
+      if (redisRes) {
+        res.send(redisRes);
+        return;
+      }
+      database.get('index.html', page => {
+        redis.set('index.html', page, 'EX', 10); // set with expiration of 10 seconds
+        res.send(page);
+      });
+    })
+  });
+  app.listen(3001, function() {
+    console.log('Listening on port 3001');
+  });
+#+end_src
+#+NAME: database.js
+#+begin_src js
+  const database = {
+    ['index.html']: '<html>Hello world!</html>',
+  };
+  module.exports.get = (key, vallback) => {
+    setTimeout(() => {
+      callback(database[key]);
+    }, 3000)
+  };
+#+end_src
+** Specialized Storage Paradigms
+| =Type=         | =Implementation=     | =Description=                           | =Example=              |
+|----------------+----------------------+-----------------------------------------+------------------------|
+| Blob Store     | GCS, S3              | large amount of unstructured data       | image file, executable |
+|                |                      | behave /like/ k/v storage               |                        |
+|----------------+----------------------+-----------------------------------------+------------------------|
+| Time Series DB | InfluxDB, Prometheus | for ts type computations (eg: roll avg) | monitoring, prices     |
+|----------------+----------------------+-----------------------------------------+------------------------|
+| Graph DB       | Neo4J                | relationships is core to them           | social network         |
+|                |                      | when there are a lot of relationships   |                        |
+|----------------+----------------------+-----------------------------------------+------------------------|
+| Spatial DB     |                      | anything that has geometric space       | locations in a map     |
+| + Quadtree     |                      | QT is a type of "spatial index"         |                        |
+|----------------+----------------------+-----------------------------------------+------------------------|
+- BLOB: Binary Large OBject
+- Quadtree
+  - O(log 4 n) for lookup
+  - You can think of it as a grid
+    - For spatial dbs, you keep subdividing if there are locations on the cuadrant
+  - Each node on it has 4 or none child node
+*** Example: Neo4J vs SQL
+- Problem:
+  Out of all interviewrs that interviewed clement that failed him, which had intervied in facebook and failed
+**** cypher.cql - insert data nodes and relationships
+#+begin_src sql
+  create (facebook:Company {name:'Faceook'})
+
+  create (clement:Cadidate {name:'Clement'})
+  create (antoine:Cadidate {name:'Antoine'})
+  create (simon:Cadidate   {name:'Simon'})
+
+  create (alex:Interviewer    {name:'Alex'})
+  create (meghan:Interviewer  {name:'Meghan'})
+  create (marli:Interviewer   {name:'Marli'})
+  create (sandeep:Interviewer {name:'Sandeep'})
+  create (molly:Interviewer   {name:'Molly'})
+
+  create (alex)-[:INTERVIEWED {score: 'passed'}]->(clement)
+  create (marli)-[:INTERVIEWED {score: 'failed'}]->(antoine)
+
+  create (ryan)-[:APPLIED {status: 'rejected'}]->(facebook)
+  create (simran)-[:APPLEID {status: 'accepted'}]->(facebook)
+  #+end_src
+**** cypher.cql - query
+#+begin_src sql
+  match (interviewer:Interviewer)-[:INTERVIEWED {score:'failed'}]->{:Candidate {name:'Clement'}}
+  where (interviewer)-[:APPLIED {status:'rejected'}]->{:Company {name:'Facebook'}}
+  return interviewer.name;
+#+end_src
+**** sql_query.sql
+complex to understand and slow to run
+#+begin_src sql
+  select interviewers.name
+    from (
+      candidates
+      join interviews on (candidates.id = interviews.candidate_id and candidates.name = 'Clement' and interviews.score = 'failed')
+      join interivewers on (interviewers.id = interviewers.interviewer_id)
+    )
+   where exists (
+     select *
+       from applications
+      where company = 'Facebook' AND candidate_id = interviewers.id and status = 'rejected'
+   );
+#+end_src
+** Replication and Sharding
+- Some systems performance and availability can be limited due their database
+- Replication: replica takes over
+  - Writes needs to be *sync* for failovers, it costs some time
+    Writes can be *async* for better latency
+  - Main database -a/sync--> Replica
+- Sharding
+  - Is splitting/partition the data into "shards"
+  - When you have a lot of data, and replication is not optimal.
+  - Where is the logic that picks the shards?
+    1) in the application code
+    2) on a reverse proxy
+  - Types
+    1) Rows:
+       - for example, firstnames starting a-c, d-h,... each in separate shards
+       - They might create *hotspots* aka shards with more data
+    2) Hashing:
+       - ensures uniformity
+       - but isn't good with availability by itself without replicas
+- PORT=3000 DATA_DIR=aedb_data_0 node aedb.js
+  PORT=3001 DATA_DIR=aedb_data_1 node aedb.js
+  node aedb_projxy.js
+  curl --header 'Content-type: application/json' --data '{"data": "This is some data."}' localhost:8000/a
+  curl -w "\n" ocalhost:8000/a
+*** Example: aedb.js - storing data on disk
+#+begin_src js
+  const express = require('rexpress');
+  const fs = require('fs');
+  const PORT = process.env.PORT;
+  const DATA_DIR = process.env.DATA_DIR;
+  const app = express();
+  app.use(express.json());
+  app.post('/:key', (req, res) => {
+    const {key} = req.params;
+    console.log(`Storing data at key ${key}.`);
+    const destinationFile = `${DATA_DIR}/${key}`;
+    fs.writeFileSync(destinationfile, req.body.data);
+    res.send();
+  });
+  app.get('/:key', (req,res) => {
+    const {key} = req.params;
+    console.log(`Retrieving data from ${key}`);
+    const destinationFile = `${DATA_DIR}/${key}`;
+    try {
+      const data = fs.readFileSync(destinationFile);
+    } catch (err) {
+      res.send('null');
+    }
+  });
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}!`);
+  })
+#+end_src
+*** Example: aedb_proxy.js - reverse proxy
+#+begin_src js
+  const axios = require('axios');
+  const express = require('express');
+  const SHARD_ADDRESSES = ['http://localhost:3000', 'http://localhost:3001'];
+  const SHARD_COUNT = SHARD_ADDRESSES.length;
+  const app = express();
+  app.use(express.json());
+  function getShardEndpoint(key) {
+    const shardNumber = key.charCodeAt(0) % SHARD_COUNT;
+    const shardAddress = SHARD_ADDRESSES[shardNumber];
+    return `${shardAddress}/${key}`;
+  }
+  app.post('/:key', (req,res) => {
+    const shardEndpoint = getShardEndpoint(req.params.key);
+    console.log(`Fowarding to: ${shardEndpoint}`);
+    axios
+    .post(shardEndopint, req.body)
+    .then(innerRes => {
+      res.send();
+    });
+  });
+  app.get('/:key', (req,res) => {
+    const shardEndpoint = getShardEndpoint(req.params.key);
+    console.log(`Forwarding to: ${shardendpoint}`);
+    axios
+      .get(shardEndpoint)
+      .then(innerRes => {
+        if (innerRes.data === null) {
+          res.send('null');
+          return;
+        }
+        res.send(innerRes.data);
+    });
+  });
+  app.listen(8000, () => {
+    console.log('listening port 8000');
+  })
+#+end_src
+- 19:27
+** Leader Election
+- Example: program that allows users to subscribe a product on a regular basis
+  - Components
+    - Database
+    - 3rd-Party Service: takes care of charging the users, debiting funds (eg: paypal/stripe)
+    - Service that connects the /database/ to the /3rd party service/.
+      Can be replicated for HA, with proper ~leader election~ to avoid duplicated tasks.
+      Leader will be the one doing the request.
+      Followers on standby.
+- Roles: leader on the group of servers is picked through ~leader election~
+  - leader
+  - followers
+- Challenge is mainly on gaining *consensus* and sharing some state.
+- Consensus
+  - Algorithms: Paxos, Raft
+  - Software: etcd, zookeeper
+- With the *consensus* problem solved by *etcd*, you can then have a key/value like "leader=host1" which give you leader election
+*** Example
+- python leader_election.py server1
+  python leader_election.py server2
+  python leader_election.py server3
+  python leader_election.py server4
+#+NAME: leader_election.py
+#+begin_src python
+  import etcd3
+  import sys
+  import time
+  from threading import Event
+
+  LEADER_KEY = "/algoexpert/leader"
+
+  def main(server_name):
+      client = etcd3.client(host="localhost", port=2379)
+      while True:
+          is_leader, lease = leader_election(client, server_name)
+          if is_leader:
+              print("I am the leader.")
+              on_leadership_gained(lease)
+          else:
+              print("I am a follower.")
+              wait_for_next_election(client)
+
+  # This election mechanism consists of all clients trying to put their name
+  # into a single key, but ina way that only works if the key does not
+  # exists (or has expired before).
+  def leader_election(client, server_name):
+      print("New leader election happening.")
+      # Create a lease before creating a key. This way, if this client ever
+      # lets the lease expire, the keys associated with that lease will all
+      # expire as well.
+      # Here, if te client fails to renew lease for 5 seconds (network
+      # partition or machine goes down), then the leader election key will
+      # expire.
+      lease = client.lease(5) # 5 seconds lease
+
+      # Try to create the key with your name as the value. If it fails, then
+      # another server got there first.
+      is_leader = try_insert(client, LEADER_KEY, server_name, lease)
+      return is_leader, lease
+
+  def on_leadership_gained(lease):
+      while True:
+          # As long as this process is alive and we're the leader,
+          # we try to renew the lease. We don't give up leadership
+          # unless the process / machine crashes or some exception
+          # is raised.
+          try:
+              print("Refreshing lease; still the leader.")
+              lease.refresh()
+              do_work() # business logic goes here
+          except Exception:
+              # Here we most likely got a client timeout (from
+              # network issue). Try to revoke the current lease
+              # so another member can bget leadership.
+              lease.revoke()
+              return
+          except KeyboardInterrupt:
+              print("\nRevoking lease; no longer the leader.")
+              lease.revoke()
+              sys.exit(1)
+
+  def wait_for_next_election(client):
+      election_event = Event()
+      def watch_callback(resp):
+          for event in resp.events:
+              # It means the key expired / got deleted, which means the
+              # leadership is up for grabs.
+              if isinstance(event, etcd3.events.DeleteEvent):
+                  print("LEADERSHIP CHANGE REQUIRED")
+                  election_event.set()
+      watch_id = client.add_watch_callback(LEADER_KEY, watch_callback)
+      # While we haven't seen that leadership needs change, just sleep.
+      try:
+          while not election_event.is_set():
+              time.sleep(1)
+      except KeyboardInterrupt:
+          client.cancel_watch(watch_id)
+          sys.exit(1)
+
+      # Cancel the watch; we see that election should happen again.
+      client.cancel_watch(watch_id)
+
+  # Try to insert a key into etcd witha  value and a lease. If the lease expires
+  # that key willg et automatically deleted behind the scnes. I fthat key
+  # wa already present, this will raise an exception.
+  def try_insert(client, key, value, lease):
+      insert_succeded, _ = client.transaction(
+          failure=[],
+          success=[client.transactions.put(key, value, lease)],
+          compare=[client.transactions.version(key) == 0],
+      )
+      return insert_succeded
+
+  def do_work():
+      time.sleep(1)
+
+  if __name__ == "__main__":
+      server_name = sys.argv[1]
+      main(server_name)
+#+end_src
+** Peer-to-Peer Networks
+- Example: a system to deploy large files to thousands of machines at once. From one of them to all the other.
+- Solutions
+  1) on a regular network. Have all machines download it from 1 machine.
+  2) *get the file to N machines*, and have them serve the file. Requests will split among them.
+  3) *sharding the files*. Still has all machines fetching a shard from 1 machine.
+  4) *peer-to-peer network*
+     Split the file in chunks and sent it to all the peers.
+     Let the rest build the whole file.
+     With this, peers will not have a need to wait and they could actively send chunks themselves.
+     They would need to know which peer to talk next (*peer discovery*)
+- Machine = Peers
+- Peer Discovery: How?
+  - with a tracker, a central database of peers
+  - gossip/epidemic protocol, by using a distributed hash table (aka DHT)
+- Real World Use case
+  - https://github.com/uber/kraken P2P Docker registry capable of distributing TBs of data in seconds
+  - Torrent
+** Pooling and Streaming
+- For when you need to have access to a constantly changing piece of information. eg: temperature
+- *Polling*: as you reduce the polling frequency you increase the load on the servers
+  Clients -every X seconds-> Servers
+          <-----------------
+- *Streaming*: typically a socket
+  Clients <--continuous push-- Servers
+*** Example: messaging_api.js
+#+begin_src js
+  const axios = require('axios');
+  const WebSocket = require('ws');
+  function createMessagingSocket() {
+    return new WebSocket('ws://localhost:3001/messages');
+  }
+  function getMessages() {
+    return axios.get('http://localhost:3001/messages')
+      .then(res => res.data);
+  }
+  function sendMessage(message) {
+    return axios.post('http://localhost:3001/messages', message);
+  }
+  module.exports.createMessagingSocket = createMessagingSocket;
+  module.exports.getMessages = getMessages;
+  module.exports.sendMessage = sendMessage;
+#+end_src
+*** Example: helpers.js
+#+begin_src js
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+  module.exports.getRandomInt = getRandomInt;
+#+end_src
+*** Example: server.js
+#+begin_src js
+  const express = require('express');
+  const expressWs = require('express-ws');
+  const app = express();
+  expressWs(app);
+  const messages = [{id: 0, text: 'Welcome!', username: 'Chat Room'}];
+  const sockets = [];
+  app.use(express.json());
+  app.listen(3001, () => {
+    console.log('Listening on port 3001!');
+  });
+  app.get('/messages', (req, res) => {
+    res.json(messages);
+  });
+  app.post('/messages', (req, res) => {
+    const message = req.body;
+    messages.push(message);
+    for (const socket of sockets) {
+      socket.send(JSON.stringify(message));
+    }
+  });
+  app.ws('/messages', socket => {
+    socksets.push(socket);
+    socket.on('close', () => {
+      sockets.splice(sockets.indexOf(socket), 1);
+    });
+  });
+#+end_src
+*** Example: client.js
+#+begin_src js
+  const helpers = require('./helpers');
+  const messagingApi = require('./messaging_api');
+  const readline = require('readline');
+  const displayedMessages = {};
+  const terminal = readline.createInterface({
+    input: process.stdin,
+  });
+
+  terminal.on('line', text => {
+    const username = process.env.NAME;
+    const id = helpers.getRandomInt(100000);
+    displayedMessages[id] = true;
+    const message = {id, text, username};
+    messagingApi.sendMessage(message);
+  });
+
+  function displayMessage(message) {
+    console.log(`> ${message.username}: ${message.text}`);
+    displayedMessages[message.id] = true;
+  }
+
+  async function getAndDisplayMessages() {
+    const messages = await messagingApi.getMessages();
+    for (const message of messages) {
+      const messageAlreadyDisplayed = message.id in displaedMessages;
+      if (!messageAlreadyDisplayed) displayMessage(message);
+    }
+  }
+#+end_src
+** Configuration
+** Rate Limiting
+** Logging and Monitoring
+** Publish and Subscribe Patterns
+** MapReduce
+** Security and HTTPS
+** API Design
