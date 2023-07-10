@@ -1,3 +1,20 @@
+- Why company with lsp does NOT show anything on the "echo area"?
+  - company-box-doc
+    - (company-call-backend 'doc-buffer candidate)
+    - (company-call-backend 'quickhelp-string candidate)
+  - company / company-capf.el / handles doc-buffer
+    #<buffer *lsp-documentation*>
+- company
+  - Example front-ends setup for fast typing (tooltip on request) #1214 https://github.com/company-mode/company-mode/discussions/1214
+  - Tips & tricks https://github.com/company-mode/company-mode/wiki/Tips-&-tricks
+  - company-tng https://github.com/company-mode/company-mode/blob/master/company-tng.el
+  - Before asking a question https://github.com/company-mode/company-mode/discussions/1139
+  - frontends https://company-mode.github.io/manual/Frontends.html
+- Custom configs
+  - https://www.gtrun.org/post/config/
+  - visual customization
+    https://xenodium.com/my-emacs-eye-candy/
+    https://github.com/xenodium/dotsies/blob/790465b1824481b81bf5c6e08949128c13d76f95/emacs/features/fe-ui.el#L42
 - https://www.emacswiki.org/emacs/HideModeLine
   (setq mode-line-format nil)
 - https://superuser.com/questions/77314/how-to-do-select-column-then-do-editing-in-gnu-emacs
@@ -29,6 +46,39 @@ C-q C-j
   (setq display-buffer-alist
       (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
          (nil)))))
+* compile - in file
+https://stackoverflow.com/questions/4540793/emacs-set-compilation-command-per-buffer
+https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html
+- At the beggining of the file (1st or 2nd line)
+#+begin_src
+// -*- compile-command: "urxvt -title ipickme -e sh -c 'go run main.go'" -*-
+#+end_src
+- At the end of the file
+#+begin_src
+/* Local Variables: */
+/* compile-command:"gcc -Wall -O3 -o f file.c" */
+/* End: */
+#+end_src
+* begin_src - code evaluation - org-babel
+- https://github.com/pope/ob-go
+- https://github.com/dfeich/org-babel-examples
+  - C
+  - beamer
+  - calc
+  - ditaa
+  - gnuplot
+  - graphviz
+  - latex-koma-letter
+  - latex
+  - library-of-babel
+  - lisp
+  - odt
+  - plantuml
+  - python
+  - python3
+  - shell
+  - sqlite
+  - tables
 * align text on multiple columns (separeted by space)
 https://pragmaticemacs.wordpress.com/2016/01/16/aligning-text/
 C-u M-x align-regexp \(\s-*\)\s- 1 1 y
@@ -38,3 +88,15 @@ http://pragmaticemacs.com/emacs/dired-rename-multiple-files/
 * flush-lines - delete all blank lines
   https://www.masteringemacs.org/article/removing-blank-lines-buffer
 * shell-command-on-region
+* company-backends
+| company-bbdb         | '(message-mode)                                          |
+| company-semantic     | '(c-mode c++-mode jde-mode java-mode)                    |
+| company-cmake        | cmake-mode                                               |
+| company-capf         | lsp                                                      |
+| company-clang        | '(c-mode c++-mode objc-mode)                             |
+| company-files        | backend for file names                                   |
+| company-oddmuse      | backend for oddmuse-mode                                 |
+| company-dabbrev      |                                                          |
+| company-dabbrev-code | prog/batch-file/csharp/css/erlang/haskell/jde/lua/python |
+
+(company-dabbrev-code company-gtags company-etags company-keywords)

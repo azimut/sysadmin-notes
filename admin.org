@@ -28,6 +28,7 @@ https://dingdingsherrywang.medium.com/system-design-instagram-4658eeb0423a
   Pi 3.
   #+end_src
 * Distributed
+- https://www.youtube.com/watch?v=1TIzPL4878Q
 - https://henryr.github.io/distributed-systems-readings/
 - https://medium.com/baseds
 - https://github.com/rShetty/awesome-distributed-systems

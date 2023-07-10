@@ -104,3 +104,13 @@ pdftk adv_bash_scripting.pdf cat 3-8 output output.pdf
 3500-3538
 3755-3817
 4185
+* lower resolution / reduce size
+https://www.digitalocean.com/community/tutorials/reduce-pdf-file-size-in-linux
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/default -dNOPAUSE -dQUIET -dBATCH -sOutputFile=sig22_GRIS-lowres.pdf sig22_GRIS.pdf
+| Option                  | Description                                                                     |
+|-------------------------+---------------------------------------------------------------------------------|
+| -dPDFSETTINGS=/screen   | Has a lower quality and smaller size. (72 dpi)                                  |
+| -dPDFSETTINGS=/ebook    | Has a better quality, but has a slightly larger size (150 dpi)                  |
+| -dPDFSETTINGS=/prepress | Output is of a higher size and quality (300 dpi)                                |
+| -dPDFSETTINGS=/printer  | Output is of a printer type quality (300 dpi)                                   |
+| -dPDFSETTINGS=/default  | Selects the output which is useful for multiple purposes. Can cause large PDFS. |

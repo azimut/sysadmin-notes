@@ -1,3 +1,4 @@
+- Containers from scratch: The sequel - Liz Rice (Aqua Security) https://www.youtube.com/watch?v=_TsSmSu57Zo
 - https://fly.io/blog/docker-without-docker/
   https://fly.io/blog/carving-the-scheduler-out-of-our-orchestrator/
   https://fly.io/docs/reference/apps/

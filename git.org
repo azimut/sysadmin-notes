@@ -96,6 +96,7 @@ git log --oneline -1 $revision
 - X, Reset (soft/hard) (3/2023 updated)
   s HEAD^ (to pop a commit) (keeps it staged)
   h HEAD^ (") (keeps it unstaged????)
+  k **KILLS FILES***
 - R rename
 - c f fixup commit message
 - On a commit

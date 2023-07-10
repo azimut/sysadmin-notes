@@ -1,3 +1,4 @@
+- https://philbooth.me/blog/nine-ways-to-shoot-yourself-in-the-foot-with-postgresql
 - triggers https://ctodive.com/hooks-the-secret-feature-powering-the-postgres-ecosystem-f05b3b82e0ba
 - Scheme migrations with views https://fabianlindfors.se/blog/schema-migrations-in-postgres/
 * non default port, Selinux
