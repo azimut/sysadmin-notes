@@ -1,3 +1,6 @@
+- https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/nginx
+- https://labs.hakaioffsec.com/nginx-alias-traversal/
+- https://github.com/yandex/gixy/
 - https://github.com/stark0de/nginxpwner
 - https://gist.github.com/dustyfresh/5ed0e4226253ad91450c8c8fcb63a661 (hardened nginx conf)
 - https://github.com/trimstray/nginx-admins-handbook

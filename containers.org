@@ -1,7 +1,25 @@
+| microvm     | https://qemu.readthedocs.io/en/latest/system/i386/microvm.html |
+| firecracker | https://www.usenix.org/system/files/nsdi20-paper-agache.pdf    |
+| gvisor      | https://github.com/google/gvisor                               |
+
 - Containers from scratch: The sequel - Liz Rice (Aqua Security) https://www.youtube.com/watch?v=_TsSmSu57Zo
 - https://fly.io/blog/docker-without-docker/
   https://fly.io/blog/carving-the-scheduler-out-of-our-orchestrator/
   https://fly.io/docs/reference/apps/
+- 2023 https://hocus.dev/blog/qemu-vs-firecracker/
+  - "A little known fact about Firecracker it is its lack of support for
+    many modern hypervisor features, such as *dynamic RAM management*,
+    which is vital for long-lived workloads."
+  - if you need a *GPU* inside the VM, you have to pick a different hypervisor.
+  - Firecracker uses a *virtio-blk* implementation that isn’t as memory-hungry
+    as alternatives, but has a smaller throughput.
+  - https://news.ycombinator.com/item?id=36666782
+    - We reclaim memory with a memory balloon device
+      - Firecracker has a balloon device you can inflate
+        and then deflate... returning the memory to the host.
+        You can do this while the VM is running.
+    - for the disk trimming we discard (& compress) the disk
+    - and for i/o speed we use io_uring (which we only use for scratch disks, the project disks are network disks).
 - 2015 | KVM kernel api https://lwn.net/Articles/658511/
 - https://github.com/google/gvisor
   - implements basically all of linux, in userland
