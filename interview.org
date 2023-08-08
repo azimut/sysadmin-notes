@@ -812,7 +812,7 @@ complex to understand and slow to run
 - Real World Use case
   - https://github.com/uber/kraken P2P Docker registry capable of distributing TBs of data in seconds
   - Torrent
-** Pooling and Streaming
+** TODO Pooling and Streaming
 - For when you need to have access to a constantly changing piece of information. eg: temperature
 - *Polling*: as you reduce the polling frequency you increase the load on the servers
   Clients -every X seconds-> Servers
@@ -905,9 +905,107 @@ complex to understand and slow to run
   }
 #+end_src
 ** Configuration
-** Rate Limiting
-** Logging and Monitoring
-** Publish and Subscribe Patterns
-** MapReduce
-** Security and HTTPS
-** API Design
+- Most large scale distributed systems, are going to be relying on configuration
+- A set of parameters, constants that your application are going to use
+  Not on your code.
+  On an isolated file.
+- Types:
+  1) Static:
+     Packaged/shipped with your application code
+     You have to wait until the code is deployed.
+  2) Dynamic:
+     Backed by some database.
+     Immediate changes.
+     Needs tooling to make them safer. (eg: access control, approval, controlled deploy)
+*** Example: config.json
+#+begin_src json
+  {
+    "apiKey": "asdbasdas_1231",
+    "showSystemsExpert": false,
+    "supportedLanguages": [
+      "cpp",
+      "csharp",
+      "go"
+    ],
+    "version": {
+      "number": 0,
+      "releaseDate": "2020-02-20"
+    }
+  }
+#+end_src
+*** Example: config.yaml
+#+begin_src yaml
+  apiKey: asodijaos_123123
+  shoSystemsExpert: false
+  supportedLangueges:
+    - cpp
+    - csharp
+    - go
+  version:
+    number: 0
+    releaseDate:
+#+end_src
+*** Example: server.js
+#+begin_src javascript
+  const fs = require('fs');
+  const express = require('express');
+  const app = express();
+  const staticConfig = JSON.parse(fs.readFileSync('static_config.json'));
+  app.listen(3000, () => console.log('Listening on port 3000.'));
+  app.get('/static/new_feature.html', function(req, res) {
+    if (!staticConfig.newFeatureLaunched) {
+      res.status(401).send('unauthorized.\n');
+      return;
+    }
+    res.send('<html>Hello World!</html>\n');
+  });
+#+end_src
+** 20 Rate Limiting
+- Is setting thresholds to some operations, after which they will return errors.
+  Limiting the amount of *operations* that can be performed in a given amount of *time*.
+- protects you from DoS attacks
+- eg: per user, per ip address, on region, on the whole system (eg: max 10k requests)
+*** Example
+**** database.js
+#+begin_src javascript
+  const database = {
+    ['index.html'] = '<html>hello world!</html>',
+  };
+  module.exports.get = (key, callback) => {
+    setTimeout(() => {
+      callback(database[key]);
+    }, 1000);
+  };
+#+end_src
+**** server.js
+#+begin_src javascript
+  const database = require('./database');
+  const express = require('express');
+  const app = express();
+
+  // keep a hash table of he previous access time for each user.
+  const accesses = {}
+
+  app.listen(3000, () => console.log('Listening on port 3000.'));
+  app.get('/index.html', function(req, res) {
+    const {user} = req.headers; // assumes there is an user, irl could be auth creds...
+    if (user in accesses) {
+      const previousAccessTime = accesses[user];
+      // limit to 1 request every 5 seconds
+      if (Date.now() - previousAccessTime < 5000) {
+        res.status(429).send('too many requests.\n');
+        return;
+      }
+    }
+    // serve the page and store this access time
+    database.get('index.html', page => {
+      accesses[user] = Date.now();
+      res.send(page + '\n');
+    });
+  }
+#+end_src
+** 21 Logging and Monitoring
+** 22 Publish and Subscribe Patterns
+** 23 MapReduce
+** 24 Security and HTTPS
+** 25 API Design

@@ -1,6 +1,43 @@
 - https://philbooth.me/blog/nine-ways-to-shoot-yourself-in-the-foot-with-postgresql
 - triggers https://ctodive.com/hooks-the-secret-feature-powering-the-postgres-ecosystem-f05b3b82e0ba
 - Scheme migrations with views https://fabianlindfors.se/blog/schema-migrations-in-postgres/
+* list extensions/plugins (\dx)
+on supabase
+#+begin_src
+ ~> \dx
+                                            List of installed extensions
+        Name        │ Version │   Schema   │                              Description
+════════════════════╪═════════╪════════════╪════════════════════════════════════════════════════════════════════════
+ pg_graphql         │ 1.2.3   │ graphql    │ pg_graphql: GraphQL support
+ pg_stat_statements │ 1.10    │ extensions │ track planning and execution statistics of all SQL statements executed
+ pgcrypto           │ 1.3     │ extensions │ cryptographic functions
+ pgjwt              │ 0.2.0   │ extensions │ JSON Web Token API for Postgresql
+ pgsodium           │ 3.1.7   │ pgsodium   │ Pgsodium is a modern cryptography library for Postgres.
+ plpgsql            │ 1.0     │ pg_catalog │ PL/pgSQL procedural language
+ supabase_vault     │ 0.2.8   │ vault      │ Supabase Vault Extension
+ uuid-ossp          │ 1.1     │ extensions │ generate universally unique identifiers (UUIDs)
+(8 rows)
+#+end_src
+* list sequences
+https://soft-builder.com/how-to-list-sequences-in-postgresql-database/
+#+begin_src sql
+# select sequence_schema, sequence_name from information_schema.sequences order by sequence_name;
+ sequence_schema │   sequence_name
+═════════════════╪════════════════════
+ public          │ dns_data_id_seq
+ public          │ dns_error_id_seq
+ public          │ domains_id_seq
+ public          │ nameservers_id_seq
+#+end_src
+* add COLUMN into table
+https://www.commandprompt.com/education/how-to-add-columns-to-a-table-in-postgresql/
+#+begin_src sql
+  ALTER TABLE nameservers ADD COLUMN is_alive boolean DEFAULT true;
+  ALTER TABLE nameservers DROP COLUMN is_alive;
+
+  ALTER TABLE nameservers ADD COLUMN timeouts integer DEFAULT 0;
+  ALTER TABLE nameservers ADD COLUMN enabled boolean DEFAULT true;
+#+end_src
 * non default port, Selinux
 - Listen on non default port (5433)
 #+begin_src
