@@ -1,7 +1,0 @@
-* remove before (#)
-  sed -i -n '/#/,$p' file.txt
-* remove the last 10 lines of a file
-  https://stackoverflow.com/questions/13380607/how-to-use-sed-to-remove-the-last-n-lines-of-a-file/13380679
-  sed -i -n -e :a -e '1,10!{P;N;D;};N;ba' file.txt
-* remove the first 10 lines of a file
-  sed -e '1,10d' file.txt
