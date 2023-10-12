@@ -1,0 +1,28 @@
+* Article: https://fasterthanli.me/series/building-a-rust-service-with-nix/part-5
+  - .dockerignore
+    - useful for COPY
+    - also when doing a "docker build ." for
+      "Sending build context to Docker daemon"
+  - COPY when used with directories, it copies the content not the dir
+  - $ docker system df
+    $ docker system prune
+    $ docker system prune --all
+  - $ DOCKER_BUILDKIT=1 docker build -t catscii .
+  - removing the "recommended" packages from APT installation makes the build fail
+    and start and a goose chase of which package needs to be installed
+  - Cache of cargo rust
+    #+begin_src dockerfile
+RUN --mount=type=cache,target=/root/.rustup \
+    --mount=type=cache,target=/root/.cargo/registry \
+    --mount=type=cache,target=/root/.cargo/git \
+		--mount=type=cache,target=/app/target \
+		set -eux; \
+		cargo build --release;
+    #+end_src
+  - A process running as PID 1 inside a container is treated specially
+    by Linux: it ignores any signal with the default action. As a
+    result, the process will not terminate on SIGINT or SIGTERM unless
+    it is coded to do so.
+    https://docs.docker.com/engine/reference/run/#foreground
+  - As a hack to enable Ctrl+c to work, we could spawn from /bin/sh
+    CMD ["/bin/sh", "-c", "/app/catscii"]

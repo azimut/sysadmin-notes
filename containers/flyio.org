@@ -1,0 +1,104 @@
+* 2023 Article: Deploying catscii to fly.io
+https://fasterthanli.me/series/building-a-rust-service-with-nix/part-6
+- A =tool= for exploring each layer in a docker image
+  https://github.com/wagoodman/dive
+- $ fly auth whoami
+  $ fly apps create # returns the app name
+  $ fly config save -a old-frost-6294
+  $ DOCKER_BUILDKIT=1 docker build --target app --tag catscii .
+  $ fly deploy --local-only
+  $ fly secrets import
+  SENTRY_DSN=https://reacted@redacted.ingest.sentry.io/redacted
+  HONEYCOMB_API_KEY=redacted
+  C^d
+  $ fly logs
+  $ fly status
+  $ fly ips list
+- Add the image, to disable Dockerfile builds. Local or remote.
+  #+begin_src toml
+ [build]
+ image = "catscii"
+  #+end_src
+** Default fly.toml
+#+begin_src toml
+    app = "old-frost-6294"
+    kill_signal = "SIGINT"
+    kill_timeout = 5
+    processes = []
+    [env]
+    [experimental]
+      allowed_public_ports = []
+      auto_rollback = true
+    [[services]]
+        http_checks = []
+        internal_port = 8080
+        processes = ["app"]
+        protocol = "tcp"
+        script_checks = []
+        [services.concurrency]
+          hard_limit = 25
+          soft_limit = 20
+          type = "connections"
+        [[services.ports]]
+          force_https = true
+          handlers = ["http"]
+          port = 80
+        [[services.ports]]
+          handlers = ["tls", "http"]
+          port = 443
+        [[services.tcp_checks]]
+          grace_period = "1s"
+          interval = "15s"
+          restart_limit = 0
+          timeout = "2s"
+  #+end_src
+** =objcopy= to compress debug info, instead of cp
+- on the "builder" image
+From: cp target/release/catscii .
+To:   objcopy --compress-debug-sections ./target/release/catscii ./catscii
+** Cargo.toml - from min-sized-rust
+#+begin_src toml
+[profile.release]
+debug = 1 # include enough debug info for SENTRY to be useful
+opt-level = "z" # optimize for size
+lto = true # enable link-time optimizations
+#+end_src
+** Dockerfile
+- $ DOCKER_BUILDKIT=1 docker build --target app --tag catscii .
+  $ docker run -it --env SENTRY_DSN --env HONEYCOMB_API_KEY -p 8080:8080/tcp --rm catscii
+- Install run-time dependencies on *app* container,
+  remove extra APT files afterwards.
+  #+begin_src dockerfile
+    FROM base as app
+    SHELL ["/bin/bash", "-c"] # shell used by RUN
+    RUN set -eux ; \
+      apt update; \
+      apt install -y --no-install -recommends ca-certificates; \
+      apt clean autoclean; \
+      apt autoremove --yes; \
+      rm -rf /var/lib/{apt,dpkg,cache,log}
+    WORKDIR /app
+    COPY --from=builder /app/catscii .
+    CMD ["/app/catscii"]
+  #+end_src
+* fly.toml for snitch :(
+#+begin_src
+# fly.toml app configuration file generated for silent-wildflower-1665 on 2023-07-28T14:07:03-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "silent-wildflower-1665"
+primary_region = "eze"
+
+[build]
+  image = "ghcr.io/azimut/snitch:latest"
+
+[http_service]
+  internal_port = 8081
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+#+end_src

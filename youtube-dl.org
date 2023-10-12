@@ -1,0 +1,4 @@
+- For minimum size
+  Ideal for slides (non-blurry video, low br)
+  Ideal for human voice (crappy audio)
+  $ youtube-dl -S tbr -f 'worstvideo[height>360]+worstaudio[tbr!=none]'
