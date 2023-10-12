@@ -22,3 +22,5 @@
 - get duration in seconds
   ffmpeg -i file.flv 2>&1 | grep "Duration"| cut -d ' ' -f 4 | sed s/,// | sed 's@\..*@@g' | awk '{ split($1, A, ":"); split(A[3], B, "."); print 3600*A[1] + 60*A[2] + B[1] }'
   https://superuser.com/questions/650291/how-to-get-video-duration-in-seconds
+- get slice of video
+  ffmpeg -ss 00:01:21 -to 00:01:24

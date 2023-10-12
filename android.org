@@ -20,6 +20,12 @@
   https://gist.github.com/ktnr74/60ac7bcc2cd17b43f2cb
   https://stackoverflow.com/questions/35275828/is-there-a-way-to-check-if-android-device-screen-is-locked-via-adb
   https://ktnr74.blogspot.com/2014/09/calling-android-services-from-adb-shell.html
+* error: insufficient permissions for device error
+https://itsfoss.com/fix-error-insufficient-permissions-device/
+When "adb shell" fails with that error
+$ adb kill-server
+$ sudo adb start-server
+$ adb shell
 * aapt
 |--------------+---------------------------------------------------------+---|
 | CMD          | ARGS                                                    |   |
@@ -33,7 +39,7 @@
 |--------------------+-----------------------------------------+---------------------------------------|
 | exec-out screencap | -p > screen.png                         | pipe to display or feh --scale-down - |
 | install            | -r some.apk                             | install apk                           |
-| logcat             |                                         | tailf of system logs                  |
+| logcat             | --regex 'containsthiststring' -v color  | tailf of system logs                  |
 | service call power | N                                       |                                       |
 | shell am start     | -n PACK.NAME/android.app.NativeActivity | run package                           |
 | shell dumpsys*     | nfc/window/power                        | screen status                         |

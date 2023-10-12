@@ -1,3 +1,4 @@
+- https://github.com/mxssl/sre-interview-prep-guide
 - https://github.com/bregman-arie/devops-exercises
   https://github.com/bregman-arie/devops-resources
   https://github.com/Tikam02/DevOps-Guide

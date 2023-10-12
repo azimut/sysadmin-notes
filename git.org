@@ -1,3 +1,4 @@
+- book Pro Git https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
 - https://bytes.zone/posts/modeling-git-internals-in-alloy-part-1-blobs-and-trees/
 - https://www.boringcactus.com/2021/02/22/can-we-please-move-past-git.html
 - https://dev.to/yonkeltron/is-it-time-to-look-past-git-ah4
@@ -14,6 +15,9 @@
   https://www.youtube.com/watch?v=ig5E8CcdM9g
 - Video:  Git From the Bits Up
   https://www.youtube.com/watch?v=MYP56QJpDr4
+- Github Action
+  https://simonwillison.net/2020/Oct/9/git-scraping/
+  https://news.ycombinator.com/item?id=37082289
 * Github Altenatives
 - Gitlab
 - Bitbucket
