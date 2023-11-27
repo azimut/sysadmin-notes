@@ -1,3 +1,10 @@
+https://www.emacswiki.org/emacs/EmacsNewbieKeyReference
+| M-<     | goto beggining of the file  |
+| M->     | goto end of the file        |
+| C-o     | open line                   |
+| C-x C-o | remove all but 1 empty line |
+| C-i     | TAB                         |
+
 - Why company with lsp does NOT show anything on the "echo area"?
   - company-box-doc
     - (company-call-backend 'doc-buffer candidate)
