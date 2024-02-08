@@ -1,0 +1,83 @@
+- filters
+  https://www.benzedrine.ch/milter-regex.html
+  https://en.wikipedia.org/wiki/Policyd-weight
+  http://www.postfwd.org/
+
+https://scaron.info/blog/debian-mail-spf-dkim.html
+article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
+
+|-----+-----------------------+------------------------------------|
+| MUA | Mail user agent       | from user to MTA                   |
+| MTA | Mail transport agent  | from sender to receiver server     |
+| MSA | Mail submission agent | accepts email from MTA             |
+| MDA | Mail delivery agent   | delivering email to the mail spool |
+|-----+-----------------------+------------------------------------|
+
+- smart Host/mail relay: MTA configured to send email from another system
+- mail queue: mail waiting to be processed
+- mailbox: where mail is stored
+
+- 25  SMTP - between servers, incoming email
+  110 POP
+  587 ???  - mail submission, send outgoing email
+  993 IMAP (better for multiple systems, for slow connections)
+  995 POP3s
+
+- MUA > SMTP
+  MSA > Mail Queue > MTA > SMTP
+  MTA > MDA > Mail spool
+  MTA > POP3
+
+- https://asynchronous.in/posts/email-with-notmuch-astroid/
+
+- LDAP
+  https://en.wikipedia.org/wiki/Apache_Directory (apacheds)
+
+- webmail
+  https://www.sogo.nu/
+
+** mail server
+
+- https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
+
+- Search
+  - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/
+  - https://notmuchmail.org/
+    - gives a query language to search through emaisl
+      "from:abc@domain.com and to:bob@domain.com and NSA and free and backup"
+- MUA
+  - neomutt https://github.com/neomutt/neomutt
+  - neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
+
+- imap sync
+  - https://wiki.archlinux.org/title/OfflineIMAP
+    https://www.offlineimap.org/documentation.html
+  - https://wiki.archlinux.org/title/Isync
+    https://sourceforge.net/p/isync/isync/ci/master/tree/
+    config https://github.com/rememberYou/dotfiles/blob/master/isync/.config/isync/mbsyncrc
+
+*** lainchan
+
+- MTA
+  https://www.postfix.org/
+  https://opensmtpd.org/
+  https://www.exim.org/
+  https://www.courier-mta.org/
+  https://cr.yp.to/qmail.html https://en.wikipedia.org/wiki/Qmail
+
+- MDA
+  https://www.dovecot.org/
+  https://en.wikipedia.org/wiki/Procmail
+
+- spam filters
+  Rspamd https://rspamd.com/doc/
+  SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin
+  DSpam
+
+- Ready to use solutions:
+  https://mailinabox.email/
+  https://github.com/LukeSmithxyz/emailwiz
+  https://www.iredmail.org/
+  https://www.zimbra.com/
+  https://github.com/docker-mailserver/docker-mailserver
+  https://poste.io/

@@ -1,0 +1,91 @@
+- https://en.wikipedia.org/wiki/Amavis
+  - open source content filter for email
+  - interface between a MTA and content filters (milters)
+
+- by default listening on 10024/tcp
+
+* config
+
+** general
+#+NAME: /etc/amavis/conf.d/15-content_filter_mode
+#+DESC: given that the variables referenced by this variables are undefined, it won't skip anything...
+#+begin_src perl
+  @bypass_virus_checks_maps = (
+      \%bypass_virus_checks,
+      \@bypass_virus_checks_acl,
+      \$bypass_virus_checks_re);
+
+  @bypass_spam_checks_maps = (
+      \%bypass_spam_checks,
+      \@bypass_spam_checks_acl,
+      \$bypass_spam_checks_re);
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/05-node_id
+#+begin_src perl
+chomp($hyhostname = `hostname --fqdn`);
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/05-domain_id
+#+begin_src perl
+  chomp($mydomain = `head -n 1 /etc/mailname`);
+  @local_domains_acl = ( ".$mydomain" );
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/50-user
+#+begin_src perl
+  @local_domains_acl = ( ".example.com" );
+  $max_server = 2;
+  $max_requests = 20;
+#+end_src
+
+** cronjob
+
+#+NAME: /etc/cron.d/amavisd-new
+#+DESC: cronjob to get spamassasin up to date
+#+begin_src cron
+  18 */3 * * * amavis test -e /usr/sbin/amavisd-new-cronjob &&  /usr/sbin/amavisd-new-cronjob sa-sync
+  24 1 * * * amavis test -e /usr/sbin/amavisd-new-cronjob &&  /usr/sbin/amavisd-new-cronjob sa-clean
+#+end_src
+
+** postfix
+
+#+NAME: /etc/postfix/master.cf
+#+begin_src conf
+# lmtp = local mail transfer protocol
+lmtp-amavis unix - - - - 2 lmtp  # 2 max services
+  -o lmtp_data_done_timeout=1200 # 20 minutes
+  -o lmtp_send_xforward_command=yes
+  -o max_use=20
+#+end_src
+
+#+NAME: /etc/postfix/main.cf
+#+begin_src conf
+content_filter = lmtp-amavis:[127.0.0.1]:10024
+#+end_src
+
+#+NAME: /etc/postfix/master.cf
+#+DESC: a path/way to resubmit the emails to postfix, turning things off
+#+begin_src conf
+  127.0.0.1:10025 inet n - n - - smtpd # 10025 port used by amavis by default for resubmission
+   -o content_filter= # empty string == turning off
+   -o mynetworks=127.0.0.0/8
+   -o smtpd_client_restrictions=permit_mynetworks,reject
+   -o smtpd_recipient_restrictions=permit_mynetworks,reject
+   -o smtpd_delay_reject=no
+   -o smtpd_helo_restrictions=
+   -o smtpd_sender_restrictions=
+   -o smtpd_data_restrictions=reject_unauth_pipelining
+   -o smtpd_end_of_data_restrictions=
+   -o smtpd_restriction_classes=
+   -o smtpd_error_sleep_time=0
+   -o smtpd_soft_error_limit=1001
+   -o smptd_hard_error_limit=1000
+   -o smtpd_client_conenction_count_limit=0
+   -o smtpd_client_connection_rate_limit=0
+   -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_milters,no_address_mappings
+   -o local_header_rewrite_clients=
+   -o smtpd_milters=
+   -o local_recipient_maps=
+   -o relay_recipient_maps=
+#+end_src

@@ -1,0 +1,17 @@
+* 05 | The Book of Postfix
+** 2 Preparing your host and Environment
+
+- System Checklist
+  1) Set your ~hostname~ correctly
+  2) verify your host's connectivity
+  3) maintain a reliable system ~time~
+  4) make sure that the ~syslog~ service can record postfix diagnostics
+  5) configure name resolution for the client
+  6) configure ~DNS~ records for the mail server
+
+- postfix automatically uses the hostname that you
+  assign to the server when greeting remote mail clients and servers,
+  unless you manually configure another name. (with =myhostname=)
+
+- check FQDN hostname
+  $ hostname -f

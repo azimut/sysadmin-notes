@@ -1,0 +1,175 @@
+- https://en.wikipedia.org/wiki/Postfix_(software)
+  - 1997-
+  - Author: Wietse Venema
+  - Arguable the most popular, along with Exim
+  - filters
+    https://www.benzedrine.ch/milter-regex.html
+    https://en.wikipedia.org/wiki/Policyd-weight
+    http://www.postfwd.org/
+
+- List default options
+  $ postconf -d
+
+- List non-default options
+  $ postconf -n
+
+- Create /etc/postfix/access.db
+  $ sudo postmap /etc/postfix/access
+
+- Make it the default MTA
+  $ sudo alternatives --set mta /usr/sbin/sendmail.postfix
+
+- usr/libexec/postfix
+
+** configuration files
+
+- /usr/share/postfix/ contains the same files unaltered
+
+*** /etc/postfix/access
+
+- can filter access by email or host
+- and then "ACCEPT OK" or "REJECT ??"
+- can DISCARD, rejects but tells the sending server it accept it
+
+#+begin_src
+  1.2.3   REJECT
+  1.2.3.4 OK
+#+end_src
+
+*** /etc/postfix/canonical (incoming email)
+
+- enabled on etc/postfix/main.cf, canonical_maps
+- mapping between local and remote addreses
+
+#+begin_src
+user1 user1@rnhost1.localnet.com # local users to email address
+@example.com @localnet.com       # entire domain map
+gmcwilliams@example.com grantmcwilliams@localnet.com # entire address rewrite
+#+end_src
+
+*** /etc/postfix/generic (outgoing email)
+
+- mapping between local and remote addreses
+
+#+begin_src
+user1 user1@rhhost1.localnet.com # local user to email address
+#+end_src
+
+*** /etc/postfix/relocated
+
+- information about users that have moved or relocated
+
+#+begin_src
+user1@redhat.com user1@rhhost1.localnet.com
+#+end_src
+
+*** /etc/postfix/transport
+
+- email transport:nexthop
+- maps between
+  - mail address
+  - transport delivery options
+  - nexthop destinations
+
+#+begin_src
+user1@localnet.com smtp:mail.localnet.com
+#+end_src
+
+*** /etc/postfix/virtual (incoming)
+
+- redirects incoming email, coming from one adress to one or many other
+
+#+begin_src
+user1 user2 user3 # mail to user1 redirected to user2 and user3
+user1@rhhost1.localnet.com root
+#+end_src
+
+*** /etc/aliases (incoming)
+
+- from one to another local
+- example: email coming to a fired used to a new one
+- Creates a new /etc/aliases.db
+  $ sudo newaliases
+
+#+begin_src
+bin:   root
+games: root
+root:  marc
+#+end_src
+
+*** /etc/postfix/master.cf
+
+- master service
+- no need to convert it to a .db
+
+- fields
+  SERVICE TRANSPORT PRIVATE? UNPRIVILIGED? CHROOT? WAKEUP? MAXTHREADS CMD+ARGS
+
+*** /etc/postfix/main.cf
+
+- Important configuration options
+  - myhostname
+  - mydomain
+  - myorigin
+  - inet_interfaces
+  - mydestination
+  - mynetworks
+  - relayhost
+
+- main configuration, global config
+- Contains
+  - host identification
+  - domain
+  - mail destination/origin/owner
+  - network interfaces
+  - relay
+  - directory locations for spool, queue and user mail
+
+** selinux
+
+- List SELinux boolean
+  $ getsebool -a | grep postfix
+  postfix_local_write_mail_spool --> on
+
+- List postfix ports listening by selinux
+  $ sudo semanage port -l | grep smtp
+  smtp_port_t tcp 25,465,587
+
+- List postfix processes with SELinux domain
+  $ ps -AZ | grep postfix
+  system_u:system_r:postfix_master_t:s0 1556 ? 00:00:00 master
+  system_u:system:r:postfix_qmgr_t:s0 1565 ? 00:00:00 qmgr
+  system_u:system_r:postfix_pickup_t:s0 3721 ? 00:00:00 pickup
+
+- List postfix security contexts
+  $ ls -dZ /etc/postfix/ /var/lib/postfix/ /var/spool/postfix/
+  drwxr-xr-x. root    root system_u:object_r:postfix_etc_t:s0 /etc/postfix/
+  drwx------. postfix root system_u:object_r:postfix_data_t:s0 /var/lib/postfix/
+  drwxr-xr-x. root    root system_u:object_r:postfix_spool_t:s0 /var/spool/postfix/
+
+** commands
+|----------------------+-----------------------------------------------------------|
+| alternatives         | from chkconfig package, handles symlinks                  |
+| mail/mailx           | send & receive email                                      |
+| postalias/newaliases | to process the /etc/aliases file                          |
+| postconf             | to configure postfix                                      |
+| postfix              | manage the service                                        |
+| postmap              | converts postfix config files into postfix database files |
+| postqueue/mailq      | list and control queue                                    |
+|----------------------+-----------------------------------------------------------|
+** services
+|-----------------+---------------------------------------------------------------------|
+|       <c>       |                                                                     |
+|-----------------+---------------------------------------------------------------------|
+|     master      | main postfix daemon, starts other services                          |
+|     pickup      | watches for email in var/spool/postfix/ and feeds it to cleanup     |
+|     cleanup     | process inbound email, if passes, informs the queue manager         |
+|      qmgr       | mail transmission, mail relay, local delivery                       |
+| trivial-rewrite | mail routing strategy (3 types of requests: rewrite/resolve/verify) |
+|      smtpd      | remote email delivery                                               |
+|      lmtpd      | local email delivery                                                |
+|     bounce      |                                                                     |
+|      defer      |                                                                     |
+|      trace      |                                                                     |
+|-----------------+---------------------------------------------------------------------|
+

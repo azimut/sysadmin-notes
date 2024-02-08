@@ -1,0 +1,3 @@
+- https://en.wikipedia.org/wiki/IPsec
+- https://en.wikipedia.org/wiki/StrongSwan
+- https://strongswan.org/

@@ -1,3 +1,5 @@
+- https://blog.scottlowe.org/2023/12/15/conditional-git-configuration/
+- workflow https://sethrobertson.github.io/GitFixUm/fixup.html
 - book Pro Git https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
 - https://bytes.zone/posts/modeling-git-internals-in-alloy-part-1-blobs-and-trees/
 - https://www.boringcactus.com/2021/02/22/can-we-please-move-past-git.html

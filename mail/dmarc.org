@@ -1,0 +1,11 @@
+- https://en.wikipedia.org/wiki/DMARC
+  - D.M.A.R.C. - Domain-based Message Authentication, Reporting and Conformance
+  - extends SPF and DKIM
+  - mail authentication protocol
+
+- rfc https://datatracker.ietf.org/doc/html/rfc7489
+
+* OpenDMARC
+- source https://github.com/trusteddomainproject/OpenDMARC
+- integration https://wiki.archlinux.org/title/OpenDMARC
+- doc http://www.trusteddomain.org/opendmarc/

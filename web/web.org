@@ -1,0 +1,6 @@
+https://arstechnica.com/information-technology/2023/07/ars-on-aws-01/
+https://arstechnica.com/information-technology/2023/07/ars-on-aws-02/
+https://arstechnica.com/information-technology/2023/08/ars-on-aws-03/
+https://arstechnica.com/information-technology/2023/08/ars-on-aws-04/
+
+article https://arstechnica.com/gadgets/2024/01/i-abandoned-openlitespeed-and-went-back-to-good-ol-nginx/

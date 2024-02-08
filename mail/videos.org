@@ -1,0 +1,246 @@
+* 20 | Building an Ubuntu mail server with Postfix, Amavis, SpamAssassin, ClamAV, Dovecot, and OpenDMARC
+
+https://www.youtube.com/watch?v=6SfXXtb-nHM
+
+- blogposts
+  - postfix https://web.archive.org/web/20220217012541/https://www.sidequestninja.com/blog/hello-world-this-is-an-email/
+  - amavis https://web.archive.org/web/20220217012645/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-2/
+  - postgresql https://web.archive.org/web/20220217012747/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-3/
+  - dovecot https://web.archive.org/web/20220217012855/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-4/
+  - spf,dkim,dmarc https://web.archive.org/web/20220217012924/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-5/
+
+#+NAME: main.cf
+#+begin_src conf
+  # "mydomain" is by default equal to "myhostname" TLD
+  # "myorigin" is by default equal to "myhostname"
+  myorigin = $mydomain
+  masquerade_domains = $mydomain # helps strip TLD (?)
+  myhostname = mail.example.com
+  mydestination = $myhostname, localhost.$mydomain, $mydomain
+  smtpd_relay_restrictions = permit_mynetworks,permit_sasl_authenticated,defer_unauth_destination
+
+  smtpd_tls_cert_file=/etc/letsencrypt/live/example.com/fullchain.pem
+  smtpd_tls_key_file=/etc/letsencrypt/live/example.com/privkey.pem
+  smtpd_tls_dh1024_param_file=/etc/letsencrypt/ssl-dhparams.pem
+  smtpd_tls_security_level=may # since we can't require it, to receive
+  smtp_tls_security_level=may # to send
+  smtp_tls_loglevel = 1
+#+end_src
+
+#+NAME: master.cf
+#+begin_src conf
+  smtp       inet n - y - - smtpd
+  submission inet n - y - - smtpd
+    -o syslog_name=postfix/submission
+    -o smtpd_tls_wrappermode=no         # disable a legacy mode
+    -o smtpd_tls_security_level=encrypt # disable non encrypted
+    -o smtpd_sasls_auth_enable=yes
+    -o smtpd_relay_restrictions=permit_mynetworks,permit_sasl_authenticated,defer
+  cleanup unix n - y - 0 cleanup
+    -o header_checks=regexp:/etc/postfix/header_checks
+#+end_src
+
+#+NAME: /etc/postfix/header_checks
+#+begin_src
+/^Received:.*with ESMTPSA/ IGNORE
+#+end_src
+
+** postfix virtual mailbox / postgres
+
+$ sudo groupadd mailreader
+$ sudo useradd -g mailreader -d /home/mail -s /sbin/nologin mailreader
+$ sudo mkdir /home/mail
+$ sudo chown mailreader:mailreader /home/mail
+$ sudo apt-get install postgresql postfix-pgsql
+
+#+begin_src sql
+  CREATE USER mailreader_admin;
+  -- \password mailreader_admin
+  CREATE DATABASE mail WITH OWNER mailreader_admin;
+  -- \c mail
+  REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+  REVOKE USAGE  ON SCHEMA public FROM PUBLIC;
+
+  GRANT CREATE ON SCHEMA public to mailreader_admin;
+  GRANT USAGE  ON SCHEMA public to mailreader_admin;
+  ALTER SCHEMA public OWNER TO mailreader_admin;
+
+  CREATE TABLE users (
+    email TEXT PRIMARY KEY,
+    password TEXT NOT NULL,
+    realname TEXT,
+    maildir TEXT NOT NULL,
+    created TIMESTAMP WITH TIME ZONE DEFAULT now()
+  );
+#+end_src
+
+#+NAME: /etc/postgresql/10/main/pg_hba.conf
+#+begin_src conf
+  # TYPE DATABASE USER METHOD
+  # TYPE DATABASE USER ADDRESS METHOD
+  local all postgres         peer
+  # comment out # local all all              peer
+  # comment out # host  all all 127.0.0.1/32 md5
+  # comment out # host  all all ::1/128      md5
+  host  mail mailreader       127.0.0.1/32 md5
+  host  mail mailreader       ::1/128      md5
+  local mail mailreader_admin              md5
+#+end_src
+
+$ sudo apt-get install dovecot-imap dovecot-pgsql
+$ doveadm pw -l # list password hashing algorithms
+$ doveadm pw -s PBKDF2
+
+#+begin_src sql
+  insert into users (
+    email,
+    password,
+    realname,
+    maildir
+  ) values (
+    'octavius@example.com',
+    '{PBKDF2}alkjqpwxqj' -- what "doveadm pw -s PBKDF2" returned
+    'Octavius the OCtopus',
+    'octavius/'
+  );
+#+end_src
+
+
+#+begin_src sql
+  create table transports (
+    domain text primary key,
+    gid integer unique not null,
+    transport text not null
+  );
+
+  insert into transports (
+    domain,
+    gid,
+    transport
+  ) values (
+    'example.com',
+    1002,
+    'virtual:' -- final destination
+  );
+#+end_src
+
+
+#+begin_src sql
+  create table aliases (
+    alias text primary key,
+    email text not null
+  );
+
+  insert into aliases (
+    alias,
+    email
+  ) values (
+    'octaviustheoctopus@example.com', -- '@example.com' would be a "catch-all", not recommended
+    'octavius@example.com'
+  );
+#+end_src
+
+
+#+begin_src sql
+  GRANT USAGE ON SCHEMA public TO mailreader;
+  GRANT SELECT ON ALL TABLES IN SCHEMA public TO mailreader;
+#+end_src
+
+#+NAME: /etc/postfix/pgsql/mailboxes.cf
+#+begin_src
+  user=mailreader
+  password=your_mailreader_password
+  dbname=mail
+  table=mail
+  select_field=maildir
+  where_field=email
+  hosts=localhot
+#+end_src
+
+#+NAME: /etc/postfix/pgsql/transport.cf
+#+begin_src
+  user=mailreader
+  password=your_mailreader_password
+  dbname=mail
+  table=transports
+  select_field=transport
+  where_field=domain
+  hosts=localhost
+#+end_src
+
+#+NAME: /etc/postfix/pgsql/alias.cf SELECT email FROM aliases WHERE alias = "some@example.com";
+#+begin_src
+  user=mailreader
+  password=your_mailreader_password
+  dbname=mail
+  table=aliases
+  select_field=email
+  where_field=alias
+  hosts=localhost
+#+end_src
+
+#+NAME: main.cf
+#+begin_src conf
+  local_recipient_maps = # turn it off, we don't want to deliver mail the normal way
+  virtual_uid_maps     = static:1002
+  virtual_gid_maps     = static:1002
+  virtual_mailbox_base = /home/mail/ # preppended to what is on the db
+  virtual_mailbox_maps = pgsql:/etc/postfix/pgsql/mailboxes.cf
+  virtual_alias_maps   = pgsql:/etc/postfix/pgsql/aliases.cf
+  transport_maps       = pgsql:/etc/postfix/pgsql/transport.cf
+#+end_src
+
+#+NAME: redict root on errors /root/.forward
+#+begin_src sql
+octavius@example.com
+#+end_src
+
+** dovecot
+
+#+NAME: /etc/dovecot/dovecot.conf
+#+begin_src conf
+  protocols = imap
+  ssl_protocols = TLSv1.2
+  ssl_cipher_list = ...
+  ssl_prefer_server_ciphers = yes # prefer above order
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/10-ssl.conf "<" tell it to put the content of the file into the variable
+#+begin_src conf
+  ssl = yes
+  ssl_cert = </etc/letsencrypt/live/example.com/fullchain.pem
+  ssl_key = </etc/letsencrypt/live/example.com/privkey.pem
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/auth-sql.conf.ext
+#+begin_src conf
+  passdb {
+    driver = sql
+    args   = /etc/dovecot/dovecot-sql.conf.ext
+  }
+
+  userdb { # we already put all the user/pass info on 1 table, so we don't use this
+    driver = prefetch
+  }
+#+end_src
+
+#+NAME: /etc/dovecot/onf.d/10-auth.conf
+#+begin_src conf
+  #!include auth-system.conf.ext
+  !include auth-sql.conf.ext
+#+end_src
+
+#+NAME: /etc/dovecot/dovecot-sql.conf.ext
+#+begin_src conf
+  driver = pgsql
+  connect = host=localhost dbname=mail user=mailreader password=yourpassword_here
+  default_pass_scheme = PBKDF2
+  password_query = SELECT email as user, password, 'maildir:/home/mail'||maildir as userdb_mail FROM users WHERE email = '%u'
+  # %u is a placeholder for the full email address
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/10-mail.conf
+#+begin_src conf
+  mail_uid = 1002
+  mail_gid = 1002
+#+end_src
