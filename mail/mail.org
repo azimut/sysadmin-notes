@@ -1,6 +1,3 @@
-https://scaron.info/blog/debian-mail-spf-dkim.html
-article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
-
 |-----+-----------------------+------------------------------------|
 | MUA | Mail user agent       | from user to MTA                   |
 | MTA | Mail transport agent  | from sender to receiver server     |
@@ -13,15 +10,20 @@ article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
 - mailbox: where mail is stored
 
 - 25  SMTP - between servers, incoming email
-  110 POP
-  587 ???  - mail submission, send outgoing email
-  993 IMAP (better for multiple systems, for slow connections)
+  110 POP3
+  143 IMAP
+  465 SMTPs
+  587 Submission, send outgoing email
+  993 IMAPs (better for multiple systems, for slow connections)
   995 POP3s
+  4190 ManageSieve
 
 - MUA > SMTP
   MSA > Mail Queue > MTA > SMTP
   MTA > MDA > Mail spool
   MTA > POP3
+
+- recommended subdomains: spam, webmail, postfixadmin, mail
 
 - https://asynchronous.in/posts/email-with-notmuch-astroid/
 

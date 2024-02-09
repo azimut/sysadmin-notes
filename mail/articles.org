@@ -23,3 +23,5 @@
 - 22 https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html
 - 23 opinion https://blog.bityard.net/articles/2023/January/various-ways-of-sending-mail-via-smtp
 - 23 https://www.linode.com/docs/guides/running-a-mail-server/
+- https://scaron.info/blog/debian-mail-spf-dkim.html
+- article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
