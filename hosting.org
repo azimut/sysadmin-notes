@@ -1,5 +1,14 @@
 - heroku is dead
-- https://fly.io/
+- https://render.com/ - free no credit card
+- https://fly.io/     - free credit card
 - https://glitch.com/pricing node/sqlite/static, "Full-stack apps that sleep after 5 minutes"
 - https://railway.app/
-- https://render.com/
+- https://beanstalkapp.com/
+- https://www.qovery.com/
+- https://northflank.com/
+- https://www.cloud66.com/
+- https://delta.blue/
+- https://cloud.google.com/run
+- https://www.fl0.com/
+- https://neon.tech/
+- https://www.koyeb.com/

@@ -24,6 +24,12 @@ https://www.emacswiki.org/emacs/EmacsNewbieKeyReference
     https://github.com/xenodium/dotsies/blob/790465b1824481b81bf5c6e08949128c13d76f95/emacs/features/fe-ui.el#L42
 - https://www.emacswiki.org/emacs/HideModeLine
   (setq mode-line-format nil)
+
+- yasnippet
+  - https://github.com/joaotavora/yasnippet/blob/master/README.mdown
+  - https://joaotavora.github.io/yasnippet/snippet-development.html
+  - https://joaotavora.github.io/yasnippet/snippet-expansion.html
+
 - https://superuser.com/questions/77314/how-to-do-select-column-then-do-editing-in-gnu-emacs
   Vertical Select
   C-x SPC

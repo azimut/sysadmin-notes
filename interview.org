@@ -1,7 +1,249 @@
+- https://github.com/donnemartin/system-design-primer
+- https://github.com/checkcheckzz/system-design-interview
+- https://github.com/shashank88/system_design
+- https://github.com/lei-hsia/grokking-system-design
+- https://github.com/karanpratapsingh/system-design
+- https://github.com/ashishps1/awesome-behavioral-interviews
 - https://github.com/mxssl/sre-interview-prep-guide
 - https://github.com/bregman-arie/devops-exercises
   https://github.com/bregman-arie/devops-resources
   https://github.com/Tikam02/DevOps-Guide
+
+* Course: System Design Interview    | NeetCode
+
++ https://colin-scott.github.io/personal_website/research/interactive_latency.html
++ https://en.wikipedia.org/wiki/Token_bucket
+  https://en.wikipedia.org/wiki/Consistent_hashing
++ https://en.wikipedia.org/wiki/Least_frequently_used
+  https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU
++ https://cloud.google.com/learn/what-is-object-storage
++ https://en.wikipedia.org/wiki/Content_delivery_network#Content_networking_techniques
++ https://en.wikipedia.org/wiki/Webhook
+  https://en.wikipedia.org/wiki/Server-sent_events
+  https://gist.github.com/CMCDragonkai/6bfade6431e9ffb7fe88 (one way?)
++ https://discord.com/blog/how-discord-stores-billions-of-messages
+  https://discord.com/blog/how-discord-stores-trillions-of-messages
++ https://vitess.io/docs/resources/presentations/
+
+** 0 How to Approach
+
+1) In an interview you are basically defying the scope/requirements of the interview challenge.
+   - Functional: aka features/scope
+   - Non-Functional:
+     * scalability
+       - throughput (eg: daily active users, requests per seconds)
+       - storage capacity
+     * performance
+       - latency
+       - availability (#nr non error `div` # nr requests)
+
+2) back of the envelope calculations
+   |------+----------------------+-----------------------------|
+   | 1s   |                      | 1 second                    |
+   | 1ms  | milli                | 1 second divided 1 thousand |
+   | 1us  | micro                | 1 second divided 1 million  |
+   | 1ns  | nano                 | 1 second divided 1 billion  |
+   |------+----------------------+-----------------------------|
+   | mega | million              |                             |
+   | giga | billion              |                             |
+   | tera | trillion (3+billion) |                             |
+   | peta | 15 zeroes            |                             |
+   |------+----------------------+-----------------------------|
+
+3) High Level Design
+
+** 1 Rate Limiter
+
+- First step is to define the ~functional requirements~
+  - Why is the rate limiting being applied?
+    - security
+    - cost
+    - availability
+    - ux
+
+- Then what we are protecting
+  - backend api
+    - distributed? (eg: each microservice)
+
+- =Availability=
+  - Fail
+    1) Open: if it fails the rest should still keep working
+    2) Closed: if it fails the rest should stop working
+
+- Algorithm
+  1) fixed window, meaning using wallclock timeframes
+     + we don't have to keep track of when the request was made (more storage, simpler)
+     + redis implementation with sorted set + expire
+  2) sliding window
+  3) token bucket
+  4) sliding window counter
+
+- database schema of the rules (not the ones getting updated each request)
+  - id : string
+  - api : string
+  - endpoint : string
+  - timeunit : string
+  - request : int (number of request allowed)
+
+** 2 Designing TinyUrl
+
+- Non-Functional requirements
+  - What are we going to be doing more? Reads? Writes?
+
+- 62 characters available [0-9a-zA-Z]
+- 8 characters length
+- 62^8
+
+- 1000 bytes per url
+  1 billion new urls per month
+  1 terabyte per month
+
+- NoSQL
+  - designed for large scale
+  - we don't need an ACID properties or atomic transactions
+
+- keep an in memory ~cache~ of "hot" urls mappings
+  - algorithms
+    1) LFU: least frequently used
+    2) LRU: least recently used
+
+- http redirections
+  - 301 permanently moved, will be cached by the browser
+  - 302 temporally moved
+
+- one way to avoid tinurls hash collisions
+  - we could pre-generate all/some the keys that are unused and provide them
+  - the ACID, especially Atomicity and Isolation, would help avoid concurrency collisions
+  - so some type of "row locking" on other database
+
+** 3 Designing Twitter
+
+- Requirements
+  - a very read-heavy system
+  - tweet
+    - content (text/image/video)
+    - interactions (like,retweet)
+  - mvp
+    - follow others
+    - create tweets
+    - view feed
+
+- Calculations
+  - 50M tweets created per day
+  - 200M active users
+    100 tweets a user sees per day
+    20B tweet reads per day
+  - 1MB avg space per tweet
+    20PB data read per day
+
+- Database
+  - we have a relationship model when it comes to following feature
+    we can implement sharding with both SQL/NoSQL
+    table of tweets
+    table of follows
+  - sharding based on UID to help scale writes
+  - media
+    - separate (object) storage (GCS/S3)
+    - or a distributed through a CDN in the middle of the object storage and the application
+      - pull based CDN
+
+- LRU cache of recent tweets or
+
+- pub/sub
+  - will receive new tweets and maintain a separate "feed cache"
+  - skipping the database
+
+** 4 Designing Discord
+
+- What? Functional
+  - groupchat application (eg: slack, teams)
+    - sendMsg(body,server,channel)
+    - polling for receiving? inneficient (lot of traffic/requests)
+    - websockets for receiving or "http streaming"
+  - we can resume where we left
+    - viewChannel(pagination?,lastMsgReadTimestamp)
+  - different channels on a group
+  - notifications per channel/server
+
+- Non Functional
+  - low latency
+
+- Calculations
+  - 5M daily active users
+  - 50M messages per day
+  - 20k persons per server
+  - 10k messages per day per server
+  - 2k per message
+
+- database (SQL)
+  - medium scale
+  - channelId for sharding (or serverId)
+  - index by date (send_at)
+  - tables:
+    - messages: id, uid, mentionId, serverId, channelId, sent_at
+    - userActivity: id, uid, serverId, channelId, last_read_at
+      - for each user, for each channel they visited
+
+- cache (in memory)
+  - to keep the notifications/mentions counts
+  - every time a message is sent, if it has a mention, it also goes to a KV store
+
+- database (NoSQL) alternative
+  - mongodb
+    - original discord implementation
+    - until the index (channelId,sent_at) didn't fit into memory
+  - cassandra
+    - partition index by channelId
+    - cluster index by channelId+messageId
+
+** 5 Designing Youtube
+
+- Functional, What?
+  - upload
+  - watch
+
+- Non-Functional
+  - reliability (not corrupt/delete videos)
+  - scale (thousands of viewers)
+  - availability > consistency
+  - Calculations
+    - 1 B daily active users
+    - 5 videos per day
+    - 100 users watch per 1 uploading a video
+    - 5B watched per day
+      50M upload a day
+
+- Object Storage
+  - for raw uploaded files
+  - for final encoded videos
+  - upload(title,desc,video,userId)
+  - =message queue= for encoding
+  - CDN for video in Object Store
+
+- NoSQL
+  - to store metadata of the video and user info
+  - large data
+  - frequent reads
+  - in memory cache for metadata access in NoSQL
+  - mongodb
+    - collections: video, user
+    - we store duplicate references of information (to avoid relationships/joins)
+    - on the rare batch updates, it could be done asynchronous
+
+- Youtube uses MySQL's Vites
+
+** 6 Designing Google Drive
+
+- What? Cloud solution for files
+  - (upload/download/remove)/edit/share/folders
+
+- Non-Functional
+  - 200M users
+  - 50M daily active users
+  - 15G available for free
+  - 3000Pb of data (3 ExaBytes)
+  - 2 file uploads per day
+
 * Course: System Design Fundamentals | AlgoExpert
 ** Introduction
 - More on the *knowledge* side than coding interviews that require *problem solving* skills

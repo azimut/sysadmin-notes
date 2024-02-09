@@ -1,0 +1,7 @@
+- https://www.haproxy.com/blog/category/solutions
+- article 21 https://www.haproxy.com/blog/haproxy-forwards-over-2-million-http-requests-per-second-on-a-single-aws-arm-instance
+- article https://www.haproxy.com/blog/using-haproxy-as-an-api-gateway-part-1-introduction
+- configs https://github.com/HariSekhon/HAProxy-configs
+- starter guide https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/intro/
+- manual https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/
+- architecture https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/architecture/

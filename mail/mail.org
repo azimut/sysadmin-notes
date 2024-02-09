@@ -1,8 +1,3 @@
-- filters
-  https://www.benzedrine.ch/milter-regex.html
-  https://en.wikipedia.org/wiki/Policyd-weight
-  http://www.postfwd.org/
-
 https://scaron.info/blog/debian-mail-spf-dkim.html
 article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
 
@@ -36,10 +31,6 @@ article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
 - webmail
   https://www.sogo.nu/
 
-** mail server
-
-- https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
-
 - Search
   - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/
   - https://notmuchmail.org/
@@ -48,6 +39,8 @@ article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
 - MUA
   - neomutt https://github.com/neomutt/neomutt
   - neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
+  - fetches mail from POP3/IMAP https://github.com/nicm/fdm
+  - maildir https://github.com/leahneukirchen/mblaze
 
 - imap sync
   - https://wiki.archlinux.org/title/OfflineIMAP
@@ -56,12 +49,7 @@ article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
     https://sourceforge.net/p/isync/isync/ci/master/tree/
     config https://github.com/rememberYou/dotfiles/blob/master/isync/.config/isync/mbsyncrc
 
-*** lainchan
-
 - MTA
-  https://www.postfix.org/
-  https://opensmtpd.org/
-  https://www.exim.org/
   https://www.courier-mta.org/
   https://cr.yp.to/qmail.html https://en.wikipedia.org/wiki/Qmail
 
@@ -69,15 +57,9 @@ article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
   https://www.dovecot.org/
   https://en.wikipedia.org/wiki/Procmail
 
-- spam filters
+- spam filters https://packages.gentoo.org/categories/mail-filter
   Rspamd https://rspamd.com/doc/
   SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin
   DSpam
-
-- Ready to use solutions:
-  https://mailinabox.email/
-  https://github.com/LukeSmithxyz/emailwiz
-  https://www.iredmail.org/
-  https://www.zimbra.com/
-  https://github.com/docker-mailserver/docker-mailserver
-  https://poste.io/
+  clamsmtp http://thewalter.net/stef/software/clamsmtp/
+  procmail https://en.wikipedia.org/wiki/Procmail

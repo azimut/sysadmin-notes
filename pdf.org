@@ -1,3 +1,63 @@
+* xvfb
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=1407238
+
+PROFILEDIR=$(mktemp -p ~/tmp -d tmp-fx-profile.XXXXXX.d)
+timeout 60 xvfb-run firefox --profile $PROFILEDIR ... (other params)
+rm -rf $PROFILEDIR
+
+mkdir /tmp/firefox_tmp_home
+export HOME=firefox_tmp_home
+timeout 60 xvfb-run -a -s -screen 0 1280x1024x24 flock -w 50 /tmp/firefox_tmp_home firefox --headless --no-remote --window-size 1448,1024
+--screenshot PDF_NAME THE_URL
+
+* puppettear
+
+- https://github.com/puppeteer/puppeteer
+
+Installed resume-cli using npm install -g resume-cli
+Installed puppeteer by using PUPPETEER_PRODUCT=firefox npm install puppeteer
+
+** puppetear
+
+#+begin_src javascript
+const puppeteer = require("puppeteer");
+const path = require("path");
+const fs = require("fs");
+const filePath = path.resolve(__dirname, "index.html");
+
+(async () => {
+  try {
+    const puppeteerVersion = require('puppeteer/package.json').version;
+    console.log(`Using Puppeteer version ${puppeteerVersion}`);
+    console.log(`This is the path: ${filePath}`)
+
+    const browser = await puppeteer.launch({
+      product: 'firefox',
+      headless: true, // Use true to run headless, not 'new'
+      dumpio: false // Error logging
+    });
+    const page = await browser.newPage();
+    var contentHtml = fs.readFileSync(`${filePath}`, 'utf8');
+    await page.setContent(contentHtml);
+    // await page.goto(`file:${filePath}`);
+    await page.pdf({
+      path: "output.pdf",
+      format: "A4",
+      displayHeaderFooter: false,
+      margin: { top: 0, right: 0, bottom: 0, left: 0 },
+      // preferCSSPageSize: true,
+      // printBackground: false, // Change to true if you want to include background
+    });
+    await browser.close();
+    console.log("✅ PDF built");
+  } catch (error) {
+    console.error("❌ Error building PDF:", error);
+    process.exit(1);
+  }
+})();
+#+end_src
+
 * URL to image
 firefox --screenshot page.png --window-size=1500 https://mysite.com/page.html
 convert page.png -crop 1500x1766 page.tiff
@@ -6,10 +66,68 @@ convert page.tiff page.pdf
 https://bugzilla.mozilla.org/show_bug.cgi?id=1407238
 (incognito makes it faster?)
 chrome --incognito --headless --disable-gpu --print-to-pdf https://bugzilla.mozilla.org
+** firefox (selenium/helium)
+
+- problems:
+  - wrong formatting with multi-column
+  - cannot remove margins :(
+  - fails completely on some files???
+
+# Scale: fit to page width
+# Margins: none / -default-
+# Format: original / -simplified-
+# Options: "print backgrounds" "print headers and footers"
+#
+# https://www.deskriders.dev/posts/1640791840-selenium-firefox-and-saving-webpage-as-pdf/
+# https://searchfox.org/mozilla-central/source/modules/libpref/init/all.js
+# https://searchfox.org/mozilla-central/source/widget/nsPrintSettingsService.cpp
+
+#+begin_src
+#!/usr/bin/env python3
+"""INCOMPLETE Convert url to pdf."""
+
+from time import sleep
+
+from helium import start_firefox
+from selenium.webdriver import FirefoxOptions
+
+#URL = "https://www.deskriders.dev/posts/1639863087-python-selenium/"
+#URL = "file:///home/sendai/Downloads/Educative - Grokking the Coding Interview Patterns for Coding Questions 2022-7/01. Introduction/2 Course Overview - Grokking the Coding Interview_ Patterns for Coding Questions.html"
+URL = "file:///home/sendai/Downloads/Educative - Grokking Modern System Design Interview for Engineers & Managers 2022-10/08. Load Balancers/1. Introduction to Load Balancers.html"
+
+options = FirefoxOptions()
+
+options.add_argument("--start-maximized")
+
+options.set_preference("print.always_print_silent", True)
+options.set_preference("print.save_as_pdf.links.enabled", True)
+
+options.set_preference("print_printer", "Mozilla Save to PDF")
+options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_file", True)
+options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_filename", "/home/sendai/html2pdf.pdf")
+
+options.set_preference("print.print_headercenter", "")
+options.set_preference("print.print_headerleft", "")
+options.set_preference("print.print_headerright", "")
+options.set_preference("print.print_footercenter", "")
+options.set_preference("print.print_footerleft", "")
+options.set_preference("print.print_footerright", "")
+
+options.set_preference("print.print_bgcolor", False)
+options.set_preference("print.print_bgimages", False)
+
+driver = start_firefox(URL, options=options)
+
+driver.execute_script("window.print();")
+sleep(2)  # Found that a little wait is needed for the print to be rendered otherwise the file will be corrupted
+
+driver.quit()
+#+end_src
+
 * evince keep zoom
   https://askubuntu.com/questions/213820/how-to-keep-zoomlevel-in-evince-constant-after-clicking-a-link
   > gsettings set org.gnome.Evince allow-links-change-zoom false
-* markdown to pdf
+* markdown    to pdf
 pandoc --pdf-engine=xelatex -V pagestyle=empty -V margin-left=10mm -V margin-right=10mm -V margin-top=10mm -V margin-bottom=10mm -V papersize=letter -V fontsize=12pt "${md}" -o pdf/"${md%.*}".pdf
 ** Example
 #+begin_src bash
@@ -33,15 +151,16 @@ for md in p*.md; do
 		"${md}" -o pdf/"${title}".pdf
 done
 #+end_src
-* html     to pdf
+* html(plain) to pdf
 pandoc input.html -t latex -o output.pdf
-* ppt      to pdf
+-t html
+* ppt         to pdf
 - https://askubuntu.com/questions/11130/how-can-i-convert-a-ppt-to-a-pdf-from-the-command-line
   unoconv -f pdf file.ppt
-* djvu     to pdf
+* djvu        to pdf
 https://wiki.archlinux.org/index.php/PDF,_PS_and_DjVu#DjVu_tools
 - ddjvu --format=pdf some.djvu some.pdf
-* epub     to pdf
+* epub        to pdf
 ebook-convert input.epub output.pdf
 * rotate
 https://stackoverflow.com/questions/3136610/pdftk-rotating-pages-problem

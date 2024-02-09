@@ -1,0 +1,25 @@
+wiki https://en.wikipedia.org/wiki/OpenSMTPD
+home https://www.opensmtpd.org/
+arch https://wiki.archlinux.org/title/OpenSMTPD
+source https://github.com/OpenSMTPD/OpenSMTPD
+
+- Both server and client side implementations of SMTP
+  - server: accept messages coming from the network or local socket and put it to the queue
+  - client: taking a message from the queue and forwarding it
+
+* Video: 13 |  OpenSMTPD, current state of affairs | Gilles Chehade
+
+https://www.youtube.com/watch?v=p0S1bbO-h0k
+
+- Gilles is the creator of OpenSMTPD
+
+- SMTP
+  - is only a way to move mail between machines, is not for retrieve it.
+  - relies heavily on the DNS protocol (MX)
+  - to goal of a MX is to route msg closer to the destination
+  - it only sees 1(one) node ahead
+  - RFC imposes responsability over the msgs
+    - you are not allowed to lose a msg that you accepted
+    - if you can't relay, the sender must be ack
+    - each MX has an interest in getting message out of it way fast
+    - transactional protocol, accepted message is a commit

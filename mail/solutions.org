@@ -1,0 +1,41 @@
+- Ready to use solutions:
+  https://www.iredmail.org/
+  https://www.zimbra.com/
+
+- poste
+  - home https://poste.io/
+  - doc https://poste.io/doc/
+
+- docker-mailserver
+  - repo https://github.com/docker-mailserver/docker-mailserver
+  - guide https://docker-mailserver.github.io/docker-mailserver/latest/introduction/
+
+- mailinabox
+  - repo https://github.com/mail-in-a-box/mailinabox
+  - home https://mailinabox.email/
+  - guide https://mailinabox.email/guide.html
+    guide maint https://mailinabox.email/maintenance.html
+
+- mailcow
+  - home https://mailcow.email/
+  - docker https://github.com/mailcow/mailcow-dockerized
+    dockerfile https://github.com/mailcow/mailcow-dockerized/tree/master/data/Dockerfiles
+  - ansible https://github.com/mailcow/mailcow-ansiblerole
+  - docs https://docs.mailcow.email/#what-is-mailcow-dockerized
+
+- emailwiz
+  - repo https://github.com/LukeSmithxyz/emailwiz
+
+- mailserver
+  - source https://github.com/mailserver2/mailserver
+
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|
+|                   | postfix | haraka | dovecot | rspamd | amavis | spamassassin | clamav | OpenDKIM | fail2ban | postgrey | z-push | sogo | roundcube | rainloop |
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|
+| docker-mailserver | x       | -      | x       | x      | x      | x            | x      | x        | x        | x        |        |      |           |          |
+| mailserver2       | x       | -      | x       | x      | -      | -            | x      |          |          |          |        |      | -         | x        |
+| mailinabox        | x       | -      | x       | -      | -      | x            | -      | x        | -        | x        |        |      |           |          |
+| poste             | -       | x      | x       | x      |        |              | x      |          |          |          | x      | -    | nginx     |          |
+| mailcow           | x       | -      | x       | x      | -      |              | x      |          |          |          |        | x    |           |          |
+| emailwiz          | x       | -      | x       | x      | -      | x            | -      | x        | x        | -        | -      | -    | -         |          |
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|

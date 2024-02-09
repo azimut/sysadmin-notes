@@ -1,16 +1,25 @@
-article 10 http://goran-juric.from.hr/books/debian-mail/chunked/
-article 12 https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
-article 13 https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
-article 14 https://arstechnica.com/information-technology/2014/02/how-to-run-your-own-e-mail-server-with-your-own-domain-part-1/
-article 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-2-arming-your-server-with-postfix-dovecot/
-article 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-3-fortifying-your-box-against-spammers/
-article 14 https://arstechnica.com/information-technology/2014/04/taking-e-mail-back-part-4-the-finale-with-webmail-everything-after/
-article 15 https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
-article 15 https://frozen-geek.net/openbsd-email-server-1/
-article 17 https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
-article 19 https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
-article 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
-article 20 https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
-article 21 https://schumacher.sh/2021/05/10/running-a-private-mail-server-for-six-years-easy-peasy.html
-article 21 https://computer.rip/2021-12-26-diy-mail.html
-article 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
+- 10 http://goran-juric.from.hr/books/debian-mail/chunked/
+- 12 https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
+- 13 https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
+- 14 https://arstechnica.com/information-technology/2014/02/how-to-run-your-own-e-mail-server-with-your-own-domain-part-1/
+- 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-2-arming-your-server-with-postfix-dovecot/
+- 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-3-fortifying-your-box-against-spammers/
+- 14 https://arstechnica.com/information-technology/2014/04/taking-e-mail-back-part-4-the-finale-with-webmail-everything-after/
+- 15 https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
+- 15 https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
+- 15 https://frozen-geek.net/openbsd-email-server-1/
+- 16 opensmtpd https://web.archive.org/web/20160126030038/https://www.openbsd.org/opensmtpd/faq/example1.html
+- 17 https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
+- 17 opensmtpd https://web.archive.org/web/20170715133140/https://blog.cagedmonster.net/opensmtpd-and-dovecot-under-openbsd-with-mysql-support-and-spamd/
+- 18 opinion https://arstechnica.com/gadgets/2018/12/review-helm-personal-server-gets-email-self-hosting-almost-exactly-right/
+- 19 https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
+- 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
+- 20 opensmtpd https://web.archive.org/web/20200408175322/https://prefet.ch/blog/2020/email-server/
+- 20 https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
+- 20 https://www.garron.blog/posts/host-your-email-server.html
+- 21 https://schumacher.sh/2021/05/10/running-a-private-mail-server-for-six-years-easy-peasy.html
+- 21 https://computer.rip/2021-12-26-diy-mail.html
+- 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
+- 22 https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html
+- 23 opinion https://blog.bityard.net/articles/2023/January/various-ways-of-sending-mail-via-smtp
+- 23 https://www.linode.com/docs/guides/running-a-mail-server/

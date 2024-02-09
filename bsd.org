@@ -1,5 +1,6 @@
 - https://ikrima.dev/dev-notes/homelab/zfs-for-dummies/
   https://news.ycombinator.com/item?id=37387392
+- https://justine.lol/pledge/
 * Channels
 - https://www.youtube.com/c/FreeBSDProject/videos
 - https://www.youtube.com/c/EuroBSDcon/videos

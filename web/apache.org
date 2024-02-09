@@ -1,0 +1,8 @@
+* jobs
+** websocket
+
+I have an issue with my server i.e. connected to a DB server, I get
+around 500+ calls from WS at a time and that some time crash the
+server, it was fine before but with more calls its giving this error
+
+[mpm_event:error] [pid 8258:tid 13982533397216] AH03490: scoreboard is full, not at MaxRequestWorkers.Increase ServerLimit.

@@ -1,3 +1,5 @@
+- tool https://github.com/wagoodman/dive
+
 * Article: https://fasterthanli.me/series/building-a-rust-service-with-nix/part-5
   - .dockerignore
     - useful for COPY

@@ -1,3 +1,7 @@
+* txt to image
+convert -font FreeMono -pointsize 20 label:@what.txt what.gif && sxiv what.gif
+convert -interline-spacing -10 -font Nimbus-Mono-PS -fill white -background black -pointsize 20 label:@what.txt what.gif && identify what.gif
+convert -list font
 * square image
 - convert me-aoc7-silver-2.png
   -trim
