@@ -9,6 +9,11 @@
 - MUA -> [mail] -> MTA -> queue -> MTA (internet) <- MRA <- MUA
                                 -> MDA (local)
 
+- MUA > SMTP
+  MSA > Mail Queue > MTA > SMTP
+  MTA > MDA > Mail spool
+  MTA > POP3
+
 - smart Host/mail relay: MTA configured to send email from another system
 - mail queue: mail waiting to be processed
 - mailbox: where mail is stored
@@ -21,11 +26,6 @@
   993 IMAPs (better for multiple systems, for slow connections)
   995 POP3s
   4190 ManageSieve
-
-- MUA > SMTP
-  MSA > Mail Queue > MTA > SMTP
-  MTA > MDA > Mail spool
-  MTA > POP3
 
 - recommended subdomains: spam, webmail, postfixadmin, mail
 
@@ -45,7 +45,6 @@
 - MUA
   - neomutt https://github.com/neomutt/neomutt
   - neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
-  - fetches mail from POP3/IMAP https://github.com/nicm/fdm
   - maildir https://github.com/leahneukirchen/mblaze
 
 - imap sync
@@ -55,17 +54,8 @@
     https://sourceforge.net/p/isync/isync/ci/master/tree/
     config https://github.com/rememberYou/dotfiles/blob/master/isync/.config/isync/mbsyncrc
 
-- MTA
-  https://www.courier-mta.org/
-  https://cr.yp.to/qmail.html https://en.wikipedia.org/wiki/Qmail
-
-- MDA
-  https://www.dovecot.org/
-  https://en.wikipedia.org/wiki/Procmail
-
 - spam filters https://packages.gentoo.org/categories/mail-filter
   Rspamd https://rspamd.com/doc/
   SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin
   DSpam
   clamsmtp http://thewalter.net/stef/software/clamsmtp/
-  procmail https://en.wikipedia.org/wiki/Procmail

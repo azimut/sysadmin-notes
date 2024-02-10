@@ -6,6 +6,7 @@
 - rfc https://datatracker.ietf.org/doc/html/rfc7489
 
 * OpenDMARC
+
 - source https://github.com/trusteddomainproject/OpenDMARC
 - integration https://wiki.archlinux.org/title/OpenDMARC
 - doc http://www.trusteddomain.org/opendmarc/
