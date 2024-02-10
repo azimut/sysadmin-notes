@@ -1,0 +1,10 @@
+- neomutt https://github.com/neomutt/neomutt
+- neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
+- maildir cli utilities https://github.com/leahneukirchen/mblaze
+
+- Search
+  - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/
+  - https://asynchronous.in/posts/email-with-notmuch-astroid/
+  - https://notmuchmail.org/
+    - gives a query language to search through emaisl
+      "from:abc@domain.com and to:bob@domain.com and NSA and free and backup"

@@ -29,23 +29,11 @@
 
 - recommended subdomains: spam, webmail, postfixadmin, mail
 
-- https://asynchronous.in/posts/email-with-notmuch-astroid/
-
 - LDAP
   https://en.wikipedia.org/wiki/Apache_Directory (apacheds)
 
 - webmail
   https://www.sogo.nu/
-
-- Search
-  - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/
-  - https://notmuchmail.org/
-    - gives a query language to search through emaisl
-      "from:abc@domain.com and to:bob@domain.com and NSA and free and backup"
-- MUA
-  - neomutt https://github.com/neomutt/neomutt
-  - neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
-  - maildir https://github.com/leahneukirchen/mblaze
 
 - imap sync
   - https://wiki.archlinux.org/title/OfflineIMAP
@@ -59,3 +47,5 @@
   SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin
   DSpam
   clamsmtp http://thewalter.net/stef/software/clamsmtp/
+
+- https://lobste.rs/t/email

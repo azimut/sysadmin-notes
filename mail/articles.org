@@ -1,3 +1,4 @@
+- 02 https://paulgraham.com/spam.html
 - 10 http://goran-juric.from.hr/books/debian-mail/chunked/
 - 12 https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
 - 13 https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
@@ -9,8 +10,10 @@
 - 15 https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
 - 15 https://frozen-geek.net/openbsd-email-server-1/
 - 16 opensmtpd https://web.archive.org/web/20160126030038/https://www.openbsd.org/opensmtpd/faq/example1.html
+- 16 https://www.fastmail.com/blog/spf-dkim-dmarc/
 - 17 https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
 - 17 opensmtpd https://web.archive.org/web/20170715133140/https://blog.cagedmonster.net/opensmtpd-and-dovecot-under-openbsd-with-mysql-support-and-spamd/
+- 18 spf https://alex.kaskaso.li/post/revisiting-email-spoofing
 - 18 opinion https://arstechnica.com/gadgets/2018/12/review-helm-personal-server-gets-email-self-hosting-almost-exactly-right/
 - 19 https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
 - 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
@@ -27,6 +30,8 @@
 - 23 opensmtpd https://palant.info/2023/03/08/converting-incoming-emails-on-the-fly-with-opensmtpd-filters/
 - https://scaron.info/blog/debian-mail-spf-dkim.html
 - article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
+- 22 https://explained-from-first-principles.com/email/
+
 * 21 | Writing a custom Mail Delivery Agent
 
 https://poolp.org/posts/2020-12-29/writing-a-custom-mail-delivery-agent/

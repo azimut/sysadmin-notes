@@ -1,0 +1,10 @@
+- home https://www.courier-mta.org/maildrop/
+- https://en.wikipedia.org/wiki/Maildrop
+  - C++
+  - Better memory usage than ~procmail~
+  - mbox,maildir support
+  - filtering, forward support
+  - running modes
+    - normal
+    - embedded
+    - manual

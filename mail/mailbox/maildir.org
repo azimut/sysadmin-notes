@@ -6,3 +6,5 @@
     faster alternative of SMTP
   - introduced ~QMQP~ (Quick Mail Queuing Protocol)
     allows network sharing of email queues between hosts
+
+  - =TODO=

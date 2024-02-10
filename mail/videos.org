@@ -1,3 +1,34 @@
+- HackTheBox - Tentacle
+  https://www.youtube.com/watch?v=kKhuUXPmJ_o
+
+* 20 | Building a Functional Email Server with Dominick LoBraico
+
+- video https://www.youtube.com/watch?v=cM6mRLvFw54
+
+- replacing XXXX?
+  - INI config format, key=value, section {}
+  - advanced macros (looked to function calls)
+  - non explicit routing of mails
+
+- wanted to change
+  - because they were scared of making changes
+  - configuration required specialized knowledge on the configuration DSL
+
+- final product
+  - written and configurable on OCaml
+
+- benefits
+  - tools: using editor tools for the configuration language
+    - jump to definition
+    - checks for unused values
+    - exhaustive case match
+  - culture: people treat code and configuration different
+    - refactoring
+    - testing
+
+- downsides
+  - needs to keep it up to date with smtp
+
 * 20 | Building an Ubuntu mail server with Postfix, Amavis, SpamAssassin, ClamAV, Dovecot, and OpenDMARC
 
 https://www.youtube.com/watch?v=6SfXXtb-nHM
