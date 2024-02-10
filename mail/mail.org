@@ -29,18 +29,8 @@
 
 - recommended subdomains: spam, webmail, postfixadmin, mail
 
-- LDAP
-  https://en.wikipedia.org/wiki/Apache_Directory (apacheds)
-
 - webmail
   https://www.sogo.nu/
-
-- imap sync
-  - https://wiki.archlinux.org/title/OfflineIMAP
-    https://www.offlineimap.org/documentation.html
-  - https://wiki.archlinux.org/title/Isync
-    https://sourceforge.net/p/isync/isync/ci/master/tree/
-    config https://github.com/rememberYou/dotfiles/blob/master/isync/.config/isync/mbsyncrc
 
 - spam filters https://packages.gentoo.org/categories/mail-filter
   Rspamd https://rspamd.com/doc/

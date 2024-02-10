@@ -1,0 +1,4 @@
+- arch wiki https://wiki.archlinux.org/title/Isync
+- source https://sourceforge.net/p/isync/isync/ci/master/tree/
+- config https://github.com/rememberYou/dotfiles/blob/master/isync/.config/isync/mbsyncrc
+- home https://isync.sourceforge.io/
