@@ -1,0 +1,6 @@
+- wiki https://en.wikipedia.org/wiki/Courier_Mail_Server
+  - is an MTA that provides SMTP,IMAP,POP3,SMAP,webmail,mailing list
+  - it is best know for its imap server component
+
+- source https://github.com/svarshavchik/courier
+- home https://www.courier-mta.org/imap/

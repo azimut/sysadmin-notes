@@ -1,0 +1,8 @@
+- home https://www.fetchmail.info/
+- manual https://www.fetchmail.info/fetchmail-man.html
+- source https://gitlab.com/fetchmail/fetchmail
+- wiki https://en.wikipedia.org/wiki/Fetchmail
+  - C
+  - retrieves from POP3,IMAP,ODRM to user's local system
+  - submits to an MTA or invokes an MDA
+  - delivering directly to a mail folder is NOT supported

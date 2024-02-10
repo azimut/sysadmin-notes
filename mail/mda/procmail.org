@@ -1,0 +1,9 @@
+- What it does?
+  - /sorts/ email into mailboxes
+  - call an external /filter/ program
+
+- wiki https://en.wikipedia.org/wiki/Procmail
+  - 1990-2014...2020-2022?
+  - data-driven programming language (like sed/awk)
+
+- source https://github.com/BuGlessRB/procmail

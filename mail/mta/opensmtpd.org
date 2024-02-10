@@ -1,13 +1,160 @@
-wiki https://en.wikipedia.org/wiki/OpenSMTPD
-home https://www.opensmtpd.org/
-arch https://wiki.archlinux.org/title/OpenSMTPD
-source https://github.com/OpenSMTPD/OpenSMTPD
+|--------+--------------------------------------------|
+| wiki   | https://en.wikipedia.org/wiki/OpenSMTPD    |
+| home   | https://www.opensmtpd.org/                 |
+| arch   | https://wiki.archlinux.org/title/OpenSMTPD |
+| source | https://github.com/OpenSMTPD/OpenSMTPD     |
+|--------+--------------------------------------------|
+
+- Public release on 2013
 
 - Both server and client side implementations of SMTP
   - server: accept messages coming from the network or local socket and put it to the queue
   - client: taking a message from the queue and forwarding it
 
-* Video: 13 |  OpenSMTPD, current state of affairs | Gilles Chehade
+- no shared memory, only IPC communication
+
+- is a multi-process daemon
+  - smtpd (only process under root user)
+  - lookup (not chroot)
+  - control
+  - klondike
+  - queue
+  - scheduler
+  - pony express
+
+* TODO Video: 20 | OpenSMTPD over the clouds the story of an HA setup | Giovanni Bechis
+https://www.youtube.com/watch?v=y6DLZkAT4Bg
+
+- postfix/spamassasin/amavis-new/courier-imap
+  to
+  opensmtpd
+
+- On '19 filters were added to opensmtpd
+
+- pf + relayd for load balancer
+  #+NAME: relayd config
+  #+begin_src conf
+  mx0_pub="1.2.3.4"
+  mx0_priv="10.0.0.4"
+  mx1_priv="10.0.0.5"
+
+  table <mx0> { $mx0_priv }
+  table <fallback-mx0> { $mx1_priv }
+
+  redirect mx0-smtp {
+    listen on $mx0_pub port smtp \
+      interface $if_pub sticky-address
+
+    pftag RELAYD
+
+    forward to <mx0> check tcp
+    forward to <fallback-mx0> check tcp
+  }
+  #+end_src
+
+- MySQL master-master replica to share databases
+  #+begin_src
+    [mysqld]
+    server-id=1
+
+    binlog-do-db = dbispconfig
+    binlog-do-db = sogo
+
+    replicate-do-db = dbispconfig
+    replicate-do-db = sogo
+
+    auto_increment_increment = 2
+    auto_increment_offset    = 1
+  #+end_src
+
+- MySQL setup replica
+  #+begin_src
+    > CHANGE MASTER TO MASTER_HOST='10.0.0.5', \
+      MASTER_PORT=3306, \
+      MASTER_USER='replica', \
+      MASTER_PASSWORD='changeme', \
+      MASTER_LOG_FILE='slave-bin.000831', \
+      MASTER_LOG_POS=341, \
+      MASTER_CONNECT_RETRY=10;
+
+    > CHANGE MASTER TO master_use_gtid=slave_pos;
+  #+end_src
+
+- shared NFS storage
+
+- sogo for calendar service
+
+- smtpd
+  #+begin_src
+    pki mx.domain.tld cert "/etc/.../fullchain.pem"
+    pki mx.domain.tld key  "/etc/.../privkey.pem"
+
+    table aliases file:/etc/mail/aliases
+
+    table vusers mysql:/etc/mail/mysql.conf
+    table vdomains mysql:/etc/mail/mysql.conf
+    table valiases mysql:/etc/mail/mysql.conf
+    table credentials mysql:/etc/mail/mysql.conf
+  #+end_src
+
+- smtpd - mysql.conf
+  #+begin_src
+    host     127.0.0.1
+    username ispcsrv6
+    password xxx
+    database dbispconfig
+
+    # Alias lookup query
+    query_alias SELECT destination FROM mail_valias \
+                 WHERE source=?
+
+    # Domain lookup query
+    query_domain SELECT domain FROM mail_domain \
+                  WHERE domain=?;
+
+    # User lookup query - user cannot be the email address, so REPLACE (!?
+    query_userinfo SELECT uid,id,maildir \
+                     FROM mail_user
+                    WHERE REPLACE(login, '@', '_')=? \
+                      AND server_id=6;
+
+    # Credentials lookup query
+    query_crendentials SELECT login, password \
+                         FROM mail_user
+                        WHERE login=?
+                          AND disablesmtp='n';
+  #+end_src
+
+- smtpd - antispam - define filters
+  #+begin_src
+    filter check_dyndns phase connect match rdns \
+      regex { '.*\.dyn\..*', '.*\.dsl\..*' } \
+      disconnect "550 no residential connections"
+    filter check_rdns phase connect match !rdns \
+      disconnect "550 no rDNS available"
+    filter "dkimsign" proc-exec "filter-dkimsign \
+           -d domain.tld -s dkim \
+           -k /etc/mail/dkim/key.pem" \
+           user _dkimsign group _dkimsign
+    filter "spamassasin" proc-exec "filter-spamassasin"
+  #+end_src
+
+- smtpd - antispam - apply filters
+  #+begin_src
+    listen on socket filter "dkimsign"
+    listen on lo0 filter "dkimsign"
+    listen on egress filter { check_dyndns, check_rdns, spamassassin } \
+      tls pki mx.domain.tld
+    listen on egress filter { check_dyndns, check_rdns, spamassassin } \
+      smtps pki mx.domain.tld
+    listen on egress port submission filter "dkimsign" \
+      tls auth <credentials> pki mx.domain.tld
+  #+end_src
+
+- filter-clamav wasn't production ready at that point
+- 22:00
+
+* TODO Video: 13 | OpenSMTPD, current state of affairs                | Gilles Chehade
 
 https://www.youtube.com/watch?v=p0S1bbO-h0k
 
@@ -23,3 +170,116 @@ https://www.youtube.com/watch?v=p0S1bbO-h0k
     - if you can't relay, the sender must be ack
     - each MX has an interest in getting message out of it way fast
     - transactional protocol, accepted message is a commit
+
+- code example of how to implement your own backend in C
+
+- 28:00 dev...
+* TODO Video: 13 | OpenSMTPD: We deliver!                             | Eric Faurot
+
+- video https://www.youtube.com/watch?v=7kaSyQYYGRQ
+- paper https://2013.asiabsdcon.org/papers/abc2013-P4B-paper.pdf
+
+- conf
+  - syntax inpired by pf.conf
+  - first match wins
+
+- /var/spool/smtpd/queue
+
+- /usr/sbin/smtpctl
+  - local enqueue (sendmail)
+  - queue inspection
+  - mail remove
+  - pause/resume
+  - stats
+  - monitor activity
+  - talks through a unix socket
+
+- IPC between spawned process happens through imsg(3) protocol
+
+26:00
+
+** Examples
+
+- Example: minimalist setup
+  #+begin_src
+  listen on lo0
+
+  table aliases db:/etc/mail/aliases.db
+
+  accept for local alias <aliases> deliver to mbox
+  accept for any relay
+  #+end_src
+
+- Example: primary domain
+  #+begin_src
+    listen on egress
+
+    table aliases db:/etc/mail/aliases.db
+
+    accept from any for domain "example.org" \
+                     alias <aliases> deliver to mbox
+    accept for local alias <aliases> deliver to mbox
+    accept for any relay
+  #+end_src
+
+- Example: using a smarthost
+  #+begin_src
+    listen on lo0
+
+    table secrets file:/etc/mail/secrets
+    table aliases db:/etc/mail/aliases.db
+
+    accept for local alias <aliases> deliver to mbox
+    accept for any relay \
+      via smtps+auth://label@smtps.my.isp \
+      auth <secrets>
+  #+end_src
+
+- Example: backup server
+  #+begin_src
+    listen on egress
+
+    table poolp { poolp.org, opensmtpd.org }
+
+    accept for local deliver to mbox
+
+    accept from any for domain example.org relay \
+      backup mx4.example.org
+
+    accept from any for domain <poolp> relay \
+      backup mx2.poolp.org
+  #+end_src
+
+- Example: signing outgoing mail with dkimproxy
+  #+begin_src
+    listen on lo0
+    listen on lo0 port 10029 tag DKIM
+
+    accept for local deliver to mbox
+    accept tagged DKIM for any relay
+    accept for any relay via smtp://127.0.0.1:10028
+  #+end_src
+
+- Example: authenticating relay
+  #+begin_src
+    listen on egress port submission tls \
+      certificate my.cert auth
+
+    accept from any for domain "opensmtpd.org" \
+      deliver to maildir
+
+    accept for any relay
+  #+end_src
+
+- Example: deliver to virtual users
+  #+begin_src
+    listen on egress
+
+    table usr { "alice" = "100:100:/var/vusers/alice",
+                "bob" = "100:100:/var/vusers/bob" }
+
+    accept from any for domain "wonderland.org" \
+      userbase <usr> deliver to maildir
+
+    accept for any relay
+  #+end_src

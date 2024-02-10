@@ -1,9 +1,13 @@
-|-----+-----------------------+------------------------------------|
-| MUA | Mail user agent       | from user to MTA                   |
-| MTA | Mail transport agent  | from sender to receiver server     |
-| MSA | Mail submission agent | accepts email from MTA             |
-| MDA | Mail delivery agent   | delivering email to the mail spool |
-|-----+-----------------------+------------------------------------|
+|-----+-----------------------+------------------------------------------------------------------------|
+| MUA | Mail user agent       | from user to MTA                                                       |
+| MTA | Mail transport agent  | from sender to receiver server                                         |
+| MSA | Mail submission agent | accepts email from MTA                                                 |
+| MDA | Mail delivery agent   | delivering email to the mail spool                                     |
+| MRA | Mail retrieval agent  | fetches remote email and works with the MDA, possible built into a MUA |
+|-----+-----------------------+------------------------------------------------------------------------|
+
+- MUA -> [mail] -> MTA -> queue -> MTA (internet) <- MRA <- MUA
+                                -> MDA (local)
 
 - smart Host/mail relay: MTA configured to send email from another system
 - mail queue: mail waiting to be processed

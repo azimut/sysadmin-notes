@@ -1,0 +1,12 @@
+- wiki https://en.wikipedia.org/wiki/Qmail
+  - qmail 1995-1998
+  - Daniel J. Bernstein
+  - security focused
+    - modular architecture, mutally untrusted components
+    - implemented with a security aware replacement of the C stdlib
+
+- qmail https://cr.yp.to/qmail.html
+- netqmail http://netqmail.org/ -2007
+- sqmail http://fehcom.de/sqmail/sqmail.html
+- notqmail https://notqmail.org/
+  - source https://github.com/notqmail/notqmail

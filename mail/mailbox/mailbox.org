@@ -1,0 +1,2 @@
+- wiki https://en.wikipedia.org/wiki/Email_box
+  - reserved mailbox names: postmaster, abuse

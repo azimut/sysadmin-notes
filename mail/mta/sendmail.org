@@ -1,0 +1,4 @@
+- wiki https://en.wikipedia.org/wiki/Sendmail
+  - successor of ~delivermail~
+
+- arch wiki https://wiki.archlinux.org/title/Sendmail

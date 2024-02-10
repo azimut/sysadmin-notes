@@ -1,0 +1,2 @@
+- wiki https://en.wikipedia.org/wiki/Dovecot_%28software%29
+- source https://github.com/dovecot/core

@@ -1,0 +1,7 @@
+- home https://getmail6.org/
+- source https://github.com/getmail6/getmail6
+- wiki https://en.wikipedia.org/wiki/Getmail
+  - python
+  - spiritual successor of fetchmail
+  - supports filtering
+  - supports local mailbox  or calling MDA

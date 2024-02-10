@@ -1,0 +1,8 @@
+- https://en.wikipedia.org/wiki/Maildir
+  - Daniel J. Bernstein
+  - each message is assigned a file, with an unique name
+  - avoids many locking and concurrency problems, safe on NFS
+  - introduced ~QMTP~ (Quick Mail Transport Protocol)
+    faster alternative of SMTP
+  - introduced ~QMQP~ (Quick Mail Queuing Protocol)
+    allows network sharing of email queues between hosts
