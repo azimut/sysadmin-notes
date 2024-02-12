@@ -1,2 +1,8 @@
 home https://www.exim.org/
 wiki https://en.wikipedia.org/wiki/Exim
+doc https://www.exim.org/exim-html-current/doc/html/spec_html/index.html
+
+
+- 21 security https://adepts.of0x.cc/exim-cve-2020-28018/
+- 21 security https://www.qualys.com/2021/05/04/21nails/21nails.txt
+- 23 security https://labs.watchtowr.com/exim-0days-90s-vulns-in-90s-software/

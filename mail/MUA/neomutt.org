@@ -1,10 +1,15 @@
 - neomutt https://github.com/neomutt/neomutt
 - neomutt sidebar patch https://lunar-linux.org/wp-content/cache/supercache/www.lunar-linux.org/mutt-sidebar/index.html.gz
+
 - maildir cli utilities https://github.com/leahneukirchen/mblaze
+- ??https://meli-email.org/
 
 - config
   - https://github.com/LukeSmithxyz/mutt-wizard
     https://muttwizard.com/
+
+- 15 article https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
+- 20 vim https://jonathanh.co.uk/blog/mutt-setup/
 
 - Search
   - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/

@@ -1,38 +1,74 @@
+- 06 spamassassin https://lwn.net/Articles/212997/
+- 16 spam graylisting https://lwn.net/Articles/703059/
+- 15 rspamd https://lwn.net/Articles/649940/
+- 17 rspamd https://lwn.net/Articles/732570/
+- 18 spamassasin https://lwn.net/Articles/769917/
+
+
+
 - 02 https://paulgraham.com/spam.html
 - 10 http://goran-juric.from.hr/books/debian-mail/chunked/
+- 12 https://web.archive.org/web/20121119024217/http://iafonov.github.com/blog/hardcore-email-infrastructure-setup.html
 - 12 https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
 - 13 https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
 - 14 https://arstechnica.com/information-technology/2014/02/how-to-run-your-own-e-mail-server-with-your-own-domain-part-1/
 - 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-2-arming-your-server-with-postfix-dovecot/
 - 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-3-fortifying-your-box-against-spammers/
 - 14 https://arstechnica.com/information-technology/2014/04/taking-e-mail-back-part-4-the-finale-with-webmail-everything-after/
-- 15 https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
+- 15 https://www.theregister.com/2015/09/12/feature_last_post_build_mail_server/
+     https://www.theregister.com/2015/09/19/feature_last_post_build_mailserver_part_2/
+     https://www.theregister.com/2015/09/26/feature_last_post_build_mailserver_part_3/
 - 15 https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
-- 15 https://frozen-geek.net/openbsd-email-server-1/
-- 16 opensmtpd https://web.archive.org/web/20160126030038/https://www.openbsd.org/opensmtpd/faq/example1.html
-- 16 https://www.fastmail.com/blog/spf-dkim-dmarc/
 - 17 https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
-- 17 opensmtpd https://web.archive.org/web/20170715133140/https://blog.cagedmonster.net/opensmtpd-and-dovecot-under-openbsd-with-mysql-support-and-spamd/
-- 18 spf https://alex.kaskaso.li/post/revisiting-email-spoofing
 - 18 opinion https://arstechnica.com/gadgets/2018/12/review-helm-personal-server-gets-email-self-hosting-almost-exactly-right/
 - 19 https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
-- 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
-- 20 opensmtpd https://web.archive.org/web/20200408175322/https://prefet.ch/blog/2020/email-server/
+- 19 https://poolp.org/posts/2019-12-15/decentralised-smtp-is-for-the-greater-good/
+- 20 opinion https://www.paritybit.ca/blog/a-month-and-a-half-of-self-hosted-email
+- 20 opinion https://jlelse.blog/thoughts/2020/07/no-email-selfhosting
 - 20 https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
 - 20 https://www.garron.blog/posts/host-your-email-server.html
-- 20 opensmtpd https://www.ctrl.blog/entry/systemd-opensmtpd-hardening.html
+- 20 https://akpoff.com/archive/2020/fixing_a_perplexing_email_problem_in_mutt.html
+- 21 starttls https://lwn.net/Articles/866481/
+- 21 opinion https://utcc.utoronto.ca/~cks/space/blog/sysadmin/EmailServersNoLongerPractical
 - 21 https://schumacher.sh/2021/05/10/running-a-private-mail-server-for-six-years-easy-peasy.html
 - 21 https://computer.rip/2021-12-26-diy-mail.html
-- 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
+- 21 https://zach.bloomqu.ist/blog/2021/07/reliable-self-hosted-email.html
+- 22 security https://www.brightball.com/articles/automatically-reversing-account-takeovers
 - 22 https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html
+- 23 https://research.exoticsilicon.com/articles/mail_filters
 - 23 opinion https://blog.bityard.net/articles/2023/January/various-ways-of-sending-mail-via-smtp
 - 23 https://www.linode.com/docs/guides/running-a-mail-server/
-- 23 opensmtpd https://palant.info/2023/03/08/converting-incoming-emails-on-the-fly-with-opensmtpd-filters/
-- https://scaron.info/blog/debian-mail-spf-dkim.html
 - article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
 - 22 https://explained-from-first-principles.com/email/
 
-* 21 | Writing a custom Mail Delivery Agent
+
+* 02 | We can't send mail farther than 500 miles from here
+
+- http://web.mit.edu/jemorris/humor/500-miles
+  - sendmail.cf
+  - SunOS
+  - OS was upgraded
+  - but sendmail was downgraded (8 -> 5) from a manual 8 upgrade
+  - but the "sendmail 8" config was kept, making some variables set to 0(zero)
+    - because it didn't had sane? default values
+  - among those variables, the timeout, which aborted the connection in 3ms
+- https://www.ibiblio.org/harris/500milemail-faq.html
+  - signals travel at
+    - "3c/4" over copper cable
+    - "2c/3" over fiber (slower than copper?)
+  - Quote
+    #+begin_src
+      Sysadmins do that sort of thing all the time. The answer to a
+      bug is never "the system has been up too long", but rebooting
+      the system is still sometimes the right answer, simply because
+      it has the effect of fixing the problem.
+
+      You fix a problem, any way you can, in order to rectify the
+      production issue, and then you come back later to try to
+      determine what the "right" solution is.
+    #+end_src
+
+* 21 | Writing a custom Mail Delivery Agent (MDA)
 
 https://poolp.org/posts/2020-12-29/writing-a-custom-mail-delivery-agent/
 
@@ -42,3 +78,46 @@ https://poolp.org/posts/2020-12-29/writing-a-custom-mail-delivery-agent/
 - an MDA is a program that is in charge of:
   1) delivering a email to a local user
   2) reporting to the SMTP server if the deliver was successful or not
+
+- MDA *interface* is /somewhat/ standard
+  - reads from ~stdin~
+  - reports success or failure through ~exit(3)~ status
+    https://man.freebsd.org/cgi/man.cgi?query=exit&sektion=3&apropos=0&manpath=FreeBSD+4.3-RELEASE
+    https://man.freebsd.org/cgi/man.cgi?query=sysexits&manpath=FreeBSD+4.3-RELEASE
+  - there is back and forth protocol of any kind
+
+- MDA execution
+  - executed /for each mail/ being delivered
+  - executed with the /privileges/ of the recipient user
+
+- valid MDA
+  #+begin_src sh
+    #!/bin/sh
+    cat     # consumes stdin, but email content will be gone forever
+    exit $? # report cat's exit code
+  #+end_src
+
+- MDA environment variables
+  - PATH,SHELL,HOME
+  |-----------+-----------------------------------------------------------|
+  | LOGNAME   | contain the recipient user (OS user)                      |
+  | USER      | "                                                         |
+  |-----------+-----------------------------------------------------------|
+  | DOMAIN    | recipient's domain, before aliasing                       |
+  | LOCAL     | user part of the recipient email address, before aliasing |
+  | RECIPIENT | email address, after aliasing                             |
+  | EXTENSION | gilles+1@poolp.org, "1" in this case                      |
+  |-----------+-----------------------------------------------------------|
+  | SENDER    | email address OR empty on case of MAILER-DAEMON bounce    |
+  |-----------+-----------------------------------------------------------|
+
+- final script
+  #+begin_src sh
+    #!/bin/sh
+    MAILDIR=${HOME}/Maildir
+    umask 077
+    mkdir -p ${MAILDIR}/{new,tmp}
+    FILENAME=$(date +%s).$(openssl rand -hex 8).$(hostname)
+    cat > ${MAILDIR}/tmp/${FILENAME} &&
+        mv ${MAILDIR}/tmp/${FILENAME} ${MAILDIR}/new/ # mv is an atomic update
+  #+end_src

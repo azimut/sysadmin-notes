@@ -1,0 +1,3 @@
+https://en.wikipedia.org/wiki/Sender_Policy_Framework
+- Utility to recursively looks up SPF records https://github.com/akpoff/spfwalk
+- Collection of utilities to recursively look-up SPF records and manage whitelists https://github.com/akpoff/spf_fetch

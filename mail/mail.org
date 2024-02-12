@@ -1,10 +1,10 @@
-|-----+-----------------------+------------------------------------------------------------------------|
-| MUA | Mail user agent       | from user to MTA                                                       |
-| MTA | Mail transport agent  | from sender to receiver server                                         |
-| MSA | Mail submission agent | accepts email from MTA                                                 |
-| MDA | Mail delivery agent   | delivering email to the mail spool                                     |
-| MRA | Mail retrieval agent  | fetches remote email and works with the MDA, possible built into a MUA |
-|-----+-----------------------+------------------------------------------------------------------------|
+|---------+-----------------------+------------------------------------------------------------------------|
+| MUA     | Mail user agent       | from user to MTA                                                       |
+| MTA     | Mail transport agent  | from sender to receiver server                                         |
+| MSA     | Mail submission agent | accepts email from MTA                                                 |
+| MDA/LDA | Mail delivery agent   | delivering email to the mail spool, report back to MTA?                |
+| MRA     | Mail retrieval agent  | fetches remote email and works with the MDA, possible built into a MUA |
+|---------+-----------------------+------------------------------------------------------------------------|
 
 - MUA -> [mail] -> MTA -> queue -> MTA (internet) <- MRA <- MUA
                                 -> MDA (local)
@@ -18,24 +18,42 @@
 - mail queue: mail waiting to be processed
 - mailbox: where mail is stored
 
-- 25  SMTP - between servers, incoming email
-  110 POP3
-  143 IMAP
-  465 SMTPs
-  587 Submission, send outgoing email
-  993 IMAPs (better for multiple systems, for slow connections)
-  995 POP3s
-  4190 ManageSieve
+|------+------------------+---------+-----------------------------------------------------|
+|   25 | SMTP             | postfix | between servers, incoming email                     |
+|  110 | POP3             | dovecot |                                                     |
+|  143 | IMAP             | dovecot |                                                     |
+|  465 | SMTPs            | postfix |                                                     |
+|  587 | SMTPs Submission | postfix | send outgoing email                                 |
+|  993 | IMAPs            | dovecot | (better for multiple systems, for slow connections) |
+|  995 | POP3s            | dovecot |                                                     |
+| 4190 | ManageSieve      | dovecot |                                                     |
+|------+------------------+---------+-----------------------------------------------------|
 
 - recommended subdomains: spam, webmail, postfixadmin, mail
 
-- webmail
-  https://www.sogo.nu/
+- https://wiki.archlinux.org/title/Mail_server
+- https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol
 
 - spam filters https://packages.gentoo.org/categories/mail-filter
   Rspamd https://rspamd.com/doc/
   SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin
   DSpam
   clamsmtp http://thewalter.net/stef/software/clamsmtp/
+  office https://github.com/decalage2/oletools https://github.com/HeinleinSupport/olefy
+  DCC - Distributed Checksum Clearinghouses - https://www.dcc-servers.net/dcc/
+  spampd https://github.com/mpaperno/spampd
+  clamsmtp https://wiki.alpinelinux.org/wiki/Setting_up_clamsmtp
+  video https://www.youtube.com/watch?v=PKY6rSpzTIQ
+
+
+- muas https://lobste.rs/s/0c0tvx/what_email_client_do_you_use
+- webmail https://www.sogo.nu/
 
 - https://lobste.rs/t/email
+- html/css support on MUA (gmail/outlook/apple-mail) https://www.caniemail.com/
+
+- imapcopy (copy between imap servers) http://www.ardiehl.de/imapcopy/
+- imap to oauth https://github.com/simonrob/email-oauth2-proxy
+- imap to oauth  https://gitlab.com/muttmua/mutt/-/blob/master/contrib/mutt_oauth2.py
+- imap to oauth https://github.com/pdobsan/mailctl
+- MTA https://blitiri.com.ar/p/chasquid/

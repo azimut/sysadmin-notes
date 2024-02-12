@@ -1,0 +1,13 @@
+- wiki https://en.wikipedia.org/wiki/Cyrus_IMAP_server
+  - intented to be run on ~sealed servers~, where users cannot login
+  - mail spool looks similar to Maildir
+  - JMAP support
+  - Sieve support for filtering
+  - CalDAV/CardDAV support
+  - used by ~Fastmail~ https://en.wikipedia.org/wiki/Fastmail
+
+- source https://github.com/cyrusimap/cyrus-imapd
+  - C
+
+- doc http://www.cyrusimap.org/
+- doc clustering http://www.cyrusimap.org/imap/reference/admin/murder/murder.html#murder

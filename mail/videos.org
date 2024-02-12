@@ -1,3 +1,8 @@
+- channel https://www.youtube.com/@mailserverguru/videos
+
+- 17 Linux Mail Server Configuration Step by Step (part 2)
+  https://www.youtube.com/watch?v=HPV1hJsRud0
+
 - HackTheBox - Tentacle
   https://www.youtube.com/watch?v=kKhuUXPmJ_o
 

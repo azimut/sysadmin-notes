@@ -1,0 +1,3 @@
+- wiki https://en.wikipedia.org/wiki/Alpine_(email_client)
+- home https://alpineapp.email/
+- source https://repo.or.cz/alpine.git

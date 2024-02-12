@@ -2,3 +2,4 @@
   - successor of ~delivermail~
 
 - arch wiki https://wiki.archlinux.org/title/Sendmail
+- home https://www.proofpoint.com/us/products/email-protection/open-source-email-solution

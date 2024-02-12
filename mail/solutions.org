@@ -4,6 +4,10 @@
   https://www.iredmail.org/
   https://www.zimbra.com/
 
+- maddy
+  https://maddy.email/
+  https://github.com/foxcpp/maddy
+
 - poste
   - home https://poste.io/
   - doc https://poste.io/doc/
@@ -31,13 +35,22 @@
 - mailserver
   - source https://github.com/mailserver2/mailserver
 
-|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|
-|                   | postfix | haraka | dovecot | rspamd | amavis | spamassassin | clamav | OpenDKIM | fail2ban | postgrey | z-push | sogo | roundcube | rainloop |
-|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|
-| docker-mailserver | x       | -      | x       | x      | x      | x            | x      | x        | x        | x        |        |      |           |          |
-| mailserver2       | x       | -      | x       | x      | -      | -            | x      |          |          |          |        |      | -         | x        |
-| mailinabox        | x       | -      | x       | -      | -      | x            | -      | x        | -        | x        |        |      |           |          |
-| poste             | -       | x      | x       | x      |        |              | x      |          |          |          | x      | -    | nginx     |          |
-| mailcow           | x       | -      | x       | x      | -      |              | x      |          |          |          |        | x    |           |          |
-| emailwiz          | x       | -      | x       | x      | -      | x            | -      | x        | x        | -        | -      | -    | -         |          |
-|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------|
+- mailu
+  https://mailu.io/2.0/
+
+- mail-toater-6
+  https://github.com/msimerson/Mail-Toaster-6
+  https://github.com/msimerson/Mail-Toaster-6/wiki
+
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------+----------|
+|                   | postfix | haraka | dovecot | rspamd | amavis | spamassassin | clamav | OpenDKIM | fail2ban | postgrey | z-push | sogo | roundcube | rainloop | radicale |
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------+----------|
+| docker-mailserver | x       | -      | x       | x      | x      | x            | x      | x        | x        | x        |        |      |           |          |          |
+| mailserver2       | x       | -      | x       | x      | -      | -            | x      |          |          |          |        |      | -         | x        |          |
+| mailinabox        | x       | -      | x       | -      | -      | x            | -      | x        | -        | x        |        |      |           |          |          |
+| poste             | -       | x      | x       | x      |        |              | x      |          |          |          | x      | -    | nginx     |          |          |
+| mail-toaster-6    | -       | x      | x       | x      | -      | x            | x      | -        | -        | -        | -      | -    | x         | x        | -        |
+| mailcow           | x       | -      | x       | x      | -      |              | x      |          |          |          |        | x    |           |          |          |
+| emailwiz          | x       | -      | x       | x      | -      | x            | -      | x        | x        | -        | -      | -    | -         |          |          |
+| mailu             | x       | -      | x       | x      | -      | -            | x      | -        | -        | -        | -      | -    | -         | x        | x        |
+|-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------+----------|

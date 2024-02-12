@@ -1,9 +1,10 @@
-|--------+--------------------------------------------|
-| wiki   | https://en.wikipedia.org/wiki/OpenSMTPD    |
-| home   | https://www.opensmtpd.org/                 |
-| arch   | https://wiki.archlinux.org/title/OpenSMTPD |
-| source | https://github.com/OpenSMTPD/OpenSMTPD     |
-|--------+--------------------------------------------|
+|------------+----------------------------------------------------------|
+| wiki       | https://en.wikipedia.org/wiki/OpenSMTPD                  |
+| home       | https://www.opensmtpd.org/                               |
+| arch       | https://wiki.archlinux.org/title/OpenSMTPD               |
+| source     | https://github.com/OpenSMTPD/OpenSMTPD                   |
+| awk filter | https://github.com/jirutka/opensmtpd-filter-rewrite-from |
+|------------+----------------------------------------------------------|
 
 - Public release on 2013
 
@@ -21,6 +22,82 @@
   - queue
   - scheduler
   - pony express
+
+
+- 15 https://raysnotebook.info/computing/email-opensmtpd.html
+- 15 https://frozen-geek.net/openbsd-email-server-1/
+- 16 https://frozen-geek.net/openbsd-email-server-2/
+- 16 https://web.archive.org/web/20160126030038/https://www.openbsd.org/opensmtpd/faq/example1.html
+- 17 https://web.archive.org/web/20170715133140/https://blog.cagedmonster.net/opensmtpd-and-dovecot-under-openbsd-with-mysql-support-and-spamd/
+- 18 https://battlepenguin.com/tech/openbsd-spampd-and-the-startup-bug/
+- 18 https://poolp.org/posts/2018-11-03/opensmtpd-released-and-upcoming-filters-preview/
+- 18 https://poolp.org/posts/2018-05-21/switching-to-opensmtpd-new-config/
+- 19 https://poolp.org/posts/2019-07-27/july-2019-report-tons-of-smtpd-work-mostly/
+- 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
+- 20 https://poolp.org/posts/2020-01-30/opensmtpd-advisory-dissected/
+- 20 https://github.com/poolpOrg/OpenSMTPD-book
+  - certificate -> cert
+  - mask-source -> mask-src
+  - one line rules -> multiple lines rule
+- 20 https://dev.to/nabbisen/opensmtpd-how-to-receive-emails-sent-by-remote-hosts-to-os-local-users-48oj
+     https://dev.to/nabbisen/rspamd-installation-and-opensmtpd-configuration-on-it-on-openbsd-1p6i
+     https://dev.to/nabbisen/rspamd-monitoring-with-openbsd-relayd-486m
+     https://dev.to/nabbisen/dkim-migration-rpamd-instead-of-dkimproxy-out-on-openbsd-opensmtpd-2k6m
+- 20 https://www.ctrl.blog/entry/systemd-opensmtpd-hardening.html
+- 20 https://web.archive.org/web/20200408175322/https://prefet.ch/blog/2020/email-server/
+- 20 https://www.theregister.com/2020/01/30/openbsd_mail_bug/
+- 20 https://very.busted.systems/Simple-OpenSMTPD-filter-example-in-awk
+- 21 http://code.jeremyevans.net/2021-07-29-running-my-own-email-server.html
+- 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
+- 21 https://kfv.medium.com/my-opensmtpd-setup-on-freebsd-ed57c052fbc1
+- 22 https://docs.vultr.com/an-openbsd-e-mail-server-using-opensmtpd-dovecot-rspamd-and-rainloop
+- 23 https://palant.info/2023/03/08/converting-incoming-emails-on-the-fly-with-opensmtpd-filters/
+- 23 https://www.bsdhowto.ch/mxpop3.html
+- 23 https://wiki.ircnow.org/index.php?n=Opensmtpd.Configure?from=Openbsd.Opensmtpd
+- 23 https://kilabit.info/journal/2023/replacing_postfix_with_opensmtpd/
+- 23 https://draft.websteading.net/smtpd/
+
+
+- video: Mail with OpenSMTPD, fdm, and mblaze! https://www.youtube.com/watch?v=5YS8RPC4zwc&t=23s
+- video: opensmptd filter in ruby https://www.youtube.com/watch?v=LWkatTvSPpY
+  - rewrite subject line
+
+
+* TODO Video: 23 | Filtering Mail with Ruby!
+
+https://www.youtube.com/watch?v=LWkatTvSPpY
+
+- rewrite subject
+- $ man smtpd-filters
+
+- Characteristics
+  - standalone processes
+  - do not share memory with ~smtpd~ process
+  - expected to run an infinite loop
+  - reading from STDIN
+  - responding to STDOUT
+  - logging to STDERR
+  - *must not block IO* (standard read/write in ruby is blocking)
+
+- API relies on 2 streams
+  - report stream: 1 way stream to notify of new things
+  - filter stream: 2 way stream
+
+** Protocol
+
+- at initialization, receives
+  #+begin_src
+    config|smtpd-version|6.6.1
+    config|smtp-session-timeout|300
+    config|subsystem|smtp-in
+    config|ready
+  #+end_src
+
+- at initialization, it should send after
+  #+begin_src config
+    register|report|smtp-in|link-connect
+    register|ready
+  #+end_src
 
 * TODO Video: 20 | OpenSMTPD over the clouds the story of an HA setup | Giovanni Bechis
 https://www.youtube.com/watch?v=y6DLZkAT4Bg

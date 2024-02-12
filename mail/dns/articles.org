@@ -1,0 +1,11 @@
+- 16 spf https://www.fastmail.com/blog/spf-dkim-dmarc/
+- 17 https://mildbyte.xyz/blog/mta-spf-dkim-ptr-wtf-a-quick-checklist-on-how-to-send-e-mail-from-your-domain/
+- 18 spf https://alex.kaskaso.li/post/revisiting-email-spoofing
+- 18 spf https://ikiwiki.iki.fi/faq/dmarc_spf_considered_harmful
+- 19 dkim https://blog.jonlu.ca/posts/spf-dkim
+- 19 dkim https://www.20i.com/blog/dkim-demystified/
+- 19 spf https://poolp.org/posts/2019-12-01/spf-aware-greylisting-and-filter-greylist/
+- 20 spf https://utcc.utoronto.ca/~cks/space/blog/spam/SPFForHELOsII
+- 21 spf https://www.alexblackie.com/articles/email-authenticity-dkim-spf-dmarc/
+- 21 spf https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc
+- https://scaron.info/blog/debian-mail-spf-dkim.html

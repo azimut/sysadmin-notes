@@ -1,3 +1,7 @@
+#+CAPTION: Qmail Architecture from s/qmail
+#+NAME:   fig:qmail
+[[./sqmail_Big_Picture2.gif]]
+
 - wiki https://en.wikipedia.org/wiki/Qmail
   - qmail 1995-1998
   - Daniel J. Bernstein
