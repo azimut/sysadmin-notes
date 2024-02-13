@@ -1,28 +1,27 @@
 - home https://www.postfix.org/
 - webui https://github.com/postfixadmin/postfixadmin
 - webui https://github.com/lightmeterio/ControlCenter
+
 - https://en.wikipedia.org/wiki/Postfix_(software)
   - 1997-
-  - Author: Wietse Venema
+  - Author: =Wietse Venema=
   - Arguable the most popular, along with Exim
   - filters
     https://www.benzedrine.ch/milter-regex.html
     https://en.wikipedia.org/wiki/Policyd-weight
     http://www.postfwd.org/
 
-- List default options
-  $ postconf -d
-
-- List non-default options
-  $ postconf -n
-
-- Create /etc/postfix/access.db
-  $ sudo postmap /etc/postfix/access
-
 - Make it the default MTA
   $ sudo alternatives --set mta /usr/sbin/sendmail.postfix
 
 - usr/libexec/postfix
+
+- 11 video | Postfix and Postscreen: Stopping Spam Safely | Rob McGee https://www.youtube.com/watch?v=aq1LUZwWPXg
+- 12 video | Postfix: past, present and future - Wietse Venema https://www.youtube.com/watch?v=ll7zF5MnHPs
+- 14 video | Postfix Open Source Mail Server Lessons Learned And Recent Developments https://www.youtube.com/watch?v=T046ku3z8xM
+- 14 video | DNS Based Auth of Named Entities DANE | Tony Cargile https://www.youtube.com/watch?v=ky8soThQ_GM
+- 14 video | Postfix recent adoption of new technologies (Wietse Venema, Mailserver-Konferenz) https://www.youtube.com/watch?v=eNAqg1pI7f0
+- 18 video | A case study on building a mail archive with postfix by Dr. Stephan Rein https://www.youtube.com/watch?v=8kxIlZ8ckYY
 
 * General
 ** configuration files
@@ -152,6 +151,16 @@ root:  marc
   drwxr-xr-x. root    root system_u:object_r:postfix_spool_t:s0 /var/spool/postfix/
 
 ** commands
+
+- List default options
+  $ postconf -d
+
+- List non-default options
+  $ postconf -n
+
+- Create /etc/postfix/access.db
+  $ sudo postmap /etc/postfix/access
+
 |----------------------+-----------------------------------------------------------|
 | alternatives         | from chkconfig package, handles symlinks                  |
 | mail/mailx           | send & receive email                                      |

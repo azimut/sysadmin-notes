@@ -2,6 +2,7 @@
 #+NAME:   fig:qmail
 [[./sqmail_Big_Picture2.gif]]
 
+
 - wiki https://en.wikipedia.org/wiki/Qmail
   - qmail 1995-1998
   - Daniel J. Bernstein
@@ -9,8 +10,18 @@
     - modular architecture, mutally untrusted components
     - implemented with a security aware replacement of the C stdlib
 
+
 - qmail https://cr.yp.to/qmail.html
 - netqmail http://netqmail.org/ -2007
 - sqmail http://fehcom.de/sqmail/sqmail.html
 - notqmail https://notqmail.org/
   - source https://github.com/notqmail/notqmail
+
+
+- 01 Book | The qmail Handbook                      | Dave Sill
+  https://www.amazon.com/-/es/Dave-Sill/dp/1893115402/
+  source https://github.com/Apress/qmail-handbook
+- 04 Book | qmail: Managing Unix-Based Mail Systems | John Levine
+  https://www.amazon.com/-/es/John-Levine/dp/1565926285/
+- 07 Book | Qmail Quickstarter                      | Kyle Wheeler
+  https://www.amazon.com/-/es/Kyle-Wheeler/dp/1847191150/

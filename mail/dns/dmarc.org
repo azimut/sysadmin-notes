@@ -5,6 +5,7 @@
 
 - https://www.cloudflare.com/learning/dns/dns-records/dns-dmarc-record/
 - rfc https://datatracker.ietf.org/doc/html/rfc7489
+- 16 video | Preventing Unauthorized Email Spoofing with DMARC https://www.youtube.com/watch?v=hSr7pvGLCxg
 
 * OpenDMARC
 

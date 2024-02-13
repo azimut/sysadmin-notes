@@ -5,3 +5,11 @@
   - config https://doc.dovecot.org/configuration_manual/
   - settings https://doc.dovecot.org/settings/
   - development https://doc.dovecot.org/developer_manual/
+
+- 16 Book | Dovecot: POP3/IMAP servers for enterprises and ISPs | Peer Heinlein
+  https://www.amazon.com/-/es/Peer-Heinlein/dp/1534895701
+
+- 11 video | Dovecot: The better IMAP-server https://www.youtube.com/watch?v=DedX-brYW1M
+- 13 video | Dovecot https://www.youtube.com/watch?v=X0DEX0-Zj48
+- 13 video | Dovecot | Timo Sirainen https://www.youtube.com/watch?v=mX-fOEaion4
+- 14 video | Dovecots Way Of Scaling To Millions Of Users | Timo Sirainen https://www.youtube.com/watch?v=5QW6E-6KtvU

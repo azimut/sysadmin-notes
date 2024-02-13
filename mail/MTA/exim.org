@@ -23,6 +23,8 @@
 - exim https://www.ispmanager.com/docs/ispmanager/exim-configuration-file
 - exim https://support.mailchannels.com/hc/en-us/articles/200262620-Setting-up-for-Exim
 
+
+- 16 video https://www.youtube.com/watch?v=G83WJv6EsfU
 - 21 security https://adepts.of0x.cc/exim-cve-2020-28018/
 - 21 security https://www.qualys.com/2021/05/04/21nails/21nails.txt
 - 23 security https://labs.watchtowr.com/exim-0days-90s-vulns-in-90s-software/

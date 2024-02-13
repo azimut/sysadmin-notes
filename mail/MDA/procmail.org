@@ -39,6 +39,11 @@
 - wiki https://wiki.gentoo.org/wiki/Procmail
 - source (C) https://github.com/BuGlessRB/procmail
 
+
+- 01 Book | Procmail Companion | Martin McCarthy
+  https://www.amazon.com/-/es/Martin-McCarthy/dp/0201737906/
+
+
 - ?? article https://wiki.ubuntu.com/Bugs/HowToFilter
 - ?? article https://www.fi.muni.cz/tech/unix/procmail.html.en
 - 97 article https://userpages.umbc.edu/~ian/procmail.html
