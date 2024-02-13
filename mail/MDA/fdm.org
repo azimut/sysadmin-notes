@@ -1,4 +1,11 @@
 - source (C) https://github.com/nicm/fdm
+- man https://manpages.debian.org/testing/fdm/fdm.1.en.html
+- man https://manpages.debian.org/testing/fdm/fdm.conf.5.en.html
+
 - https://en.wikipedia.org/wiki/Fdm_(software)
+  - (f)etch/filter and (d)eliver (m)ail
   - Nicholas Marriott
   - 2006-
+  - fetchmail & procmail replacement
+
+- 19 article https://acampbell.uk/wp/2019/04/11/replacing-procmail-with-fdm/

@@ -4,6 +4,12 @@
   - call an external /filter/ program
   - reads mail messages from STDIN
 
+- Ships with these binaries:
+  * procmail : has a SUID flag
+  * mailstat : to parse log files
+  * lockfile : conditional semaphore-file creator (similar to *flock*)
+  * formail  : mail (re)formatter
+
 - ~/.procmailr or /etc/procmailrc, has sections
   1. Assignments: PATH, MAILDIR, DEFAULT, LOGFILE, SHELL
   2. Recipes: (>=1) each =recipe= consists of
@@ -40,12 +46,40 @@
 - 05 article https://benya.com/procmail/
 - 06 article https://web.archive.org/web/20060716101306/http://lipas.uwasa.fi/~ts/info/proctips.html
 - 09 article https://www.networkworld.com/article/930954/easy-email-filtering-with-procmail.html
+- 09 article https://web.archive.org/web/20091025120802/http://www.itworld.com/it-managementstrategy/81833/easy-email-filtering-procmail
+- 10 article Reports of procmail's death are not terribly exaggerated https://lwn.net/Articles/416901/
 - 14 article http://www.mcc.unam.mx/crf-old/howto/procmail-howto.html
 - 16 article https://pr0.uk/linux/bash/script/spam/mailserver/procmail/2016/11/27/filter-a-list-of-addresses-with-procmail.html
 
-* 21 Video
+* 22 article | procmail considered harmful
 
-- They use ~procmail~ to call different scripts depending on the /subject/ of the email
+https://anarc.at/blog/2022-03-02-procmail-considered-harmful/
+
+- has a SUID flag
+- =root:mail= permissions
+- Persistently remove SUID on Debian
+  $ dpkg-stateoverride --update --add root root 0755 /usr/bin/procmail
+
+* 21 video | API != REST - procmail to the rescue
+
+- They used mail to do the provisioning calls
+- Used ~procmail~ to call different scripts depending on the /subject/ of the email
+  - \/ defines what will be matched in ~$MATCH~
+
+#+begin_src
+  MAILDIR=$HOME/.mail
+  DEFAULT=$MAILDIR/mbox
+  LOGFILE=$MAILDIR/from
+  :0b
+  * ^Subject: *CREATE \/[1-9]+.*
+  | /home/jupyter/do.sh CREATE $MATCH
+  :0b
+  * ^Subject: *CLEANUP \/[1-9]+.*
+  | /home/jupyter/do.sh CLEANUP $MATCH
+  :0b
+  * ^Subject: *RESET \/[1-9]+.*
+  | /home/jupyter/do.sh RESET $MATCH
+#+end_src
 
 * arch wiki https://wiki.archlinux.org/title/Procmail
 

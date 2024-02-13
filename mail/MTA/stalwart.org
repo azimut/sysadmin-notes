@@ -1,0 +1,3 @@
+- source (rust) https://github.com/stalwartlabs/smtp-server
+- https://github.com/stalwartlabs/jmap-server
+- https://github.com/stalwartlabs/imap-server

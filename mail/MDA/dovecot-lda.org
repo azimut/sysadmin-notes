@@ -1,0 +1,9 @@
+- dovecot https://doc.dovecot.org/configuration_manual/protocols/lda/
+- man https://linux.die.net/man/1/dovecot-lda
+  - The dovecot-lda is a LDA which takes mail from an MTA
+    and delivers it to a user's mailbox,
+    while keeping Dovecot index files up to date.
+  - features
+    1) indexing though delivery
+    2) quota enforcing plugin
+    3) sieve support through pigeonhole plugin

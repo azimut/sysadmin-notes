@@ -1,5 +1,16 @@
 - home https://www.courier-mta.org/maildrop/
+
+- Ships with these binaries
+  * maildrop          : with SUID
+  * lockmail.maildrop : with SUID
+  * reformail         : mail (re)formatter
+
+- Disable SUID in Debian
+  - $ dpkg-statoverride --update --add root root 0755 /usr/bin/lockmail.maildrop
+  - $ dpkg-statoverride --update --add root root 0755 /usr/bin/maildrop
+
 - https://en.wikipedia.org/wiki/Maildrop
+  - from the ~courier~ project
   - C++
   - Better memory usage than ~procmail~
   - mbox,maildir support

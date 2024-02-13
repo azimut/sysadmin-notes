@@ -6,6 +6,9 @@
 - 19 dkim https://blog.jonlu.ca/posts/spf-dkim
 - 19 dkim https://www.20i.com/blog/dkim-demystified/
 - 19 spf https://poolp.org/posts/2019-12-01/spf-aware-greylisting-and-filter-greylist/
+- 20 dkim
+  https://anarc.at/blog/2020-04-14-opendkim-debian/
+  https://anarc.at/blog/2022-07-20-debian-relay-no-dkim/
 - 20 spf https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
 - 20 spf https://utcc.utoronto.ca/~cks/space/blog/spam/SPFForHELOsII
 - 21 spf https://www.alexblackie.com/articles/email-authenticity-dkim-spf-dmarc/

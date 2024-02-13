@@ -23,6 +23,7 @@
 - 18 opinion https://arstechnica.com/gadgets/2018/12/review-helm-personal-server-gets-email-self-hosting-almost-exactly-right/
 - 19 opinion https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
 - 19 opinion https://poolp.org/posts/2019-12-15/decentralised-smtp-is-for-the-greater-good/
+- 19 https://anarc.at/blog/2019-03-20-locking-down-registration-mail/
 - 20 opinion https://www.paritybit.ca/blog/a-month-and-a-half-of-self-hosted-email
 - 20 opinion https://jlelse.blog/thoughts/2020/07/no-email-selfhosting
 - 20 https://www.garron.blog/posts/host-your-email-server.html

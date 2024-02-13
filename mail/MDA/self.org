@@ -1,4 +1,7 @@
 - https://en.wikipedia.org/wiki/Message_delivery_agent
+- nim alternative https://github.com/mahlonsmith/sieb
+  - nim
+
 * 21 | Article | Writing a custom Mail Delivery Agent (MDA)
 
 https://poolp.org/posts/2020-12-29/writing-a-custom-mail-delivery-agent/

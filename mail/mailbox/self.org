@@ -4,3 +4,9 @@
     - hostmaster(dns)
     - webmaster(http)
     - abuse
+
+- syncmaildir (ABANDONED)
+  - source (C) https://github.com/gares/syncmaildir
+  - https://anarc.at/blog/2021-03-22-email-crash/
+  - https://anarc.at/blog/2021-06-29-another-mail-crash/
+  - https://anarc.at/blog/2021-11-21-one-last-smd-crash/

@@ -1,0 +1,71 @@
+- home http://sieve.info/
+- rfc (2008) https://www.rfc-editor.org/info/rfc5228 (obsoletes 3028)
+- wiki https://en.wikipedia.org/wiki/Sieve_(mail_filtering_language)
+
+
+- 11 article https://p5r.uk/blog/2011/sieve-tutorial.html
+- 22 article https://anarc.at/blog/2022-03-02-procmail-considered-harmful/#procmail-to-sieve-recipes
+- 22 article https://www.enricozini.org/blog/2022/debian/migrating-from-procmail-to-sieve/
+- wiki arch https://wiki.archlinux.org/title/Sieve_filters
+- wiki protonmail https://proton.me/support/sieve-advanced-custom-filters
+- wiki tigertech https://support.tigertech.net/sieve
+- wiki gandi
+  - https://docs.gandi.net/en/gandimail/sieve/getting_started.html
+  - https://docs.gandi.net/en/gandimail/sieve/sieve_tutorial.html
+  - https://docs.gandi.net/en/gandimail/sieve/sample_filters.html
+  - https://docs.gandi.net/en/gandimail/sieve/sieve_extensions.html
+
+- examples https://github.com/LoricAndre/awesome-sieve-filters
+- https://github.com/SoMuchToGrok/email-sieves
+
+* Example: Protonmail
+
+https://news.ycombinator.com/item?id=25743282
+
+Here is a Sieve filter I use on Protonmail (free account), which shows
+some of the things that are possible. The labels it assigns have to be
+created manually first:
+
+#+begin_src sieve
+    require ["vnd.proton.expire", "fileinto", "variables", "imap4flags", "relational"];
+    ## Detect email forwarded from Gmail and set them to automatically delete after 60 days
+    if anyof(header :matches "Return-Path" "*+caf_*@gmail.com*", header :matches "X-Forwarded-For" "*@gmail.com*"){
+      expire "day" "60"; # set expiry to 60 days (uses custom Protonmail extension)
+      fileinto "Gmail"; # file into Gmail folder
+    }
+    ## Add name field as label
+    ## 1st * matches sender name as ${2}
+    ## This doesn't work because automatic label/folder creation is not supported by Protonmail
+    #if header :matches "from" "?*? <*" {
+      # fileinto "Gmail/${2}";
+      # fileinto :create "Gmail/${2}";
+    #}
+
+    ## Try to detect newsletters based on header
+    if exists "list-unsubscribe" {
+      expire "day" "14"; # set expiry to 14 days
+      fileinto "Newsletter"; # Assign "Newsletter" label
+    }
+    ## Add label based on size
+    if size :over 8M{
+      fileinto "8M+";
+    } elsif size :over 4M{
+      fileinto "4M+";
+    } elsif size :over 2M{
+      fileinto "2M+";
+    } elsif size :over 1M{
+      fileinto "1M+";
+    } elsif size :over 512K{
+      fileinto "512K+";
+    } elsif size :over 256K{
+      fileinto "256K+";
+    } elsif size :over 128K{
+      fileinto "128K+";
+    }
+    ## Add label based on spam score (score of 0 means no score assigned)
+    if header :matches "X-Pm-Spamscore" "*" { #detect Protonmail spam score in header
+      if string :value "ge" "${1}" "1"  { #if spam score >= 1
+        fileinto "spam score ${1}"; # assign label with spam score
+      }
+    }
+#+end_src

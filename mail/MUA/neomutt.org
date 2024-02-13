@@ -9,10 +9,13 @@
     https://muttwizard.com/
 
 
-- 20 article https://akpoff.com/archive/2020/fixing_a_perplexing_email_problem_in_mutt.html
 - 15 article https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
+- 16 https://anarc.at/blog/2016-05-12-email-setup/
 - 20 vim https://jonathanh.co.uk/blog/mutt-setup/
+- 20 article https://akpoff.com/archive/2020/fixing_a_perplexing_email_problem_in_mutt.html
 
+
+- https://github.com/elobdog/mailhelp
 - Search
   - https://upsilon.cc/%7Ezack/blog/posts/2011/01/how_to_use_Notmuch_with_Mutt/
   - https://asynchronous.in/posts/email-with-notmuch-astroid/

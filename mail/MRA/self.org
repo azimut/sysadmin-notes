@@ -1,1 +1,2 @@
 - https://en.wikipedia.org/wiki/Mail_retrieval_agent
+- https://anarc.at/blog/2021-11-21-mbsync-vs-offlineimap/
