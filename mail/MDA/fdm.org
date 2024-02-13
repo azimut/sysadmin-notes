@@ -8,4 +8,5 @@
   - 2006-
   - fetchmail & procmail replacement
 
+- 19 article https://rsmith.home.xs4all.nl/howto/my-e-mail-setup.html
 - 19 article https://acampbell.uk/wp/2019/04/11/replacing-procmail-with-fdm/

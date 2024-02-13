@@ -50,6 +50,7 @@
 - 10 article Reports of procmail's death are not terribly exaggerated https://lwn.net/Articles/416901/
 - 14 article http://www.mcc.unam.mx/crf-old/howto/procmail-howto.html
 - 16 article https://pr0.uk/linux/bash/script/spam/mailserver/procmail/2016/11/27/filter-a-list-of-addresses-with-procmail.html
+- 18 article https://utcc.utoronto.ca/~cks/space/blog/sysadmin/ProcmailWhatNext?showcomments
 
 * 22 article | procmail considered harmful
 

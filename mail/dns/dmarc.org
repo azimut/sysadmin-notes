@@ -3,6 +3,7 @@
   - extends SPF and DKIM
   - mail authentication protocol
 
+- https://www.cloudflare.com/learning/dns/dns-records/dns-dmarc-record/
 - rfc https://datatracker.ietf.org/doc/html/rfc7489
 
 * OpenDMARC
