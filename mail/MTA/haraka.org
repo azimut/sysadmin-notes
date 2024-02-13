@@ -4,6 +4,4 @@
   - frequently used as filtering MTA, infront of other MTA
 
 - home https://haraka.github.io/getting_started
-
-- source https://github.com/haraka/Haraka
-  - node.js
+- source (node.js) https://github.com/haraka/Haraka

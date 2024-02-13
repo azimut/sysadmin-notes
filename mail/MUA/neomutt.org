@@ -8,6 +8,8 @@
   - https://github.com/LukeSmithxyz/mutt-wizard
     https://muttwizard.com/
 
+
+- 20 article https://akpoff.com/archive/2020/fixing_a_perplexing_email_problem_in_mutt.html
 - 15 article https://hobo.house/2015/09/09/take-control-of-your-email-with-mutt-offlineimap-notmuch/
 - 20 vim https://jonathanh.co.uk/blog/mutt-setup/
 

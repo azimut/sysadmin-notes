@@ -1,5 +1,4 @@
-- source https://github.com/nicm/fdm
+- source (C) https://github.com/nicm/fdm
 - https://en.wikipedia.org/wiki/Fdm_(software)
-  - C
   - Nicholas Marriott
   - 2006-

@@ -1,7 +1,27 @@
-home https://www.exim.org/
-wiki https://en.wikipedia.org/wiki/Exim
-doc https://www.exim.org/exim-html-current/doc/html/spec_html/index.html
+- home https://www.exim.org/
+- doc https://www.exim.org/exim-html-current/doc/html/spec_html/index.html
+- source (C) https://github.com/Exim/exim
+- wiki https://en.wikipedia.org/wiki/Exim
+  - "Exim 4" default on Debian
+  - widely used with "GNU Mailman" and "Cpanel"
+- patch https://duncanthrax.net/exiscan-acl/
+- wiki https://wiki.archlinux.org/title/Exim
+- wiki https://wiki.gentoo.org/wiki/Exim
+- wiki https://github.com/Exim/exim/wiki/
 
+- 05 config file
+  - description http://marc.merlins.org/linux/exim/
+  - file http://marc.merlins.org/linux/exim/files/exim4-conf/exim4.conf
+
+- exim
+  https://docs.directadmin.com/other-hosting-services/exim/maintaining-email-queue.html
+  https://docs.directadmin.com/other-hosting-services/exim/configuring-exim.html
+  https://docs.directadmin.com/other-hosting-services/exim/smarthost.html
+  https://docs.directadmin.com/other-hosting-services/exim/troubleshooting.html
+- exim http://bradthemad.org/tech/notes/exim_cheatsheet.php
+- exim https://wiki.debian.org/Exim
+- exim https://www.ispmanager.com/docs/ispmanager/exim-configuration-file
+- exim https://support.mailchannels.com/hc/en-us/articles/200262620-Setting-up-for-Exim
 
 - 21 security https://adepts.of0x.cc/exim-cve-2020-28018/
 - 21 security https://www.qualys.com/2021/05/04/21nails/21nails.txt

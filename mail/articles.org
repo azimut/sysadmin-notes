@@ -5,42 +5,43 @@
 - 18 spamassasin https://lwn.net/Articles/769917/
 
 
-
 - 02 https://paulgraham.com/spam.html
 - 10 http://goran-juric.from.hr/books/debian-mail/chunked/
-- 12 https://web.archive.org/web/20121119024217/http://iafonov.github.com/blog/hardcore-email-infrastructure-setup.html
-- 12 https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
-- 13 https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
-- 14 https://arstechnica.com/information-technology/2014/02/how-to-run-your-own-e-mail-server-with-your-own-domain-part-1/
-- 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-2-arming-your-server-with-postfix-dovecot/
-- 14 https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-3-fortifying-your-box-against-spammers/
-- 14 https://arstechnica.com/information-technology/2014/04/taking-e-mail-back-part-4-the-finale-with-webmail-everything-after/
-- 15 https://www.theregister.com/2015/09/12/feature_last_post_build_mail_server/
-     https://www.theregister.com/2015/09/19/feature_last_post_build_mailserver_part_2/
-     https://www.theregister.com/2015/09/26/feature_last_post_build_mailserver_part_3/
-- 15 https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
-- 17 https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
+- 12 postfix https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
+- 13 exim+postfix https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.htmlj
+- 14 postfix
+  https://arstechnica.com/information-technology/2014/02/how-to-run-your-own-e-mail-server-with-your-own-domain-part-1/
+  https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-2-arming-your-server-with-postfix-dovecot/
+  https://arstechnica.com/information-technology/2014/03/taking-e-mail-back-part-3-fortifying-your-box-against-spammers/
+  https://arstechnica.com/information-technology/2014/04/taking-e-mail-back-part-4-the-finale-with-webmail-everything-after/
+- 15 postfix
+  https://www.theregister.com/2015/09/12/feature_last_post_build_mail_server/
+  https://www.theregister.com/2015/09/19/feature_last_post_build_mailserver_part_2/
+  https://www.theregister.com/2015/09/26/feature_last_post_build_mailserver_part_3/
+- 15 opinion https://www.spamhaus.org/news/article/719/a-survival-guide-for-the-small-mail-server
+- 17 postfix https://www.c0ffee.net/blog/mail-server-guide https://news.ycombinator.com/item?id=16238937 https://news.ycombinator.com/item?id=21576936
 - 18 opinion https://arstechnica.com/gadgets/2018/12/review-helm-personal-server-gets-email-self-hosting-almost-exactly-right/
-- 19 https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
-- 19 https://poolp.org/posts/2019-12-15/decentralised-smtp-is-for-the-greater-good/
+- 19 opinion https://poolp.org/posts/2019-08-30/you-should-not-run-your-mail-server-because-mail-is-hard/
+- 19 opinion https://poolp.org/posts/2019-12-15/decentralised-smtp-is-for-the-greater-good/
 - 20 opinion https://www.paritybit.ca/blog/a-month-and-a-half-of-self-hosted-email
 - 20 opinion https://jlelse.blog/thoughts/2020/07/no-email-selfhosting
-- 20 https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
 - 20 https://www.garron.blog/posts/host-your-email-server.html
-- 20 https://akpoff.com/archive/2020/fixing_a_perplexing_email_problem_in_mutt.html
 - 21 starttls https://lwn.net/Articles/866481/
 - 21 opinion https://utcc.utoronto.ca/~cks/space/blog/sysadmin/EmailServersNoLongerPractical
-- 21 https://schumacher.sh/2021/05/10/running-a-private-mail-server-for-six-years-easy-peasy.html
-- 21 https://computer.rip/2021-12-26-diy-mail.html
+- 21 opinion https://schumacher.sh/2021/05/10/running-a-private-mail-server-for-six-years-easy-peasy.html
+- 21 opinion https://computer.rip/2021-12-26-diy-mail.html
 - 21 https://zach.bloomqu.ist/blog/2021/07/reliable-self-hosted-email.html
 - 22 security https://www.brightball.com/articles/automatically-reversing-account-takeovers
 - 22 https://cfenollosa.com/blog/after-self-hosting-my-email-for-twenty-three-years-i-have-thrown-in-the-towel-the-oligopoly-has-won.html
+- 22 https://explained-from-first-principles.com/email/
 - 23 https://research.exoticsilicon.com/articles/mail_filters
 - 23 opinion https://blog.bityard.net/articles/2023/January/various-ways-of-sending-mail-via-smtp
 - 23 https://www.linode.com/docs/guides/running-a-mail-server/
 - article k8s setup https://github.com/erebe/personal-server/blob/master/README.md
-- 22 https://explained-from-first-principles.com/email/
 
+- dovecot
+  https://www.ispmanager.com/docs/ispmanager/dovecot-configuration-files
+  https://www.ispmanager.com/docs/ispmanager/mail-servers-technical-details
 
 * 02 | We can't send mail farther than 500 miles from here
 

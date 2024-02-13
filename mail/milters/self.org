@@ -1,0 +1,4 @@
+- https://en.wikipedia.org/wiki/Milter
+  - supported by Postfix and Sendmail
+
+- home https://web.archive.org/web/20150510033400/https://www.milter.org/

@@ -1,11 +1,119 @@
 - What it does?
+  - data-driven programming language (like sed/awk)
   - /sorts/ email into mailboxes
   - call an external /filter/ program
+  - reads mail messages from STDIN
 
-- wiki https://en.wikipedia.org/wiki/Procmail
-  - 1990-2014...2020-2022?
-  - data-driven programming language (like sed/awk)
-  - TODO
+- ~/.procmailr or /etc/procmailrc, has sections
+  1. Assignments: PATH, MAILDIR, DEFAULT, LOGFILE, SHELL
+  2. Recipes: (>=1) each =recipe= consists of
+     * Mode
+       - start with (:0)
+       - followed by zero or more flags
+         - (f) consider the pipe as a filter (can alter the message, and keep going)
+         - (w) wait for the filter/program to finish AND check exit code
+         - (:) to use a lockfile (useful for mailbox writes)
+     * Conditions
+       - optional, if none, always run Action
+       - usually regex
+       - always start with "* "
+     * Action
+       - exactly one
+       - to deliver to mailbox or discard
+       - runs if ALL conditions match
+       - One of
+         1) mailbox-name
+         2) | /an/external/program
 
-- source https://github.com/BuGlessRB/procmail
-  - C
+- flags
+  (-t) disable email bounce on failed delivery, return to mailqueue
+
+- man procmail https://linux.die.net/man/1/procmail
+- man procmailrc https://linux.die.net/man/5/procmailrc
+- wiki https://wiki.gentoo.org/wiki/Procmail
+- source (C) https://github.com/BuGlessRB/procmail
+
+- ?? article https://wiki.ubuntu.com/Bugs/HowToFilter
+- ?? article https://www.fi.muni.cz/tech/unix/procmail.html.en
+- 97 article https://userpages.umbc.edu/~ian/procmail.html
+- 02 article https://mirror.apps.cam.ac.uk/pub/doc/redhat/redhat7.3/rhl-rg-en-7.3/s1-email-procmail.html
+- 05 article https://benya.com/procmail/
+- 06 article https://web.archive.org/web/20060716101306/http://lipas.uwasa.fi/~ts/info/proctips.html
+- 09 article https://www.networkworld.com/article/930954/easy-email-filtering-with-procmail.html
+- 14 article http://www.mcc.unam.mx/crf-old/howto/procmail-howto.html
+- 16 article https://pr0.uk/linux/bash/script/spam/mailserver/procmail/2016/11/27/filter-a-list-of-addresses-with-procmail.html
+
+* 21 Video
+
+- They use ~procmail~ to call different scripts depending on the /subject/ of the email
+
+* arch wiki https://wiki.archlinux.org/title/Procmail
+
+- TODO: See also Exim, ClamAV
+
+- Example: filter mail to a different mailbox
+  #+begin_src
+    :0:
+    * ^From.*coworker@domain.com
+    * ^Subject.*FW:
+    $HOME/mail/jokes
+  #+end_src
+
+** Example: postfix integration
+
+#+NAME: /etc/postfix/main.cf
+#+begin_src
+  mailbox_command = /usr/bin/procmail -a "$EXTENSION"
+#+end_src
+
+** Example: sending to Dovecot with ~deliver~ binary
+https://web.archive.org/web/20100724063844/http://wiki2.dovecot.org/procmail
+
+#+begin_src
+  DELIVER="/usr/lib/dovecot/deliver -d $LOGNAME"
+  DEFAULT="$HOME/Maildir/"
+  MAILDIR="$HOME/Maildir/"
+  :0 w
+  * ^X-Spam-Status: Yes
+  | $DELIVER -m Spam
+  :0 w
+  | $DELIVER
+#+end_src
+
+** Example: spamassassin
+  #+begin_src
+    # Adds "X-Spam" headers to every single email
+    :0fw
+    | /usr/bin/vendor_perl/spamc
+
+    # delete >5 * mesages
+    :0
+    * ^X-Spam-Level: \*\*\*\*\*
+    /dev/null
+
+    # possible false positive goes to "spam" folder
+    :0:
+    * ^X-Spam-Status: Yes
+    $HOME/mail/Spam
+  #+end_src
+
+* wikipedia https://en.wikipedia.org/wiki/Procmail
+
+- 1990-2014...2020-2022?
+
+- drawbacks
+    - TODOOOOOOOOOo
+
+- called by
+    - servers (MTA): more common, to deliver messages
+    - clients (MRA): (eg: fetchmail) can call it too
+    - or by ~formail~ to apply it to a email already on the inbox
+
+- Example: .procmailrc
+  #+begin_src
+   MAILDIR=$HOME/mail
+   DEFAULT=$MAILDIR/inbox
+   :0:
+   * ^List-id: .*<foo-announce@lists.example.com>
+   foo-announce
+  #+end_src

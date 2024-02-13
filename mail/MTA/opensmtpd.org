@@ -2,7 +2,7 @@
 | wiki       | https://en.wikipedia.org/wiki/OpenSMTPD                  |
 | home       | https://www.opensmtpd.org/                               |
 | arch       | https://wiki.archlinux.org/title/OpenSMTPD               |
-| source     | https://github.com/OpenSMTPD/OpenSMTPD                   |
+| source(C)  | https://github.com/OpenSMTPD/OpenSMTPD                   |
 | awk filter | https://github.com/jirutka/opensmtpd-filter-rewrite-from |
 |------------+----------------------------------------------------------|
 
