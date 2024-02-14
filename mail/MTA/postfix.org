@@ -17,11 +17,11 @@
 - usr/libexec/postfix
 
 - 11 video | Postfix and Postscreen: Stopping Spam Safely | Rob McGee https://www.youtube.com/watch?v=aq1LUZwWPXg
-- 12 video | Postfix: past, present and future - Wietse Venema https://www.youtube.com/watch?v=ll7zF5MnHPs
-- 14 video | Postfix Open Source Mail Server Lessons Learned And Recent Developments https://www.youtube.com/watch?v=T046ku3z8xM
-- 14 video | DNS Based Auth of Named Entities DANE | Tony Cargile https://www.youtube.com/watch?v=ky8soThQ_GM
-- 14 video | Postfix recent adoption of new technologies (Wietse Venema, Mailserver-Konferenz) https://www.youtube.com/watch?v=eNAqg1pI7f0
-- 18 video | A case study on building a mail archive with postfix by Dr. Stephan Rein https://www.youtube.com/watch?v=8kxIlZ8ckYY
+- 12 video | Postfix: past, present and future            | Wietse Venema https://www.youtube.com/watch?v=ll7zF5MnHPs
+- 14 video | Postfix OSS Mail Server: Lessons Learned     | Wietse Venema https://www.youtube.com/watch?v=T046ku3z8xM
+- 14 video | Postfix recent adoption of new technologies  | Wietse Venema https://www.youtube.com/watch?v=eNAqg1pI7f0
+- 14 video | DNS Based Auth of Named Entities DANE        | Tony Cargile https://www.youtube.com/watch?v=ky8soThQ_GM
+- 18 video | A case study on building a mail archive      | Dr. Stephan Rein https://www.youtube.com/watch?v=8kxIlZ8ckYY
 
 * General
 ** configuration files
@@ -187,12 +187,24 @@ root:  marc
 |-----------------+---------------------------------------------------------------------|
 
 * 05 | The Book of Postfix
+
+https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
+
 ** 2 Preparing your host and Environment
 
 - System Checklist
   1) Set your ~hostname~ correctly
   2) verify your host's connectivity
   3) maintain a reliable system ~time~
+     - full human date is present in
+       1) part of the Received headeer
+       2) Date header
+     - solutions
+       1) ntp
+          - port 123 incoming/outgoing?
+       2) GPRS (worldwide) or DCF-77 (in europe) time device
+       3) hardware tick counter
+          https://cr.yp.to/clockspeed.html
   4) make sure that the ~syslog~ service can record postfix diagnostics
   5) configure name resolution for the client
   6) configure ~DNS~ records for the mail server

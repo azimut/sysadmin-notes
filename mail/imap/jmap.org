@@ -1,2 +1,24 @@
-- 19 video | IMAP, JMAP and the future of open email standards | Bron Gondwana
-  https://www.youtube.com/watch?v=D9_w4IcG-88
+- home
+  https://jmap.io/
+  https://news.ycombinator.com/item?id=36127703 (23)
+
+- 21 video | Intro to JMAP https://www.youtube.com/watch?v=VnRvDyyhEyQ
+* 14 video | JMAP - a better way to email
+
+https://www.youtube.com/watch?v=8qCSK-aGSBA
+
+- faster than IMAP
+- standard for push updates, unlike IMAP
+- API
+
+* 19 video | IMAP, JMAP and the future of open email standards | Bron Gondwana
+https://www.youtube.com/watch?v=D9_w4IcG-88
+
+- Client server mail protocol
+- POP3 is no used much today
+- to replace
+  - imap+extension+caldav/cardav+ldap
+  - microsoft: EAS, ActiveSync, OWA
+  - gmail: propietary api
+- evolved from their Fastmail private API
+- in parallel improving IMAPrev2

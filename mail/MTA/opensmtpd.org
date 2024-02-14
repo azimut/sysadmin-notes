@@ -23,7 +23,7 @@
   - scheduler
   - pony express
 
-
+- 14 https://web.archive.org/web/20220701225113/https://blog.corrupted.io/2014/06/09/OpenSMTPD-virtual-users-with-sqlite.html
 - 15 https://raysnotebook.info/computing/email-opensmtpd.html
 - 15 https://frozen-geek.net/openbsd-email-server-1/
 - 16 https://frozen-geek.net/openbsd-email-server-2/
@@ -32,8 +32,10 @@
 - 18 https://battlepenguin.com/tech/openbsd-spampd-and-the-startup-bug/
 - 18 https://poolp.org/posts/2018-11-03/opensmtpd-released-and-upcoming-filters-preview/
 - 18 https://poolp.org/posts/2018-05-21/switching-to-opensmtpd-new-config/
+- 18 https://github.com/lattera/articles/blob/master/opsec/2018-05-08_torified_mta/article.md
 - 19 https://poolp.org/posts/2019-07-27/july-2019-report-tons-of-smtpd-work-mostly/
 - 19 https://poolp.org/posts/2019-09-14/setting-up-a-mail-server-with-opensmtpd-dovecot-and-rspamd/
+- 19 https://nicolascarpi.github.io/openbsd/2019/04/03/openbsd-mail-server.html
 - 20 https://poolp.org/posts/2020-01-30/opensmtpd-advisory-dissected/
 - 20 https://github.com/poolpOrg/OpenSMTPD-book
   - certificate -> cert
@@ -47,10 +49,12 @@
 - 20 https://web.archive.org/web/20200408175322/https://prefet.ch/blog/2020/email-server/
 - 20 https://www.theregister.com/2020/01/30/openbsd_mail_bug/
 - 20 https://very.busted.systems/Simple-OpenSMTPD-filter-example-in-awk
+- 20 https://karchnu.fr/posts/2020-09-17-certificate-smtp-imap-antispam.html
 - 21 http://code.jeremyevans.net/2021-07-29-running-my-own-email-server.html
 - 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
 - 21 https://kfv.medium.com/my-opensmtpd-setup-on-freebsd-ed57c052fbc1
 - 22 https://docs.vultr.com/an-openbsd-e-mail-server-using-opensmtpd-dovecot-rspamd-and-rainloop
+- 22 https://x61.sh/log/2022/10/20221027T115439-rspamd-dashboard.html
 - 23 https://palant.info/2023/03/08/converting-incoming-emails-on-the-fly-with-opensmtpd-filters/
 - 23 https://www.bsdhowto.ch/mxpop3.html
 - 23 https://wiki.ircnow.org/index.php?n=Opensmtpd.Configure?from=Openbsd.Opensmtpd

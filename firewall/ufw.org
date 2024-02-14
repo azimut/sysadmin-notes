@@ -1,0 +1,13 @@
+- wiki https://en.wikipedia.org/wiki/Uncomplicated_Firewall
+  - Debian & Ubuntu's default
+
+- source (Python) https://git.launchpad.net/ufw
+- wiki ubuntu https://wiki.ubuntu.com/UncomplicatedFirewall
+- man https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html
+
+- gui
+  - wiki https://ast.wikipedia.org/wiki/Gufw
+  - wiki ubuntu https://help.ubuntu.com/community/Gufw
+
+- tool: Script to update UFW with Cloudflare IPs
+  https://github.com/Paul-Reed/cloudflare-ufw/

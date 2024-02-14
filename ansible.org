@@ -1,1 +1,2 @@
+- https://github.com/sovereign/sovereign
 - https://github.com/lobsters/lobsters-ansible

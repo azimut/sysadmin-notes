@@ -10,4 +10,3 @@
   implemented in:
   - dns-ip6-arpa-scan.nse - sudo nmap --script-trace --script dns-ip6-arpa-scan --script-args=prefix=2001:0DB8::/48 --dns-server 8.8.4.4
   - dnsrevenum6 8.8.4.4 2802:8000::/24 - https://tools.kali.org/information-gathering/thc-ipv6
-

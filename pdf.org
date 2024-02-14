@@ -1,3 +1,9 @@
+* pdf to image
+
+https://stackoverflow.com/questions/6605006/convert-pdf-to-image-with-high-resolution
+
+$ convert -verbose -density 110 -trim sqmail_Big_Picture2.pdf -quality 100 -flatten -sharpen 0x1.0 sqmail_Big_Picture2.jpg
+
 * xvfb
 
 https://bugzilla.mozilla.org/show_bug.cgi?id=1407238

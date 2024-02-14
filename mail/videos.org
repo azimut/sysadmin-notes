@@ -6,13 +6,23 @@
 - HackTheBox - Tentacle
   https://www.youtube.com/watch?v=kKhuUXPmJ_o
 
+
 - 22 | Email Server / Correo Electrónico | LastDragon
   https://www.youtube.com/playlist?list=PLxJguiVqgxl9P4jiymf00asbQoTMD-CN_
+  1) basics + postfix
+     - debian 11
+     - postfix+dovecot
+     - dns: MX, A, AAAA
+     - edit /etc/hostname
+     - edit /etc/hosts for ipv4 and ipv6
+     - /etc name comes from ~edit to config~
+
 
 - video Debian Email Server Part 3 (Configuration, Security, and Demonstration)
   https://www.youtube.com/watch?v=k3NbYLj3FPQ&pp=ygUJZXhpbSBtYWls
 
 - 09 | Amavisd-new: Tuning Tipps and Tricks (MK4, Mark Martinec)  https://www.youtube.com/watch?v=6_wJ83dLbzE
+- 10 | Scott Lystig Fritchie - "Webmail for millions, powered by Erlang" https://vimeo.com/13022413
 - 12 | NOTACON 4: Spam/Virus/Phishing Gateways https://www.youtube.com/watch?v=RDSY2tDE_wU
 - 12 | Reigning over high-volume Debian e-mails https://www.youtube.com/watch?v=CYDzcF3i4Ro
 - 14 | Email Delivery for Rails Folks - Sally Lehman https://www.youtube.com/watch?v=XtGUd174n5A
@@ -20,8 +30,9 @@
 - 16 | SLUG November 2016 - Email Encryption and Signing with PGP https://www.youtube.com/watch?v=Ijpr8yMWK8Q
 - 16 | Amavis and SpamAssassin (Mark Martinec, Mailserver-Konferenz) https://www.youtube.com/watch?v=5F6Zayl0PJY
 - 16 | Protect Your Sender Reputation – Tips and Trends to Avoid Deliverability Pitfalls https://www.youtube.com/watch?v=EYbG3Gths6U
+- 17 | Encrypted Email: how hard could it be? ― Bart Butler from ProtonMail ― MiXiT 2017 https://vimeo.com/216747532 https://www.youtube.com/watch?v=P7KHupkk7mM
 - 18 | Introduction to SMTP Relay for Servers https://www.youtube.com/watch?v=iVJDZRLBWz8
-- 18 | BalCCon2k18 - MacLemon - Email how does it even work https://www.youtube.com/watch?v=ptaiwDJYqX4&pp=ygUJZXhpbSBtYWls
+- 18 | BalCCon2k18 - MacLemon - Email how does it even work https://www.youtube.com/watch?v=ptaiwDJYqX4
 - 19 | Rspamd integration into FreeBSD.org mail infrastructure https://www.youtube.com/watch?v=HTVh6n9SvBU
 - 19 | Hands-on Computer Security & Incident Response -- Email Header Analysis Part 1
   https://www.youtube.com/watch?v=ZmVOGVbnYvo
