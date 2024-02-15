@@ -1,2 +1,4 @@
 - https://github.com/WireGuard
 - https://en.wikipedia.org/wiki/WireGuard
+- VPN that uses wireguard under the hood
+  https://github.com/tonarino/innernet

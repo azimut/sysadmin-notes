@@ -1,0 +1,7 @@
+- wiki https://en.wikipedia.org/wiki/Iptables
+- home https://www.netfilter.org/projects/iptables/index.html
+- wiki debian https://wiki.debian.org/iptables
+- wiki arch https://wiki.archlinux.org/title/iptables
+
+- 20 article https://github.com/sammwyy/server-security-guide
+- 21 article https://github.com/sammwyy/ddos-mitigation

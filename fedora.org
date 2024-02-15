@@ -1,3 +1,13 @@
+* disable default Fedora =firewalld= whitelisted services/ports
+
+$ sudo firewall-cmd --permanent --remove-service=mdns          # U/5353 - used by avahi
+$ sudo firewall-cmd --permanent --remove-service=samba-client  # U/137 U/138
+$ sudo firewall-cmd --permanent --remove-service=dhcpv6-client # U/546
+$ sudo firewall-cmd --permanent --remove-service=ssh           # T/22
+$ sudo firewall-cmd --permanent --remove-port=1025-65535/udp
+$ sudo firewall-cmd --permanent --remove-port=1025-65535/tcp
+$ sudo firewall-cmd --reload
+
 * Disable GDM login
   https://help.gnome.org/admin/system-admin-guide/stable/login-userlist-disable.html.en
 

@@ -7,6 +7,7 @@
 
 - 02 https://paulgraham.com/spam.html
 - 10 http://goran-juric.from.hr/books/debian-mail/chunked/
+- 12 https://sealedabstract.com/code/nsa-proof-your-e-mail-in-2-hours/
 - 12 postfix https://web.archive.org/web/20220314024608/https://old.blog.phusion.nl/2012/09/10/mail-in-2012-from-an-admins-perspective/
 - 13 exim+postfix https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.htmlj
 - 14 postfix

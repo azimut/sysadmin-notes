@@ -1,2 +1,0 @@
-https://en.wikipedia.org/wiki/Nftables
-go source https://github.com/google/nftables

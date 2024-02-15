@@ -1,1 +1,127 @@
-- https://opensource.com/article/18/9/linux-iptables-firewalld
+- wiki https://en.wikipedia.org/wiki/Firewalld
+  - default on RedHat & SUSE
+  - can admin different firewall /zones profiles/
+  - for example, one zone for wifi another for ethernet
+  - external programs, like NetworkManager can switch between them
+  - ~D-Bus~ interface, uses polkit for authentication
+  - Author: Eric Garver, Thomas Woerner
+
+- Description
+  - ipv4 and ipv6 simultanous
+  - can load ~kernel modules~ along a /service/ in the form of a /helper/ to help keep track of dependencies
+  - 1(one) zone per connection/interface
+  - default config =/var/lib/firewalld=
+  - system config =/etc/firewalld=
+  - only tracking incoming packets, outgoing can be tracked with the *direct interface*
+
+- home https://firewalld.org/
+- source (Python) https://github.com/firewalld/firewalld
+- documentation https://firewalld.org/documentation/
+- wiki redhat
+  - 7 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls
+  - 9 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/using-and-configuring-firewalld_firewall-packet-filters
+    - Note that firewalld with nftables backend does NOT support
+      passing custom nftables rules to firewalld, using the ~--direct~
+      option.
+
+- wiki fedora
+  https://fedoraproject.org/wiki/Firewalld
+  https://docs.fedoraproject.org/en-US/quick-docs/firewalld/
+- wiki arch https://wiki.archlinux.org/title/Firewalld
+- wiki gentoo https://wiki.gentoo.org/wiki/Firewalld
+- wiki rockylinux
+  - https://docs.rockylinux.org/guides/security/firewalld-beginners/
+  - https://docs.rockylinux.org/guides/security/firewalld/
+- wiki rackspace https://docs.rackspace.com/docs/use-firewalld-on-redhat-based-distributions
+- https://book.blueteamguides.com/hardening/firewalld
+
+- gui firewall-config
+- gui firewall-applet (QT)
+
+* flags
+
+|-------------------------------------------+----------------------------|
+| --state                                   | running                    |
+| --list-all                                | ZoneName ...               |
+| --get-active-zones                        | ZoneName interfaces: wlan0 |
+| --list-services                           | mdns sambda-client ssh     |
+| --list-rich-rules                         |                            |
+| --direct --get-all-rules                  |                            |
+|-------------------------------------------+----------------------------|
+| --reload                                  | -                          |
+|-------------------------------------------+----------------------------|
+| --get-ipsets                              |                            |
+| --new-ipset=NAME --type=hash:net          |                            |
+| --info-ipset=NAME                         |                            |
+| --ipset=NAME --add-entry=IP               |                            |
+| --ipset=NAME --add-entries-from-file=FILE |                            |
+| --ipset=NAME --get-entries                |                            |
+|-------------------------------------------+----------------------------|
+| --permanent                               |                            |
+| --add-masquerade                          |                            |
+| --add-port=                               | 21-22/tcp                  |
+| --add-interface=                          | eth0                       |
+| --add-rule=                               |                            |
+| --add-rich-rule=                          |                            |
+| --remove-service=                         | mdns                       |
+|-------------------------------------------+----------------------------|
+
+* snippets
+
+- https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Build/BatchFiles/Linux/ContainerBuildThirdParty.sh
+
+- ufw and firewalld rules to block VPS bots and scrapers
+  https://blog.abctaylor.com/ufw-and-firewalld-rules-to-block-vps-bots-and-scrapers/
+
+- FirewallD command line snippets for Linux
+  https://gist.github.com/frengky/7e9fd7f161fe89e4b8a7
+
+- --add-rich-rule="rule family='ipv4' source address='46.250.240.0/21' reject"
+  --add-rich-rule="rule family='ipv6' masquerade"
+  --direct --add-rule ipv4 filter OUTPUT 0 -p tcp -m tcp --dport=80 -j ACCEPT
+  --direct --add-rule ipv4 filter OUTPUT 1 -j DROP
+
+
+* articles
+
+- 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-1-nftables/
+- 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-2-firewalld/
+- 22 article | https://major.io/p/build-tailscale-exit-node-firewalld/
+- 18 https://firewalld.org/2018/07/nftables-backend
+- 18 article | https://opensource.com/article/18/9/linux-iptables-firewalld
+- 15 article | http://geertj.me/2015/07/18/systemd-firewalld-tarsnap-ultimate-backup.html
+* videos
+
+** 20 video | Firewalld Changes Coming to Your OS | Eric Garver
+
+https://www.youtube.com/watch?v=yy87quTsdVw
+
+** 15 video | firewalld - present and future      | Thomas Woerner
+
+https://www.youtube.com/watch?v=L8rwSqONmCY
+
+- new firewalld integration
+- firewall-offline-cmd, to make changes when firewalld is NOT running
+
+** 13 video | Dynamic firewall with firewalld     | Thomas Woerner
+
+https://www.youtube.com/watch?v=XhwvT05Puhs
+
+- created at RedHat
+- due problems with ~system-config-firewall~ & ~lokkit~
+  - it created a "static firewall"
+  - sometimes loading/unloading kernel modules in the restarting
+  - loss of connection due firewall due it
+- default config =/var/lib/firewalld=
+- system config =/etc/firewalld=
+- two modes of configuration
+  1) runtime
+  2) persistent
+- persistent zones/services are configured in XML
+- ipv4 and ipv6 simultanous
+- can load ~kernel modules~ along a /service/ in the form of a /helper/ to help keep track of dependencies
+- D-BUS
+  - uses policykit for authentication
+  - also gives you "signals" to notify about changes
+- 1(one) zone per connection/interface
+- only tracking incoming packets, outgoing can be tracked with the *direct interface*

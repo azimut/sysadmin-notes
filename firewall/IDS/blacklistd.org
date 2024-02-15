@@ -1,0 +1,2 @@
+- BSD only
+- https://cryptomonkeys.com/2018/05/freebsd-blacklistd/

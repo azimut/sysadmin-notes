@@ -1,0 +1,8 @@
+- disable passwords
+  =PasswordAuthentication= no
+
+- whitelist users
+  =AllowUsers=
+
+- whitelist which ips can ssh (firewall)
+- use jump/bastion host server

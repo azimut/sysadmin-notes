@@ -1,13 +1,23 @@
 - wiki https://en.wikipedia.org/wiki/Uncomplicated_Firewall
+  - Uncomplicated FireWall
   - Debian & Ubuntu's default
 
 - source (Python) https://git.launchpad.net/ufw
+  - docs author? Jamie Strandboge
+
 - wiki ubuntu https://wiki.ubuntu.com/UncomplicatedFirewall
+- wiki arch https://wiki.archlinux.org/title/Uncomplicated_Firewall
 - man https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html
 
 - gui
   - wiki https://ast.wikipedia.org/wiki/Gufw
   - wiki ubuntu https://help.ubuntu.com/community/Gufw
 
-- tool: Script to update UFW with Cloudflare IPs
-  https://github.com/Paul-Reed/cloudflare-ufw/
+- flags
+  - sudo ufw deny from 185.239.211.0/24
+
+- snippets
+  - Script to update UFW with Cloudflare IPs
+    https://github.com/Paul-Reed/cloudflare-ufw/
+  - ufw and firewalld rules to block VPS bots and scrapers
+    https://blog.abctaylor.com/ufw-and-firewalld-rules-to-block-vps-bots-and-scrapers/

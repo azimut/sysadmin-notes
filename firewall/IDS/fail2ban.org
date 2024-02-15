@@ -1,0 +1,13 @@
+- wiki https://en.wikipedia.org/wiki/Fail2ban
+  - 2004-
+  - Author: Cyril Jaquier (French only speaker?)
+  - IPS
+  - prevents brute-force attacks
+    - by monitoring log files
+    - running scripts based of those
+
+- wiki arch https://wiki.archlinux.org/title/Fail2ban
+- wiki source https://github.com/fail2ban/fail2ban/wiki
+- source (Python) https://github.com/fail2ban/fail2ban
+
+- 23 article | https://ittavern.com/getting-started-with-fail2ban-on-linux/

@@ -53,6 +53,7 @@
 - 21 http://code.jeremyevans.net/2021-07-29-running-my-own-email-server.html
 - 21 https://battlepenguin.com/tech/upgrading-opensmtpd-6.3-and-running-e-mail-in-docker/
 - 21 https://kfv.medium.com/my-opensmtpd-setup-on-freebsd-ed57c052fbc1
+- 21 https://josephchoe.com/opensmtpd-local-networkj
 - 22 https://docs.vultr.com/an-openbsd-e-mail-server-using-opensmtpd-dovecot-rspamd-and-rainloop
 - 22 https://x61.sh/log/2022/10/20221027T115439-rspamd-dashboard.html
 - 23 https://palant.info/2023/03/08/converting-incoming-emails-on-the-fly-with-opensmtpd-filters/

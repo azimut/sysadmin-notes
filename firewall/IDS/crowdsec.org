@@ -1,0 +1,4 @@
+- docs https://docs.crowdsec.net/docs/intro/
+- home https://www.crowdsec.net/
+- source (Go) https://github.com/crowdsecurity/crowdsec
+- wiki arch https://wiki.archlinux.org/title/CrowdSec

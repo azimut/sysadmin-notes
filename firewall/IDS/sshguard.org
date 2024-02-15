@@ -1,0 +1,8 @@
+- home https://www.sshguard.net/
+- source (C) https://bitbucket.org/sshguard/sshguard/
+
+- wiki arch https://wiki.archlinux.org/title/Sshguard
+- wiki gentoo https://wiki.gentoo.org/wiki/Sshguard
+
+- faq https://www.sshguard.net/faq.html
+- docs https://web.archive.org/web/20180902011955/https://www.sshguard.net/docs/setup/

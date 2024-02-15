@@ -46,8 +46,8 @@
 |                   | postfix | haraka | dovecot | rspamd | amavis | spamassassin | clamav | OpenDKIM | fail2ban | postgrey | z-push | sogo | roundcube | rainloop | radicale |
 |-------------------+---------+--------+---------+--------+--------+--------------+--------+----------+----------+----------+--------+------+-----------+----------+----------|
 | docker-mailserver | x       | -      | x       | x      | x      | x            | x      | x        | x        | x        |        |      |           |          |          |
+| mailinabox        | x       | -      | x       | -      | -      | x            | -      | x        | x        | x        | x      |      |           |          |          |
 | mailserver2       | x       | -      | x       | x      | -      | -            | x      |          |          |          |        |      | -         | x        |          |
-| mailinabox        | x       | -      | x       | -      | -      | x            | -      | x        | -        | x        |        |      |           |          |          |
 | poste             | -       | x      | x       | x      |        |              | x      |          |          |          | x      | -    | nginx     |          |          |
 | mail-toaster-6    | -       | x      | x       | x      | -      | x            | x      | -        | -        | -        | -      | -    | x         | x        | -        |
 | mailcow           | x       | -      | x       | x      | -      |              | x      |          |          |          |        | x    |           |          |          |

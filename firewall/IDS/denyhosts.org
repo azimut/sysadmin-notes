@@ -1,0 +1,19 @@
+- wiki https://en.wikipedia.org/wiki/DenyHosts
+  - for ssh
+  - log based IPS
+  - compares nr of failed login attempts,
+    against a user defined threshold
+  - adds IP to ~/etc/hosts.deny~ if check failed
+  - supports reporting of offenders to other instances (since version 2.0)
+  - demon or cronjob
+  - global stats (2006-2019) https://web.archive.org/web/20090224004435/http://stats.denyhosts.net/stats.html
+  - =does NOT work with ipv6= https://github.com/denyhosts/denyhosts/issues/13
+
+- home https://denyhost.sourceforge.net/
+  - 2005-
+  - features https://denyhost.sourceforge.net/features.php
+  - faq https://denyhost.sourceforge.net/faq.php
+
+- source (Python) https://github.com/denyhosts/denyhosts
+  - Author: Phil Schwartz
+  - aims to thwart sshd (ssh server) brute force attacks.

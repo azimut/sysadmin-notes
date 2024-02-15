@@ -1,0 +1,44 @@
+- home https://firehol.org/
+- source (bash) https://github.com/firehol/firehol
+- wiki https://en.wikipedia.org/wiki/FireHOL
+  - Author: Costa Tsaousis
+  - desiged as a iptables wrapper
+  - no gui
+  - plaintext file configuration
+  - no nftables support https://github.com/firehol/firehol/issues/48
+- wiki arch https://wiki.archlinux.org/title/FireHOL
+
+* snippets
+** blocklist-ipsets
+
+- ipsets dynamically updated with firehol's update-ipsets.sh script
+  https://github.com/firehol/blocklist-ipsets
+  https://iplists.firehol.org/
+
+#+NAME: firehol.conf
+#+begin_src sh
+  # our wan interface
+  wan="dsl0"
+
+  # our whitelist
+  ipset4 create whitelist hash:net
+  ipset4 add whitelist A.B.C.D/E # A.B.C.D/E is whitelisted
+
+  # subnets - netsets
+  for x in fullbogons dshield spamhaus_drop spamhaus_edrop
+  do
+          ipset4 create  ${x} hash:net
+          ipset4 addfile ${x} ipsets/${x}.netset
+          blacklist4 full inface "${wan}" log "BLACKLIST ${x^^}" ipset:${x} \
+                  except src ipset:whitelist
+  done
+
+  # individual IPs - ipsets
+  for x in feodo palevo sslbl zeus openbl blocklist_de
+  do
+          ipset4 create  ${x} hash:ip
+          ipset4 addfile ${x} ipsets/${x}.ipset
+          blacklist4 full inface "${wan}" log "BLACKLIST ${x^^}" ipset:${x} \
+                  except src ipset:whitelist
+  done
+    #+end_src

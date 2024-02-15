@@ -1,0 +1,17 @@
+- wiki https://en.wikipedia.org/wiki/Chrony
+  - client & server
+  - default on RedHat and SUSE
+  - NTS (Network Time Security) support
+  - Original Author: Richard Curnow
+
+- wiki arch https://wiki.archlinux.org/title/Chrony
+- source (C) https://gitlab.com/chrony/chrony
+- home https://chrony-project.org/
+- docs https://chrony-project.org/documentation.html
+- examples https://chrony-project.org/examples.html
+
+- $ chronyc
+  > activity
+  > sources
+  > sourcestats
+  > clients
