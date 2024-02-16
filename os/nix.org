@@ -1,0 +1,114 @@
+- https://terinstock.com/post/2021/01/Setting-up-a-git-server-on-NixOS/
+- article https://ersei.net/en/blog/nix-all-the-way-down
+- https://github.com/humancalico/nix-learning
+- https://nixos.wiki/wiki/Nix_to_Debian_phrasebook
+- Article: https://galowicz.de/2023/04/05/single-command-server-bootstrap/
+- Tool: Format disks with nix-config https://github.com/nix-community/disko
+- Tool: install nixos everywhere via ssh https://github.com/numtide/nixos-anywhere
+
+* Article - https://fasterthanli.me/series/building-a-rust-service-with-nix/part-9
+- https://nixos.org/download.html
+- /nix/store is immutable (aka readonly)
+- Find out what needs something
+  #+begin_src
+  $ nix-store --query \
+               --referrers /nix/store/4nl-glibc-2.35-163/
+   /nix/store/4n-glibc-2.35-163
+   /nix/store/026-zlib-1.2.13
+   /nix/store/3j1-aws-c-common-0.8.5
+   /nix/store/3mx-openssl-3.0.7
+   /nix/store/4rk-s2n-tls-1.3.28
+  $ nix-store --query \
+              --referrers /nix/store/lqz-glibc-2.35-224/
+  #+end_src
+- Find out what needs something, tree style
+  #+begin_src
+    $ nix-store --query --tree $(which cowsay)
+/nix/store/azn-cowsay-3.7.0
+└───/nix/store/bja-perl-5.36.0
+    ├───/nix/store/lqz-glibc-2.35-224
+    │   ├───/nix/store/na1-libidn2-2.3.2
+    │   │   ├───/nix/store/jdj-libunistring-1.0
+    │   │   │   └───/nix/store/jdj-libunistring-1.0 [...]
+    │   │   └───/nix/store/na1-libidn2-2.3.2 [...]
+    │   └───/nix/store/lqz-glibc-2.35-224 [...]
+    ├───/nix/store/7w1-coreutils-9.1
+    │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   ├───/nix/store/83q-attr-2.5.1
+    │   │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   │   └───/nix/store/83q-attr-2.5.1 [...]
+    │   ├───/nix/store/aqd-gmp-with-cxx-stage4-6.2.1
+    │   │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   │   ├───/nix/store/k88-gcc-12.2.0-lib
+    │   │   │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   │   │   └───/nix/store/k88-gcc-12.2.0-lib [...]
+    │   │   └───/nix/store/aqd-gmp-with-cxx-stage4-6.2.1 [...]
+    │   ├───/nix/store/jwl-acl-2.3.1
+    │   │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   │   ├───/nix/store/83q-attr-2.5.1 [...]
+    │   │   └───/nix/store/jwl-acl-2.3.1 [...]
+    │   └───/nix/store/7w1-coreutils-9.1 [...]
+    ├───/nix/store/9dz-zlib-1.2.13
+    │   └───/nix/store/lqz-glibc-2.35-224 [...]
+    ├───/nix/store/kai-libxcrypt-4.4.33
+    │   ├───/nix/store/lqz-glibc-2.35-224 [...]
+    │   └───/nix/store/kai-libxcrypt-4.4.33 [...]
+    └───/nix/store/bja-perl-5.36.0 [...]
+  #+end_src
+- Remove things left around in /nix/store by *nix-shell*
+  $ nix-collect-garbage
+** Installing Nix
+- $ sh <(curl -L https://nixos.org/nix/install) --daemon
+  $ nix --version
+** Running cowsay
+  $ nix-shell -p cowsay
+  $ which cowsay
+   /nix/store/azn0g0m6yg6m9vmdp3wq6wjbsd1znv44-cowsay-3.7.0/bin/cowsay
+  $ ldd $(which cowsay)
+   not a dynamc executable
+** Installing cowsay
+- OLD: nix-env
+  NEW: nix profile
+- ~/.config/nix/nix.conf
+  #+begin_src conf
+    experimental-features = nix-command flakes
+    max-jobs = auto
+  #+end_src
+- $ nix profile install 'nixpkgs#cowsay'
+  - It installs it on ~/.nix-profile/bin/cowsay
+  - which is a symlinks to /nix/store
+** VsCODE setup
+- https://marketplace.visualstudio.com/items?itemName=jnoortheen.nix-ide
+- $ nix profile install nixpkgs#nixpkgs-fmt nixpkgs#rnix-lsp
+- Enabling formatting on save
+  #+begin_src json
+    {
+      "[nix]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "jnoortheen.nix-ide"
+      }
+    }
+  #+end_src
+** TODO The NIX language
+- REPL
+  $ nix repl
+  > 1 + 2
+- File evaluation
+  $ echo '[ 1 2 ] ++ [ 3 4 ]' > ./sample.nix
+  $ nix eval -f ./sample.nix
+   [ 1 2 3 4 ]
+*** sets (aka dictionaries)
+#+begin_src nix
+    {
+      list = [ 1 2 ] ++ [ 3 4 ];
+      addition = 1 + 2;
+    }
+#+end_src
+$ nix eval -f ./sample.nix
+ { addition = 3; list [ 1 2 3 4 ]; }
+$ nix eval -f ./sample.nix addition
+ 3
+$ nix eval -f ./sample.nix list
+ [ 1 2 3 4 ]
+- Can put funtions on it but don't eval
+  https://github.com/NixOS/nix/issues/2678

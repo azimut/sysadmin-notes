@@ -1,7 +1,9 @@
 - https://ikrima.dev/dev-notes/homelab/zfs-for-dummies/
   https://news.ycombinator.com/item?id=37387392
 - https://justine.lol/pledge/
+
 * Channels
+
 - https://www.youtube.com/c/FreeBSDProject/videos
 - https://www.youtube.com/c/EuroBSDcon/videos
 - https://www.youtube.com/c/OpenZFStalks/videos
@@ -10,6 +12,7 @@
 - https://www.youtube.com/c/TheOpenBSDguy/videos
 - https://www.youtube.com/c/teetechtm/videos
 - RootBSD https://www.youtube.com/channel/UCbpe1SYzZKG4RswEnxxSRZQ/videos
+
 * Video: 2019 | ZFS for Newbies | Langille
 https://www.youtube.com/watch?v=3oG-1U5AI9A
 - "you are gonna run out of hardware before you run out of addressable space"
