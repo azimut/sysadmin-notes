@@ -1,0 +1,3 @@
+- use jump/bastion host server
+- tool: honeypot https://github.com/cowrie/cowrie
+- tool: honeypot (aggresive) https://github.com/skeeto/endlessh

@@ -1,3 +1,5 @@
+- =/etc/ufw/before.rules=
+
 - wiki https://en.wikipedia.org/wiki/Uncomplicated_Firewall
   - Uncomplicated FireWall
   - Debian & Ubuntu's default
