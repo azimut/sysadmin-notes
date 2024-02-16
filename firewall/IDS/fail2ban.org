@@ -6,8 +6,17 @@
     - by monitoring log files
     - running scripts based of those
 
+
 - wiki arch https://wiki.archlinux.org/title/Fail2ban
 - wiki source https://github.com/fail2ban/fail2ban/wiki
 - source (Python) https://github.com/fail2ban/fail2ban
 
+
+- snippet
+  - Bash script to convert fail2ban IP addresses to an ipset blacklist
+    https://github.com/ritsu/ipset-fail2ban
+
 - 23 article | https://ittavern.com/getting-started-with-fail2ban-on-linux/
+- 20 article | https://ww.telent.net/2020/12/22/fail2ban_or_ban_2_fail
+- 20 article | https://j3s.sh/thought/fail2ban-sux.html https://news.ycombinator.com/item?id=38834627
+- 17 article | https://www.redpill-linpro.com/techblog/2017/12/07/fail2ban.html

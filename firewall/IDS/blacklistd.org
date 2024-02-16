@@ -1,2 +1,14 @@
 - BSD only
+
+- man https://man.netbsd.org/blocklistd.8
+
+- patching helper
+  since blacklistd does NOT read logs, needs patching on the tools that will use this
+  https://man.netbsd.org/libblocklist.3
+
 - https://cryptomonkeys.com/2018/05/freebsd-blacklistd/
+
+- ? https://github.com/zoulasc/blocklist
+
+- 15 video | Blacklistd | Christos Zoulas | https://www.youtube.com/watch?v=fuuf8G28mjs
+- 15 video | Blacklistd | Christos Zoulas | https://www.youtube.com/watch?v=0UKCAsezF3Q

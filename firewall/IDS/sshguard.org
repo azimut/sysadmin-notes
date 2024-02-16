@@ -1,5 +1,12 @@
+- nftables support
+- harder to add log patters than fail2ban?
+
 - home https://www.sshguard.net/
 - source (C) https://bitbucket.org/sshguard/sshguard/
+  - Authors
+    - Michele Mazzucchi
+    - T.J. Jones
+    - Kevin Zheng
 
 - wiki arch https://wiki.archlinux.org/title/Sshguard
 - wiki gentoo https://wiki.gentoo.org/wiki/Sshguard

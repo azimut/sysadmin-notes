@@ -2,6 +2,12 @@
 - home https://www.netfilter.org/projects/iptables/index.html
 - wiki debian https://wiki.debian.org/iptables
 - wiki arch https://wiki.archlinux.org/title/iptables
+- wiki gentoo https://wiki.gentoo.org/wiki/Iptables
 
 - 20 article https://github.com/sammwyy/server-security-guide
 - 21 article https://github.com/sammwyy/ddos-mitigation
+
+- 17 video | IPTables - Blacklisting IP's and Ports - Stop the Badguys https://www.youtube.com/watch?v=qruazgOjMMY
+- 09 video |
+  https://www.youtube.com/watch?v=b-a-YpPu34w
+  https://www.youtube.com/watch?v=Ygej04AcKgQ

@@ -1,8 +1,27 @@
-- disable passwords
-  =PasswordAuthentication= no
+- https://www.sshaudit.com/hardening_guides.html
 
-- whitelist users
-  =AllowUsers=
+- ssh_config
 
-- whitelist which ips can ssh (firewall)
+  ServerAliveInterval 60
+  ControlMaster auto
+  ControlPath ~/.ssh/conn/%r@%h:%p
+  ControlPersist 1h
+
+- sshd_config
+
+  - the first obtained value will be used
+
+  - disable passwords, and enable pubkey
+    =AuthenticationMethods= publickey
+    =ChallengeResponseAuthentication= no
+    =PasswordAuthentication= no
+
+  - whitelist users/ip(optional), might be add firewall to it
+    =AllowUsers= user@IP
+
+  - disable root login
+    =PermitRootLogin= no
+
 - use jump/bastion host server
+
+- ? https://www.daemonology.net/blog/2012-08-30-protecting-sshd-using-spiped.html

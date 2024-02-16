@@ -7,3 +7,13 @@
 - https://github.com/denji/nginx-tuning
 - https://github.com/h5bp/server-configs-nginx
 - https://github.com/h5bp/server-configs-apache
+- https://gist.github.com/radupotop/2aef0bdc0ccbd3a706044e3598b12cf5
+  #+begin_src conf
+    # Nginx default Dummy server
+    server {
+        listen       443 ssl default_server;
+        listen       [::]:443 ssl default_server;
+        ssl_reject_handshake on;
+        return 444;
+    }
+  #+end_src

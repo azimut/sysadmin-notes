@@ -5,6 +5,7 @@
 - source (Python) https://git.launchpad.net/ufw
   - docs author? Jamie Strandboge
 
+- wiki gentoo https://wiki.gentoo.org/wiki/Ufw
 - wiki ubuntu https://wiki.ubuntu.com/UncomplicatedFirewall
 - wiki arch https://wiki.archlinux.org/title/Uncomplicated_Firewall
 - man https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html
@@ -15,9 +16,12 @@
 
 - flags
   - sudo ufw deny from 185.239.211.0/24
+  - sudo ufw allow from IP to any port 22
 
 - snippets
   - Script to update UFW with Cloudflare IPs
     https://github.com/Paul-Reed/cloudflare-ufw/
   - ufw and firewalld rules to block VPS bots and scrapers
     https://blog.abctaylor.com/ufw-and-firewalld-rules-to-block-vps-bots-and-scrapers/
+
+- 21 video | Linux Security - UFW Complete Guide (Uncomplicated Firewall) https://www.youtube.com/watch?v=-CzvPjZ9hp8

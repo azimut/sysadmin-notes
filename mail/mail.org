@@ -41,14 +41,14 @@
 
 - spam filters https://packages.gentoo.org/categories/mail-filter
   Rspamd https://rspamd.com/doc/
-  SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin https://gist.github.com/ishmaelen/6c7a209dd00f9d2b968fd2bb0e8d3729
+  SpamAssassin https://en.wikipedia.org/wiki/Apache_SpamAssassin https://gist.github.com/ishmaelen/6c7a209dd00f9d2b968fd2bb0e8d3729 https://wiki.gentoo.org/wiki/SpamAssassin
   DSpam
-  clamsmtp http://thewalter.net/stef/software/clamsmtp/
+  clamsmtp http://thewalter.net/stef/software/clamsmtp/ https://wiki.alpinelinux.org/wiki/Setting_up_clamsmtp
   office https://github.com/decalage2/oletools https://github.com/HeinleinSupport/olefy
   DCC - Distributed Checksum Clearinghouses - https://www.dcc-servers.net/dcc/
   spampd https://github.com/mpaperno/spampd
-  clamsmtp https://wiki.alpinelinux.org/wiki/Setting_up_clamsmtp
   video https://www.youtube.com/watch?v=PKY6rSpzTIQ
+  clamav https://wiki.gentoo.org/wiki/ClamAV
 
 - webmail https://www.sogo.nu/
 

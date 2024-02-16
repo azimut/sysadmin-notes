@@ -17,23 +17,6 @@
 - home https://firewalld.org/
 - source (Python) https://github.com/firewalld/firewalld
 - documentation https://firewalld.org/documentation/
-- wiki redhat
-  - 7 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls
-  - 9 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/using-and-configuring-firewalld_firewall-packet-filters
-    - Note that firewalld with nftables backend does NOT support
-      passing custom nftables rules to firewalld, using the ~--direct~
-      option.
-
-- wiki fedora
-  https://fedoraproject.org/wiki/Firewalld
-  https://docs.fedoraproject.org/en-US/quick-docs/firewalld/
-- wiki arch https://wiki.archlinux.org/title/Firewalld
-- wiki gentoo https://wiki.gentoo.org/wiki/Firewalld
-- wiki rockylinux
-  - https://docs.rockylinux.org/guides/security/firewalld-beginners/
-  - https://docs.rockylinux.org/guides/security/firewalld/
-- wiki rackspace https://docs.rackspace.com/docs/use-firewalld-on-redhat-based-distributions
-- https://book.blueteamguides.com/hardening/firewalld
 
 - gui firewall-config
 - gui firewall-applet (QT)
@@ -66,6 +49,7 @@
 | --remove-service=                         | mdns                       |
 |-------------------------------------------+----------------------------|
 
+
 * snippets
 
 - https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Build/BatchFiles/Linux/ContainerBuildThirdParty.sh
@@ -81,6 +65,12 @@
   --direct --add-rule ipv4 filter OUTPUT 0 -p tcp -m tcp --dport=80 -j ACCEPT
   --direct --add-rule ipv4 filter OUTPUT 1 -j DROP
 
+- block china https://forums.centos.org/viewtopic.php?f=57&t=76087&sid=5949477943817e5a9dba75ec67aa943e
+  $ curl https://www.ipdeny.com/ipblocks/data/countries/cn.zone --output cn.zone # sorry China, it's not personal
+  $ firewall-cmd --permanent --new-ipset=blocklist_v4 --type=hash:net --option=family=inet --option=hashsize=4096 --option=maxelem=200000
+  $ firewall-cmd --permanent --ipset=blocklist_v4 --add-entries-from-file="cn.zone"
+  $ firewall-cmd --permanent --zone=drop --add-source=ipset:blocklist_v4
+  $ firewall-cmd --reload
 
 * articles
 
@@ -90,13 +80,31 @@
 - 18 https://firewalld.org/2018/07/nftables-backend
 - 18 article | https://opensource.com/article/18/9/linux-iptables-firewalld
 - 15 article | http://geertj.me/2015/07/18/systemd-firewalld-tarsnap-ultimate-backup.html
+
+- wiki fedora
+  https://fedoraproject.org/wiki/Firewalld
+  https://docs.fedoraproject.org/en-US/quick-docs/firewalld/
+- wiki arch https://wiki.archlinux.org/title/Firewalld
+- wiki gentoo https://wiki.gentoo.org/wiki/Firewalld
+- wiki rockylinux
+  - https://docs.rockylinux.org/guides/security/firewalld-beginners/
+  - https://docs.rockylinux.org/guides/security/firewalld/
+- wiki rackspace https://docs.rackspace.com/docs/use-firewalld-on-redhat-based-distributions
+- https://book.blueteamguides.com/hardening/firewalld
+- wiki redhat
+  - 7 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-using_firewalls
+  - 9 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/using-and-configuring-firewalld_firewall-packet-filters
+    - Note that firewalld with nftables backend does NOT support
+      passing custom nftables rules to firewalld, using the ~--direct~
+      option.
+
 * videos
 
 ** 20 video | Firewalld Changes Coming to Your OS | Eric Garver
 
 https://www.youtube.com/watch?v=yy87quTsdVw
 
-** 15 video | firewalld - present and future      | Thomas Woerner
+** TODO 15 video | firewalld - present and future      | Thomas Woerner
 
 https://www.youtube.com/watch?v=L8rwSqONmCY
 
