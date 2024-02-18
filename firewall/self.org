@@ -7,7 +7,6 @@ ipfirewall -> ipchains -> iptables -> nftables
 - fwsnort parses the rules files included in the SNORT ® intrusion detection system and builds an equivalent iptables ruleset for as many rules as possible.
   https://www.cipherdyne.org/fwsnort/
 
-- https://wiki.archlinux.org/title/Sshguard
 - https://wiki.archlinux.org/title/Router
 - https://wiki.archlinux.org/title/High_Performance_Firewall
 - https://wiki.archlinux.org/title/Simple_stateful_firewall

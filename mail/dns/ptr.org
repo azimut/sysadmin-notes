@@ -1,0 +1,5 @@
+- https://www.cloudflare.com/learning/dns/dns-records/dns-ptr-record/
+
+- https://serverfault.com/questions/595237/are-ptr-records-added-only-by-the-isps-that-provide-and-manage-the-ips
+  - the person who owns the ip space (ISPs) can create
+  - it is also possible for them to delegate that power https://www.ietf.org/rfc/rfc2317.txt

@@ -15,6 +15,7 @@
   - only tracking incoming packets, outgoing can be tracked with the *direct interface*
 
 - home https://firewalld.org/
+- man richlanguage https://firewalld.org/documentation/man-pages/firewalld.richlanguage.html
 - source (Python) https://github.com/firewalld/firewalld
 - documentation https://firewalld.org/documentation/
 
@@ -28,8 +29,11 @@
 | --list-all                                | ZoneName ...               |
 | --get-active-zones                        | ZoneName interfaces: wlan0 |
 | --list-services                           | mdns sambda-client ssh     |
-| --list-rich-rules                         |                            |
+| --direct                                  | DEPRECATED                 |
 | --direct --get-all-rules                  |                            |
+|-------------------------------------------+----------------------------|
+| --list-rich-rules                         |                            |
+| --[add¦remove]-rich-rule=                 |                            |
 |-------------------------------------------+----------------------------|
 | --reload                                  | -                          |
 |-------------------------------------------+----------------------------|
@@ -45,7 +49,6 @@
 | --add-port=                               | 21-22/tcp                  |
 | --add-interface=                          | eth0                       |
 | --add-rule=                               |                            |
-| --add-rich-rule=                          |                            |
 | --remove-service=                         | mdns                       |
 |-------------------------------------------+----------------------------|
 
@@ -77,6 +80,7 @@
 - 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-1-nftables/
 - 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-2-firewalld/
 - 22 article | https://major.io/p/build-tailscale-exit-node-firewalld/
+- 21 https://firewalld.org/2021/06/the-upcoming-1-0-0
 - 18 https://firewalld.org/2018/07/nftables-backend
 - 18 article | https://opensource.com/article/18/9/linux-iptables-firewalld
 - 15 article | http://geertj.me/2015/07/18/systemd-firewalld-tarsnap-ultimate-backup.html

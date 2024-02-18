@@ -60,3 +60,5 @@
 - imap to oauth https://gitlab.com/muttmua/mutt/-/blob/master/contrib/mutt_oauth2.py
 - imap to oauth https://github.com/pdobsan/mailctl
 - https://github.com/google/gmail-oauth2-tools/wiki/OAuth2DotPyRunThrough
+
+- mailman - mailing list UI https://gitlab.com/mailman/hyperkitty

@@ -1,5 +1,6 @@
 - https://www.cloudflare.com/learning/email-security/dmarc-dkim-spf/
 - 12 https://web.archive.org/web/20121119024217/http://iafonov.github.com/blog/hardcore-email-infrastructure-setup.html
+- 15 https://scaron.info/blog/debian-mail-spf-dkim.html
 - 16 spf https://www.fastmail.com/blog/spf-dkim-dmarc/
 - 17 https://mildbyte.xyz/blog/mta-spf-dkim-ptr-wtf-a-quick-checklist-on-how-to-send-e-mail-from-your-domain/
 - 18 spf https://alex.kaskaso.li/post/revisiting-email-spoofing
@@ -14,4 +15,3 @@
 - 20 spf https://utcc.utoronto.ca/~cks/space/blog/spam/SPFForHELOsII
 - 21 spf https://www.alexblackie.com/articles/email-authenticity-dkim-spf-dmarc/
 - 21 spf https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc
-- https://scaron.info/blog/debian-mail-spf-dkim.html

@@ -6,18 +6,6 @@
 - HackTheBox - Tentacle
   https://www.youtube.com/watch?v=kKhuUXPmJ_o
 
-
-- 22 | Email Server / Correo Electrónico | LastDragon
-  https://www.youtube.com/playlist?list=PLxJguiVqgxl9P4jiymf00asbQoTMD-CN_
-  1) basics + postfix
-     - debian 11
-     - postfix+dovecot
-     - dns: MX, A, AAAA
-     - edit /etc/hostname
-     - edit /etc/hosts for ipv4 and ipv6
-     - /etc name comes from ~edit to config~
-
-
 - video Debian Email Server Part 3 (Configuration, Security, and Demonstration)
   https://www.youtube.com/watch?v=k3NbYLj3FPQ&pp=ygUJZXhpbSBtYWls
 
@@ -38,6 +26,236 @@
   https://www.youtube.com/watch?v=ZmVOGVbnYvo
   https://www.youtube.com/watch?v=UVpu78B1pWQ
 - 23 | 37C3 - SMTP Smuggling – Spoofing E-Mails Worldwide https://www.youtube.com/watch?v=V8KPV96g1To
+* 22 | Email Server / Correo Electrónico | LastDragon
+
+https://www.youtube.com/playlist?list=PLxJguiVqgxl9P4jiymf00asbQoTMD-CN_
+
+** 1) basics + postfix + dovecot
+
+https://www.youtube.com/watch?v=pNmXlwBY5kQ
+
+- debian 11
+- postfix+dovecot
+- dns: MX, A, AAAA
+- edit =/etc/hostname=
+- create!? =/etc/mailname=?
+- edit =/etc/hosts= for ipv4 and ipv6
+- /etc name comes from ~edit to config~
+
+- postfix
+  - mails by default go into =/var/spool/mail=
+    - to override change main.cf
+      home_mailbox = Maildir/
+  - port 587/tcp aka submission
+    - is to send clients from clients to servers
+    - usually not blocked by ISPs?
+  - enable dovecot relay
+    smtpd_sasl_type = dovecot
+    smtpd_sasl_path = private/auth
+    smtpd_sasl_local_domain =
+    smtpd_sasl_security_options = noanonymous
+    broken_sasl_auth_clients = yes
+    smtpd_sasl_auth_enable = yes
+    smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unaut_destination
+
+- dovecot
+  - change where mailbox location on 10-mail.conf
+    mail_location = maildir:~/Maildir
+  - disable ssl
+    ssl = no
+  - 10-master.conf
+    service auth {
+      unix_listener auth-userdb {
+        mode = 0666
+        user =
+        group =
+    }
+    unix_listener /var/spool/postfix/private/auth {
+      mode = 0666
+    }
+
+- create user
+  #+begin_src sh
+    $ useradd lastdragon
+    $ passwd lastdragon
+    $ cp -a -R /etc/skel /home/lastdragon
+    $ chwon lastdragon.lastdragon -R lastdragon/
+    $ chmod o-wrx lastdragon/
+  #+end_src
+
+** 2) DMARC+SPC+SSL
+
+https://www.youtube.com/watch?v=rNOIsOK4OdQ
+
+- PTR in 104.200.17.21 (aka 21.17.200.104.in-addr.arpa)
+  - maildrogon.lastdragon.net
+
+- TXT in maildrogon.lastdragon.net
+  - SPF is to list the explicit list of servers (or ips) serving that domain
+  - v=spf1
+    ip4:104.200.17.21
+    ip6:2600...
+    -all
+
+- TXT in _dmarc.maildrogon.lastdragon.net
+  - DMARC is to specify an mail address where you will receive reports
+    of accepted/rejected mail
+  - v=DMARC1;
+    p=quarentine;
+    rua=mailto:lastdragon@maildrogon.lastdragon.net;
+    pct=100;
+    aspf=s
+
+- DKIM to is to sign mails
+  - you put a public key on a DNS record
+  - a public/private key challenge is performed between sender and domain's receiver
+
+- certbot to renew letsencrypt certs
+  $ certbot certonly --standalone --preferred-challenges http -d maildrogon.lastdragon.net
+
+- configure postfix with generated
+  - fullchain1.pem
+  - privatekey1.pem
+
+- configure postfix to submission to
+  ~smtpd_tls_security_level=encrypt~
+
+- configure dovecot
+  ssl=yes
+  ssl_cert=fullchain1.pem
+  ssl_key=privatekey1.pem
+
+** 3) DMARC+DKIM
+
+https://www.youtube.com/watch?v=CP8VoPaBkms
+
+- DMAC
+  - with gmail you will get a mail with a .zip that has a .xml inside
+  - each 24hs
+  - nr send emails, nr blocked
+
+- DKIM
+  - $ apt-install opendkim opendkim-tools
+    $ apt-install libmailtools-perl
+    $ useradd opendkim
+    $ mkdir -p /var/spool/postfix/opendkim
+    $ chown opendkim:opendkim /var/spool/postfix/opendkim
+    $ mkdir -p /etc/opendkim/keys/maildrogon.lastdragon.net
+    $ cd $<
+    $ opendkim-genkey -b 2048 -d maildrogon.lastdragon.net -s small
+    $ ls
+     mail.txt     # the public key, in a TXT record format
+     mail.private # private key
+  - $ vi /etc/opendkim.conf
+    - uncomment "Canonicalization relaxed/simple"
+    - uncomment "Mode sv" and "SubDomains yes"
+    - Domain maildrogon.lastdragon.net
+      Selector mail # the selector put on DNS
+      KeyFile /etc/opendkim/keys/maildrogon.lastdragon.net/mail.private
+      Socket  inet:8891@localhost # optional!!
+  - $ vi /etc/opendkim/KeyTable
+    mail._domainkey.maildrogon.lastdragon.net maildrogon.lastdragon.net:mail:/etc/opendkim/keys/maildrogon.lastdragon.net/mail.private
+  - $ vi /etc/opendkim/Signingtables
+    *@maildrogon.lastdragon.net mail._domainkey.maildrogon.lastdragon.net
+  - $ vi /etc/opendkim/TrustedHosts
+    127.0.0.1
+    ::1
+    <IPV4HERE>
+    <IPV6HERE>
+    maildrogon.lastdragon.net
+
+- postfix
+  - main.cf
+    milter_default_action = accept
+    milter_protocol       = 6
+    smtpd_milters         = local:/var/spool/postfix/opendkim/opendkim.sock
+    non_smtpd_milters     = local:/var/spool/postfix/opendkim/opendkim.sock
+  - main.cf - alternative using tcp socket
+    smtpd_milter          = inet:127.0.0.1:8891
+    non_smtpd_milters     = $smtpd_milters
+    milter_default_action = accept
+
+- dovecot
+
+** 4) ClamAV
+
+- install antivirus (clamav amavis)
+- we install uncompressors too (unzip bzip2)
+
+- amavis listens on 10.024
+  - /etc/clamav/clamd.conf, to block/warn on encrypted files
+    ArchiveBlockEncrypted true
+  - /etc/amavis/conf.d/15-content_filter_mode
+    - uncomment
+      @bypass_virus_checks_maps = (
+        \%bypass_virus_checks,
+        \@bypass_virus_checks_acl,
+        \$bypass_virus_checks_re);
+
+- /etc/groups
+  add clamav user to amavis group
+
+- postfix
+  - main.cf
+    content_filter=smtpd-amavis[127.0.0.1]:10024
+    mime_header_checks = regexp:/etc/postfix/mime_header_checks # bloqueo de archivos
+    body_checks = regexp:/etc/postfix/bodyemail # bloqueo de palabras por regexp
+  - /etc/postfix/bodymail
+    /[cC][lL][aA][vV][eE]/ REJECT
+  - $ postmap /etc/postfix/bodymail
+  - /etc/postfix/mime_header_check
+    /name=[^>]*\.(bat|com|exe|dll|vbs)/ REJECT
+  - $ postmap /etc/postfix/mime_header_check
+  - master.cf
+    - smtpd-amavis unix - - n - 2 smtp
+      -o smtp_data_done_timeout=1200
+      -o smtp_send_xforward_command=yes
+      -o disable_dns_lookups=yes
+    - 127.0.0.1:10025 inet n - n - - smtpd
+      -o content_filter=
+      -o local_recipient_maps=
+      -o relay_recipient_maps=
+      -o smtpd_restriction_classes=
+      -o smtpd_client_restrictions=
+      -o smtpd_helo_restrictions=
+      -o smtpd_sender_restriction=
+      -o smtpd_recipient_restrictions=permit_mynetworks,reject
+      -o mynetworks=127.0.0.0/8
+      -o strict_rfc821_envelopes=yes
+      -o smtpd_error_sleep_time=0
+      -o smptd_soft_error_limit=1001
+      -o smtpd_hard_error_limit=1000
+
+** 5) Spamassassin
+
+- install dependencies
+  $ sudo apt install spamassassin spamc razor pyzor
+  - pipes interface for spamassassin
+  - razor & pyrazor are extension modules (?)
+
+- add user
+  $ useradd spamd -s /bin/false
+  $ mkdir /home/spamd
+  $ chown spamd:spamd /home/spamd
+
+- /etc/default/spamassassin
+  OPTIONS="--create-prefs --max-children 5 --helper-home-dir"
+  CRON=1 # to update spam signatures (sa-update) each day
+
+- /etc/mail/spamassassin/local.cf
+  rewrite_header Subject *****SPAM*****
+  required_score 5.0 # sets threshold
+  use_bayes 1
+  bayes_auto_learn 1
+
+- check config is ok
+  $ spamassassin --lint
+
+- /etc/postfix/master.cf
+  - smtp...
+    -o content_filter=spamassassin
+  - spamassassin unix - n n  - - pipe user=smapd argv=/usr/bin/spamc -s 20971520-f -e /usr/bin/sendmail -oi -f ${sender} ${recipient}
+    - where 20971520 (20M) is the max size of things to verify
 
 * 20 | Building a Functional Email Server with Dominick LoBraico
 
@@ -82,18 +300,18 @@ https://www.youtube.com/watch?v=6SfXXtb-nHM
 #+begin_src conf
   # "mydomain" is by default equal to "myhostname" TLD
   # "myorigin" is by default equal to "myhostname"
-  myorigin = $mydomain
-  masquerade_domains = $mydomain # helps strip TLD (?)
-  myhostname = mail.example.com
-  mydestination = $myhostname, localhost.$mydomain, $mydomain
+  myorigin                 = $mydomain
+  masquerade_domains       = $mydomain # helps strip TLD (?)
+  myhostname               = mail.example.com
+  mydestination            = $myhostname, localhost.$mydomain, $mydomain
   smtpd_relay_restrictions = permit_mynetworks,permit_sasl_authenticated,defer_unauth_destination
 
-  smtpd_tls_cert_file=/etc/letsencrypt/live/example.com/fullchain.pem
-  smtpd_tls_key_file=/etc/letsencrypt/live/example.com/privkey.pem
-  smtpd_tls_dh1024_param_file=/etc/letsencrypt/ssl-dhparams.pem
-  smtpd_tls_security_level=may # since we can't require it, to receive
-  smtp_tls_security_level=may # to send
-  smtp_tls_loglevel = 1
+  smtpd_tls_cert_file         = /etc/letsencrypt/live/example.com/fullchain.pem
+  smtpd_tls_key_file          = /etc/letsencrypt/live/example.com/privkey.pem
+  smtpd_tls_dh1024_param_file = /etc/letsencrypt/ssl-dhparams.pem
+  smtpd_tls_security_level    = may # since we can't require it, to receive
+  smtp_tls_security_level     = may # to send
+  smtp_tls_loglevel           = 1
 #+end_src
 
 #+NAME: master.cf
