@@ -1,14 +1,51 @@
+- rfc (2015) https://datatracker.ietf.org/doc/html/rfc7489
+
 - https://en.wikipedia.org/wiki/DMARC
   - D.M.A.R.C. - Domain-based Message Authentication, Reporting and Conformance
+  - email authentication protocol
   - extends SPF and DKIM
-  - mail authentication protocol
+
+- _dmarc.domain TXT record
+  - (; ) separated
+  - v=DMARC1
+    p=none
+    sp=quarentine
+    rua=mailto:mailauth-reports@google.com
+  - mode
+    - aspf
+    - adkim
+    - relaxed
+
+- From is used by DMARC to validate ~alignment~
+  - both SPF and DKIM should pass to align
 
 - https://www.cloudflare.com/learning/dns/dns-records/dns-dmarc-record/
-- rfc https://datatracker.ietf.org/doc/html/rfc7489
+
+
+- 14 video | Una experiencia en el uso de DMARC https://www.youtube.com/watch?v=IUSqoEMBPBs
 - 16 video | Preventing Unauthorized Email Spoofing with DMARC https://www.youtube.com/watch?v=hSr7pvGLCxg
+- 19 video | Demystifying DMARC A guide to preventing email spoofing Sean Whalen https://www.youtube.com/watch?v=ptXTgZAIluo
+- 22 video | How To Implement DMARC and BIMI for Email https://www.youtube.com/watch?v=4SGXPQjD-RE
+- 23 video | NLUUG NJ23 -- Koen van Hove - SPooFd: How to Spoof Mails, Even with Full SPF and DMARC Protection https://www.youtube.com/watch?v=Ct0MltJPc44
+
+
+* reporting
+
+- article https://debricked.com/blog/analyze-and-visualize-dmarc-report/
+- tool https://github.com/domainaware/parsedmarc
+- tool (parsedmarc+es+grafana) https://github.com/debricked/dmarc-visualizer
+- tool https://github.com/techsneeze/dmarcts-report-parser
+- tool https://www.taugh.com/rddmarc/
+- ui https://github.com/liuch/dmarc-srg
+- ui https://github.com/techsneeze/dmarcts-report-viewer
+- service https://dmarc.postmarkapp.com/
+- service https://dmarcian.com/
+- service https://www.mailhardener.com/
+- service https://www.uriports.com/dmarc
+- service https://easydmarc.com/pricing/easydmarc/businesses
 
 * OpenDMARC
 
-- source https://github.com/trusteddomainproject/OpenDMARC
-- integration https://wiki.archlinux.org/title/OpenDMARC
+- source (C) https://github.com/trusteddomainproject/OpenDMARC
 - doc http://www.trusteddomain.org/opendmarc/
+- wiki arch https://wiki.archlinux.org/title/OpenDMARC

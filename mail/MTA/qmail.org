@@ -25,3 +25,7 @@
   https://www.amazon.com/-/es/John-Levine/dp/1565926285/
 - 07 Book | Qmail Quickstarter                      | Kyle Wheeler
   https://www.amazon.com/-/es/Kyle-Wheeler/dp/1847191150/
+
+
+- 06 video | Complete qmail SMTP server https://www.youtube.com/playlist?list=PL9BA25AE96E698D27
+- 19 video | maintaining qmail https://www.youtube.com/watch?v=xR776OFqqeA

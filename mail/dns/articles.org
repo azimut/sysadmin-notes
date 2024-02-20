@@ -5,6 +5,7 @@
 - 17 https://mildbyte.xyz/blog/mta-spf-dkim-ptr-wtf-a-quick-checklist-on-how-to-send-e-mail-from-your-domain/
 - 18 spf https://alex.kaskaso.li/post/revisiting-email-spoofing
 - 18 spf https://ikiwiki.iki.fi/faq/dmarc_spf_considered_harmful
+- 18 spf https://poolp.org/posts/2018-01-08/spfwalk/
 - 19 dkim https://blog.jonlu.ca/posts/spf-dkim
 - 19 dkim https://www.20i.com/blog/dkim-demystified/
 - 19 spf https://poolp.org/posts/2019-12-01/spf-aware-greylisting-and-filter-greylist/
@@ -13,5 +14,10 @@
   https://anarc.at/blog/2022-07-20-debian-relay-no-dkim/
 - 20 spf https://bridge.grumpy-troll.org/2020/07/small-mailserver-bcp/ https://news.ycombinator.com/item?id=23958599
 - 20 spf https://utcc.utoronto.ca/~cks/space/blog/spam/SPFForHELOsII
+- 20 https://web.archive.org/web/20220328042034/https://ezh.es/blog/2020/08/the-confused-mailman-sending-spf-and-dmarc-passing-mail-as-any-gmail-or-g-suite-customer/
 - 21 spf https://www.alexblackie.com/articles/email-authenticity-dkim-spf-dmarc/
 - 21 spf https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc
+- 21 spf+dkim+dmarc https://security.stackexchange.com/questions/257417/how-did-this-paypal-spoof-email-pass-spf-dkim-and-dmarc
+- 21 spf https://blog.mailpace.com/blog/whats-an-spf-record/
+- 22 spf+dkim https://deliciousbrains.com/how-spam-filters-works/?__s=b7opgxc3bpupssi4tgau
+- 22 https://www.netmeister.org/blog/spf.html

@@ -1,0 +1,4 @@
+- home https://openlitespeed.org/
+- wiki https://en.wikipedia.org/wiki/LiteSpeed_Web_Server
+  - 4th most popular web server
+- source (C++) https://github.com/litespeedtech/openlitespeed

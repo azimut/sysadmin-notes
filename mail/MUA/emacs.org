@@ -5,3 +5,5 @@
 - 20 emacs http://www.mycpu.org/read-email-in-emacs/
 - 20 emacs https://200ok.ch/posts/2020-05-27_using_emacs_and_mu4e_for_emails_even_with_html.html
 - 23 emacs https://200ok.ch/posts/2023-01-05_inbox_zero_hack:_achieving_productivity_bliss_in_the_new_year_with_mue.html
+
+- 22 video | EmacsConf 2022: Revisiting the anatomy of Emacs mail user agents - Mohsen BANAN (he/him) https://www.youtube.com/watch?v=dJXBUlbxU3E

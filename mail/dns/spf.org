@@ -1,4 +1,50 @@
-https://en.wikipedia.org/wiki/Sender_Policy_Framework
-- tool: recursively looks up SPF records https://github.com/akpoff/spfwalk
-- tool: recursively look-up SPF records and manage whitelists https://github.com/akpoff/spf_fetch
+- rfc (2014) https://www.rfc-editor.org/rfc/rfc7208.txt
+- https://en.wikipedia.org/wiki/Sender_Policy_Framework
+  - email authentication method
+  - to ensure that sender server is authorized to send an email from that domain
+  - messaged back if bounced
+  - implementation
+    - every domain that has an A or MX record should have a DNS's SPF record
+    - receivers check DNS's TXT records and act upon his result
+    - mail forwarding is NOT allowed by SPF, instead you can
+      - remailing: changing the orignal sender
+      - refusing: returning "551 user not local; please try <usr@example.com>"
+      - allowlisting on the target server
+      - SRS https://en.wikipedia.org/wiki/Sender_Rewriting_Scheme
+    - example: "v=spf1 mx -all"
+    - example: "v=spf2 ip4:192.0.2.0/24 a -all"
+      |------------------+--------------------------------------|
+      | v=spf1           | the version used                     |
+      | ip4:192.0.2.0/24 |                                      |
+      | a                | for allow                            |
+      | -all             | if the previous didn't match, reject |
+      |------------------+--------------------------------------|
+    - =Mechanisms=, there are 8
+      |-----------+--------------------------------------------------------------|
+      | Mechanism | matches...                                                   |
+      |-----------+--------------------------------------------------------------|
+      | all       | always                                                       |
+      | a         | if the domain has an A or AAAA record                        |
+      | ip4/ip6   | if is in the given ip range                                  |
+      | mx        | if domain's MX resolves to sender address                    |
+      | ptr       |                                                              |
+      | exits     | if the given domain matches /any/ address                    |
+      | include   | references the policy of another domain, continue on failure |
+      |-----------+--------------------------------------------------------------|
+    - =Qualifiers=
+      |---+----------+----------------------------------------------|
+      | + | PASS     | can be ommitted, "+mx" is the same as "mx"   |
+      | ? | NEUTRAL  | interpreted like NONE                        |
+      | ~ | SOFTFAIL | between (?) and (-), are accepted but tagged |
+      | - | FAIL     | should be rejected                           |
+      |---+----------+----------------------------------------------|
+    - =Modifiers=
+      |----------+---+--------+------------------------------------------------------------|
+      | exp      | = | DOMAIN | which has a TXT record, to give an "explaination" for FAIL |
+      | redirect | = | DOMAIN |                                                            |
+      |----------+---+--------+------------------------------------------------------------|
+
+- tool: (C) recursively looks up SPF records https://github.com/akpoff/spfwalk
+- tool: (sh) recursively look-up SPF records and manage whitelists https://github.com/akpoff/spf_fetch
+
 - https://www.cloudflare.com/learning/dns/dns-records/dns-spf-record/

@@ -1,2 +1,130 @@
-https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail
-https://www.cloudflare.com/learning/dns/dns-records/dns-dkim-record/
+- rfc 2011 https://datatracker.ietf.org/doc/html/nnnrfc6376
+- rfc 2018 https://datatracker.ietf.org/doc/html/rfc8301
+- rfc 2018 https://datatracker.ietf.org/doc/html/rfcnnnn8463
+
+- =Signing=
+  - insert one or more ~DKIM-Signature~ header fields
+  - Signers can choose which header fields they sign
+  - "From:" field must be always signed.
+  - a non-existing field matches the empty string,
+    so that adding a field with that name will break the signature
+  - separeted by (;)
+  |---+----+---+-----------------------------+-----------------------------------------------------------------|
+  | * | v  | = | 1                           | version                                                         |
+  | * | a  | = | rsa-sha256                  | signing algorithm                                               |
+  | * | d  | = | example.net                 | aka SDID (Signing Domain Identifier)                            |
+  | * | s  | = | <SELECTOR>                  | used to retrieve the DKIM public key, selector._domainkey.domain |
+  |   | c  | = | relaxed/simple              | canonicalization algorithm(s) for header and body               |
+  |   | q  | = | dns/txt                     | default query method                                            |
+  |   | i  | = | foo@eng.example.net         | agent or user identifier (AUID)                                 |
+  | + | t  | = | 1117574938                  | signature timestamp                                             |
+  | + | x  | = | 1118006938                  | expire time                                                     |
+  |   | l  | = | 200                         | body length to hash                                             |
+  | * | h  | = | from:to:subject:date        | list of header fields signed                                    |
+  |   | z  | = | From:foo@example.net¦To:... | copy of selected header fields AND values                       |
+  | * | bh | = | MTIzNDU2Nzg5MDEy...=        | body hash                                                       |
+  | * | b  | = | dzdVyOfAKCdLX...            | signature of headers and body                                   |
+  |---+----+---+-----------------------------+-----------------------------------------------------------------|
+
+- =Verification=
+  - <s>._domainkey.<d>
+  - record includes
+    - domain's public key
+    - other tokens and lfags
+
+* wikipedia
+
+- https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail
+- email authentication method
+- to detect forged sender addresses
+- a valid signature guarantees unmodified content/attachment
+
+- Vulnerabilities
+  - short-key: use at least 1024 bits for long lived keys
+
+* OpenDKIM
+
+- source (C) https://github.com/trusteddomainproject/OpenDKIM
+- home http://www.opendkim.org/
+- wiki gentoo https://wiki.gentoo.org/wiki/OpenDKIM
+- wiki arch https://wiki.archlinux.org/title/OpenDKIM
+- wiki debian https://wiki.debian.org/opendkim
+
+* articles
+
+- https://www.cloudflare.com/learning/dns/dns-records/dns-dkim-record/
+- 22 https://halon.io/blog/the-dkim-replay-attack-and-how-to-mitigate
+- 22 https://www.socketlabs.com/blog/dkim-replay-attacks-preventive-measures-to-protect-email-deliverability/
+- 23 https://powerdmarc.com/what-are-dkim-replay-attacks/
+- 23 https://blog.redsift.com/email/what-is-a-dkim-replay-attack/
+- 23 https://halon.io/blog/csa-dkim-webinar
+- 23 https://www.spamresource.com/2023/11/icymi-understanding-dkim-replay-attacks.html
+- 23 https://www.ietf.org/archive/id/draft-crocker-dkim-replay-00.html
+
+** TODO 22 article | A breakdown of a DKIM replay attack
+
+https://proton.me/blog/dkim-replay-attack-breakdown
+
+- deliver failures from proton to gmail
+  - decline reputation in Gmail Postmaster Tools https://www.gmail.com/postmaster/
+  - increase sending ~from bad ip addresses~
+  - even they were registered as "fully authenticated"
+
+- dkim replay:
+  - single spam email originally sent from proton,
+  - is resent to many gmail users
+
+- temporary rotated DKIM signing keys to prevent email passing DKIM
+
+* videos
+** 22 video   | What is DKIM Alignment and why it matters!
+
+https://vimeo.com/697959672
+
+- Tobias Herkula
+
+- IP addresses are no longer a trusting factor on the world today
+  - IP blacklists
+    - help to get out of botnets,
+    - but NOT bad actors on good reputation platforms
+
+- Types of DKIM alignment (from rfc 5322)
+  - strict: same From address is on the header and on the signature
+  - relaxed: introduced with DMARC standard, a match only on the organization domain (?)
+
+- "recent attacks are not really dkim replay attacks are more a loophole provided by email server providers
+   to allow clients to send email immediately"
+
+- abandoned around 19:00
+
+** 23 video   | Understanding DKIM Replay Attacks a must for email senders
+
+https://www.youtube.com/watch?v=8MMt4LmnNJo
+
+- starts 9:15
+
+- forwarding is like replaying it
+- all the authentication methods that we have are designed so that forwarding emails is allowed
+- it starts by sending 1 message to hijack their reputation, and then replay it from your domain
+
+- The switch from /IP based reputation/ to /DOMAIN based reputation/ caused the increase of these attacks
+  - there is no way to keep an ipv6 representation
+
+- Steps
+  1) send an email from a legitimate and trustworthy sender TO an email account that you own
+  2) take the whole received email (to keep the DKIM signature)
+     and re-inject it via SMTP to send to new (many) recipients
+  3) mail fails SPF, but should pass DKIM
+
+- Initial Sender Mitigations
+  - expiration  : set expiration "x="
+  - oversigning : sign headers too, even if they are not used, to make message less maleable
+  - resign      : soft bounced emails should be sign again on every delivery attempt
+
+- Receiver Mitigations
+  - check and enforce RFC5322 header compliance
+  - demand SPF/DKIM alignment
+  - check for high inbound peaks
+  - count the number of equal inbound DKIM
+
+- no OSS tool to detect DKIM replay attacks

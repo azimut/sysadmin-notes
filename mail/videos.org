@@ -1,4 +1,6 @@
 - channel https://www.youtube.com/@mailserverguru/videos
+- channel https://www.youtube.com/@certifiedsendersalliance/videos
+- channel https://vimeo.com/emailexpert
 
 - 17 Linux Mail Server Configuration Step by Step (part 2)
   https://www.youtube.com/watch?v=HPV1hJsRud0
@@ -6,18 +8,21 @@
 - HackTheBox - Tentacle
   https://www.youtube.com/watch?v=kKhuUXPmJ_o
 
-- video Debian Email Server Part 3 (Configuration, Security, and Demonstration)
-  https://www.youtube.com/watch?v=k3NbYLj3FPQ&pp=ygUJZXhpbSBtYWls
-
 - 09 | Amavisd-new: Tuning Tipps and Tricks (MK4, Mark Martinec)  https://www.youtube.com/watch?v=6_wJ83dLbzE
 - 10 | Scott Lystig Fritchie - "Webmail for millions, powered by Erlang" https://vimeo.com/13022413
+- 11 | Sending mail with Perl https://www.youtube.com/watch?v=mCr--RQ6L3E
 - 12 | NOTACON 4: Spam/Virus/Phishing Gateways https://www.youtube.com/watch?v=RDSY2tDE_wU
 - 12 | Reigning over high-volume Debian e-mails https://www.youtube.com/watch?v=CYDzcF3i4Ro
 - 14 | Email Delivery for Rails Folks - Sally Lehman https://www.youtube.com/watch?v=XtGUd174n5A
-- 16 | (IT) Corsi Linux Avanzati 2015 - Mail Server con Exim https://www.youtube.com/watch?v=GoOtA_4-ImA
+- 15 | Debian Email Server | Joe McEntire
+  - https://www.youtube.com/watch?v=yjyfqyQAecw
+  - https://www.youtube.com/watch?v=kou1y2woD7Y
+  - https://www.youtube.com/watch?v=k3NbYLj3FPQ
+  - https://www.youtube.com/watch?v=bQGrCagMIzk
 - 16 | SLUG November 2016 - Email Encryption and Signing with PGP https://www.youtube.com/watch?v=Ijpr8yMWK8Q
 - 16 | Amavis and SpamAssassin (Mark Martinec, Mailserver-Konferenz) https://www.youtube.com/watch?v=5F6Zayl0PJY
 - 16 | Protect Your Sender Reputation – Tips and Trends to Avoid Deliverability Pitfalls https://www.youtube.com/watch?v=EYbG3Gths6U
+- 17 | (GE) CCC https://www.youtube.com/watch?v=77OlKRkaixo
 - 17 | Encrypted Email: how hard could it be? ― Bart Butler from ProtonMail ― MiXiT 2017 https://vimeo.com/216747532 https://www.youtube.com/watch?v=P7KHupkk7mM
 - 18 | Introduction to SMTP Relay for Servers https://www.youtube.com/watch?v=iVJDZRLBWz8
 - 18 | BalCCon2k18 - MacLemon - Email how does it even work https://www.youtube.com/watch?v=ptaiwDJYqX4
@@ -26,7 +31,628 @@
   https://www.youtube.com/watch?v=ZmVOGVbnYvo
   https://www.youtube.com/watch?v=UVpu78B1pWQ
 - 23 | 37C3 - SMTP Smuggling – Spoofing E-Mails Worldwide https://www.youtube.com/watch?v=V8KPV96g1To
-* 22 | Email Server / Correo Electrónico | LastDragon
+
+
+* 20 | Building a Functional Email Server | Dominick LoBraico
+
+- video https://www.youtube.com/watch?v=cM6mRLvFw54
+
+- replacing XXXX?
+  - INI config format, key=value, section {}
+  - advanced macros (looked to function calls)
+  - non explicit routing of mails
+
+- wanted to change
+  - because they were scared of making changes
+  - configuration required specialized knowledge on the configuration DSL
+
+- final product
+  - written and configurable on OCaml
+
+- benefits
+  - tools: using editor tools for the configuration language
+    - jump to definition
+    - checks for unused values
+    - exhaustive case match
+  - culture: people treat code and configuration different
+    - refactoring
+    - testing
+
+- downsides
+  - needs to keep it up to date with smtp
+
+* 20 | Building an Ubuntu mail server     | Sidequest Ninja
+
+"..with Postfix, Amavis, SpamAssassin, ClamAV, Dovecot, and OpenDMARC"
+
+https://www.youtube.com/watch?v=6SfXXtb-nHM
+
+- blogposts
+  - postfix https://web.archive.org/web/20220217012541/https://www.sidequestninja.com/blog/hello-world-this-is-an-email/
+  - amavis,clamav,spamassassin https://web.archive.org/web/20220217012645/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-2/
+  - postgresql https://web.archive.org/web/20220217012747/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-3/
+  - dovecot https://web.archive.org/web/20220217012855/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-4/
+  - spf,dkim,dmarc https://web.archive.org/web/20220217012924/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-5/
+
+- written to work with Ubuntu 18.04 LTS
+- clamav uses 8GB to ram
+- edit /etc/hostname
+- update live $ sudo hostname
+- default configs at /usr/share/postfix/master.cf.dist
+- https://weakdh.org
+- https://checktls.com
+- Send an email to: check-auth@verifier.port25.com
+  Response is a report of your mail server.
+
+** Postfix   - basics
+
+#+NAME: main.cf
+#+begin_src bash
+  # "mydomain" is by default equal to "myhostname" TLD, here "example.com"
+  myhostname                  = mail.example.com
+  mydestination               = $myhostname, localhost.$mydomain, $mydomain
+  myorigin                    = $mydomain # by default equal to "myhostname"
+  masquerade_domains          = $mydomain # helps strip TLD (?)
+  smtpd_relay_restrictions    = permit_mynetworks, permit_sasl_authenticated, defer_unauth_destination # dud means that destination can only be local
+#+end_src
+
+#+NAME: master.cf
+#+begin_src conf
+  smtp       inet n - y - - smtpd       # between MTAs
+
+  submission inet n - y - - smtpd       # to send emails at
+    -o syslog_name              = postfix/submission
+    -o smtpd_tls_wrappermode    = no      # disable a legacy mode
+    -o smtpd_tls_security_level = encrypt # disable non encrypted
+    -o smtpd_sasls_auth_enable  = yes
+    -o smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, defer # shortcircuits - defer means reject with "retry later" msg
+#+end_src
+
+** Postfix   - TLS
+
+- We cannot require other mail *servers* to have TLS
+
+#+NAME: main.cf
+#+begin_src sh
+  smtpd_tls_cert_file         = /etc/letsencrypt/live/example.com/fullchain.pem
+  smtpd_tls_key_file          = /etc/letsencrypt/live/example.com/privkey.pem
+  smtpd_tls_dh1024_param_file = /etc/letsencrypt/ssl-dhparams.pem # generate it weakdh.org
+  smtpd_tls_security_level    = may # since we can't require it to other servers
+  smtp_tls_security_level     = may # to send
+  smtp_tls_loglevel           = 1   # to check it is working
+#+end_src
+
+** Amavis    - set it up with clamd
+
+$ sudo apt-get -t bionic-updates install amavisd-new clamav-daemon spamassassin
+
+#+NAME: /etc/amavis/conf.d/15-av_scanners
+#+begin_src perl
+# $ sudo adduser clamav amavis
+['ClamAV-clamd',
+  \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd.ctl"],
+  qr/\bOK$/m,
+  qr/\bFOUND$/m,
+  qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
+#+end_src
+
+#+NAME: /etc/clamav/clamd.conf
+#+begin_src
+LocalSocket /var/run/clamav/clamd.ctl
+#+end_src
+
+** Amavis    - setup filtering
+
+#+NAME: /etc/amavis/conf.d/15-content_filter_mode
+#+DESC: given that the variables referenced by this variables are undefined, it won't skip anything and will check everything
+#+begin_src perl
+  @bypass_virus_checks_maps = (
+      \%bypass_virus_checks,
+      \@bypass_virus_checks_acl,
+      \$bypass_virus_checks_re);
+
+  @bypass_spam_checks_maps = (
+      \%bypass_spam_checks,
+      \@bypass_spam_checks_acl,
+      \$bypass_spam_checks_re);
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/05-node_id
+#+begin_src perl
+chomp($hyhostname = `hostname --fqdn`);
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/05-domain_id
+#+begin_src perl
+  chomp($mydomain = `head -n 1 /etc/mailname`);
+  @local_domains_acl = ( ".$mydomain" );
+#+end_src
+
+#+NAME: /etc/amavis/conf.d/50-user
+#+DESC: overrides 05-domain_id
+#+begin_src perl
+  @local_domains_acl = ( ".example.com" );
+  $max_server = 2;
+  $max_requests = 20;
+#+end_src
+
+** Amavis    - cronjob
+
+#+NAME: /etc/cron.d/amavisd-new
+#+DESC: cronjob to get spamassasin up to date
+#+begin_src cron
+  18 */3 * * * amavis test -e /usr/sbin/amavisd-new-cronjob && /usr/sbin/amavisd-new-cronjob sa-sync
+  24   1 * * * amavis test -e /usr/sbin/amavisd-new-cronjob && /usr/sbin/amavisd-new-cronjob sa-clean
+#+end_src
+
+** Postfix   - config for Amavis
+
+#+NAME: /etc/postfix/master.cf
+#+begin_src conf
+lmtp-amavis unix - - - - 2 lmtp        # 2 max services
+  -o lmtp_data_done_timeout     = 1200 # 20 minutes, how long to wait for a email to be processed
+  -o lmtp_send_xforward_command = yes
+  -o max_use                    = 20   # lines up with the $max_requests put in amavis configuration
+#+end_src
+
+#+NAME: /etc/postfix/main.cf
+#+DESC: finish up the postfix->amavis path
+#+begin_src sh
+  content_filter = lmtp-amavis:[127.0.0.1]:10024
+#+end_src
+
+#+NAME: /etc/postfix/master.cf
+#+DESC: the amavis->postfix path, we CANNOT use the submission port, since it will loop again and send it to Amavis
+#+begin_src conf
+  127.0.0.1:10025 inet n - n - - smtpd      # 10025 port used by Amavis by default for resubmission
+   -o content_filter                      = # empty string  = = turning off
+   -o mynetworks                          = 127.0.0.0/8
+   -o smtpd_client_restrictions           = permit_mynetworks, reject
+   -o smtpd_recipient_restrictions        = permit_mynetworks, reject
+   -o smtpd_delay_reject                  = no
+   -o smtpd_helo_restrictions             =
+   -o smtpd_sender_restrictions           =
+   -o smtpd_data_restrictions             = reject_unauth_pipelining
+   -o smtpd_end_of_data_restrictions      =
+   -o smtpd_restriction_classes           =
+   -o smtpd_error_sleep_time              = 0
+   -o smtpd_soft_error_limit              = 1001
+   -o smptd_hard_error_limit              = 1000
+   -o smtpd_client_conenction_count_limit = 0
+   -o smtpd_client_connection_rate_limit  = 0
+   -o receive_override_options            = no_header_body_checks,no_unknown_recipient_checks,no_milters,no_address_mappings
+   -o local_header_rewrite_clients        =
+   -o smtpd_milters                       =
+   -o local_recipient_maps                =
+   -o relay_recipient_maps                =
+#+end_src
+
+** OS        - new user for =virtual mailbox=
+
+#+begin_src sh
+  $ sudo groupadd mailreader
+  $ sudo useradd -g mailreader -d /home/mail -s /sbin/nologin mailreader
+  $ sudo mkdir /home/mail
+  $ sudo chown mailreader:mailreader /home/mail
+  $ sudo apt-get install postgresql postfix-pgsql # install postgres
+#+end_src
+
+** postgres  - new user for =virtual mailbox=
+
+#+NAME: /etc/postgresql/10/main/pg_hba.conf
+#+begin_src conf
+  # removed # local all all              peer
+  # removed # host  all all 127.0.0.1/32 md5
+  # removed # host  all all ::1/128      md5
+
+  # TYPE DATABASE USER     METHOD
+  local  all      postgres peer
+
+  # TYPE DATABASE USER             ADDRESS      METHOD
+  host   mail     mailreader       127.0.0.1/32 md5
+  host   mail     mailreader       ::1/128      md5
+  local  mail     mailreader_admin              md5
+#+end_src
+
+
+#+begin_src sql
+  CREATE USER mailreader;       -- \password mailreader
+  CREATE USER mailreader_admin; -- \password mailreader_admin
+  CREATE DATABASE mail WITH OWNER mailreader_admin; -- \c mail
+
+  REVOKE CREATE ON SCHEMA public FROM PUBLIC; -- remove access to "public" schema on database "mail"
+  REVOKE USAGE  ON SCHEMA public FROM PUBLIC;
+  GRANT  CREATE ON SCHEMA public TO mailreader_admin;
+  GRANT  USAGE  ON SCHEMA public TO mailreader_admin;
+  ALTER SCHEMA public OWNER TO mailreader_admin;
+
+  CREATE TABLE users (
+    email    TEXT PRIMARY KEY,
+    password TEXT NOT NULL,
+    realname TEXT,
+    maildir  TEXT NOT NULL,
+    created  TIMESTAMP WITH TIME ZONE DEFAULT now()
+  );
+#+end_src
+
+** Dovecot   - generate password
+
+#+begin_src sh
+  $ sudo apt-get install dovecot-imap dovecot-pgsql
+  $ doveadm pw -l # list password hashing algorithms
+  $ doveadm pw -s PBKDF2 # will be ask for a password, it will output the hash
+   {PBKDF2}$1$SomeLongStringOfStuffHere
+#+end_src
+
+** postgres  - insert a single user, with the password obtained from doveadm
+
+#+begin_src sql
+  insert into users (
+    email,
+    password,
+    realname,
+    maildir
+  ) values (
+    'octavius@example.com',
+    '{PBKDF2}alkjqpwxqj' -- what "doveadm pw -s PBKDF2" returned
+    'Octavius the OCtopus',
+    'octavius/'
+  );
+#+end_src
+
+** postgres  - tell him about the =virtual mailbox=, handled by a single user and group
+
+#+begin_src sql
+  CREATE TABLE transports (
+    domain text primary key,
+    gid integer unique not null,
+    transport text not null
+  );
+
+  INSERT INTO transports (
+    domain,
+    gid,
+    transport
+  ) VALUES (
+    'example.com',
+    1002, -- gid on the OS
+    'virtual:' -- final destination
+  );
+#+end_src
+
+** postgres  - create a virtualalias maps lookup table, to redirect mailbox->mailbox
+
+#+begin_src sql
+  create table aliases (
+    alias text primary key,
+    email text not null
+  );
+
+  insert into aliases (
+    alias,
+    email
+  ) values (
+    'octaviustheoctopus@example.com', -- '@example.com' instead would be a "catch-all", not recommended
+    'octavius@example.com'
+  );
+#+end_src
+
+** postgres  - grant permissions to mailreader
+
+#+begin_src sql
+  GRANT USAGE ON SCHEMA public TO mailreader;
+  GRANT SELECT ON ALL TABLES IN SCHEMA public TO mailreader;
+#+end_src
+
+** Postfix   - virtual mailbox / postgresql
+
+#+NAME: /etc/postfix/pgsql/mailboxes.cf SELECT maildir FROM users WHERE email = "octavious@example.com";
+#+begin_src sh
+  user         = mailreader
+  password     = your_mailreader_password # plaintext
+  dbname       = mail
+  table        = mail
+  select_field = maildir
+  where_field  = email
+  hosts        = localhost
+#+end_src
+
+#+NAME: /etc/postfix/pgsql/transport.cf
+#+begin_src sh
+  user         = mailreader
+  password     = your_mailreader_password
+  dbname       = mail
+  table        = transport
+  select_field = transport
+  where_field  = domain
+  hosts        = localhost
+#+end_src
+
+#+NAME: /etc/postfix/pgsql/alias.cf SELECT email FROM aliases WHERE alias = "some@example.com";
+#+begin_src sh
+  user         = mailreader
+  password     = your_mailreader_password
+  dbname       = mail
+  table        = aliases
+  select_field = email
+  where_field  = alias
+  hosts        = localhost
+#+end_src
+
+#+NAME: main.cf
+#+begin_src sh
+  local_recipient_maps = # turn it off, we don't want to deliver mail the normal way
+  virtual_uid_maps     = static:1002 # OS maildir uid
+  virtual_gid_maps     = static:1002 # OS maildir gid
+  virtual_mailbox_base = /home/mail/ # preppended to what is on the db, eg /home/mail/octavious
+  virtual_mailbox_maps = pgsql:/etc/postfix/pgsql/mailboxes.cf
+  virtual_alias_maps   = pgsql:/etc/postfix/pgsql/aliases.cf
+  transport_maps       = pgsql:/etc/postfix/pgsql/transport.cf
+#+end_src
+
+** OS        - forward mails to root, mostly errors
+
+#+NAME: /root/.forward
+#+begin_src sql
+octavius@example.com
+#+end_src
+
+** Dovecot
+
+#+NAME: /etc/dovecot/dovecot.conf
+#+begin_src conf
+  protocols                 = imap
+  ssl_protocols             = TLSv1.2
+  ssl_cipher_list           = ALL:!kRSA...
+  ssl_prefer_server_ciphers = yes # prefer above order
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/10-ssl.conf "<" tell it to put the content of the file into the parameter
+#+begin_src conf
+  ssl      = yes
+  ssl_cert = </etc/letsencrypt/live/example.com/fullchain.pem
+  ssl_key  = </etc/letsencrypt/live/example.com/privkey.pem
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/10-auth.conf
+#+begin_src conf
+  #!include auth-system.conf.ext
+  !include auth-sql.conf.ext
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/auth-sql.conf.ext
+#+begin_src conf
+  passdb {
+    driver = sql
+    args   = /etc/dovecot/dovecot-sql.conf.ext
+  }
+  userdb { # we already put all the user/pass info on 1 table, so we don't use this
+    driver = prefetch
+  }
+#+end_src
+
+#+NAME: /etc/dovecot/dovecot-sql.conf.ext
+#+begin_src conf
+  driver              = pgsql
+  connect             = host=localhost dbname=mail user=mailreader password=yourpassword_here # plaintext password
+  default_pass_scheme = PBKDF2
+  password_query      = SELECT email as user, password, 'maildir:/home/mail'||maildir as userdb_mail FROM users WHERE email = '%u'
+  # %u is a placeholder for the full email address
+#+end_src
+
+#+NAME: /etc/dovecot/conf.d/10-mail.conf
+#+begin_src conf
+  mail_uid = 1002
+  mail_gid = 1002
+#+end_src
+
+** Postfix   - remove Received header with IP address of the client
+
+#+NAME: master.cf
+#+begin_src
+cleanup  unix n - y - 0 cleanup
+  -o header_checks = regexp:/etc/postfix/header_checks
+#+end_src
+
+#+NAME: /etc/postfix/header_checks
+#+begin_src
+/^Received:.*with ESMTPSA/ IGNORE
+#+end_src
+
+** Dovecot   - create folder automatically
+
+#+NAME: /etc/dovecot/conf.d/15-mailboxes.conf
+#+begin_src sh
+  namespace inbox {
+    mailbox Drafts {
+      auto        = subscribe # added, autocreate
+      special_use = \Drafts
+    }
+    mailbox Junk {
+      auto        = subscribe # added, autocreate
+      special_use = \Junk
+    }
+    mailbox Trash {
+      auto        = subscribe # added, autocreate
+      special_use = \Trash
+    }
+    mailbox Sent {
+      auto        = subscribe # added, autocreate
+      special_use = \Sent
+    }
+  }
+#+end_src
+
+** Postfix   - SASL
+
+#+NAME: master.cf
+#+begin_src sh
+  # on submission
+  -o smtpd_sasl_type              = dovecot
+  -o smtpd_sasl_path              = private/auth
+  -o smtpd_recipient_restrictions =
+#+end_src
+
+#+NAME: main.cf
+#+begin_src sh
+  smtpd_recipient_restrictions = reject_unknown_client_hostname # reject anything that doesn't pass a forward and reverse DNS lookup
+#+end_src
+
+** Dovecot   - SASL
+
+#+NAME: /etc/dovecot/conf.d/10-master.conf
+#+begin_src sh
+  service auth {
+    unix_listener auth_userdb {
+      path  = /var/spool/postfix/private/auth # let's postfix talk to dovecot
+      mode  = 0600
+      user  = postfix
+      group = postfix
+    }
+  }
+#+end_src
+
+** DNS       - reverse DNS, aka PTR record
+** DNS       - SPF's TXT record
+
+- WHO is allowed to send for this domain?
+- Uses a TXT
+- "v=spf1 mx -all"
+- does NOT protect spoffing of the the =From= header field
+
+** Postfix   - check if incoming emails passes SPF
+
+- spamassassin would use the SPF result, since this happens before
+
+- install
+  $ sudo apt install postfix-policyd-spf-python
+
+#+NAME: master.cf
+#+begin_src sh
+  policyd-spf unix - n n - 0 spawn user-policyd-spf argv=/usr/bin/policyd-spf
+#+end_src
+
+#+NAME: main.cf
+#+begin_src sh
+smtpd_recipient_restrictions = reject_unknown_client_hostname, check_policy_service unix:private/policyd-spf
+#+end_src
+
+** Amavis    - DKIM configure checks for input and output
+
+- we are the only ones that can sign it,
+  but everybody else can check it (with the public key)
+
+#+NAME: /etc/amavis/conf.d/50-user for 20200129._domainkey.example.com
+#+begin_src perl
+  $enable_dkim_verification = 1; # for incoming email
+  $enable_dkim_signing      = 1; # for outgoing email
+  dkim_key('example.com', '20200129', '/etc/amavis/dkim/example.com.pem'); # for outgoing email, 2nd is the selector
+#+end_src
+
+** Amavis    - DKIM generate certs
+
+#+begin_src sh
+  $ cd /etc/amavis
+  $ sudo mkdir dkim
+  $ cd dkim
+  $ amavisd-new genrsa ./example.com.pem 2048
+  $ sudo chown amavis:amavis example.com.pem
+#+end_src
+
+** Amavis    - generate DKIM DNS record
+
+#+begin_src sh
+  $ sudo amavisd-new showkey # shows it as a TXT record
+   v=DKIM1; h=sha256; k=rsa; p=BLABLABLA;
+#+end_src
+
+** Amavis    - treat ingoing and outgoing email differently
+
+- outgoing - add dkim
+- ingoing  - check dkim signature
+
+#+NAME: /etc/amavis/conf.d/50-user
+#+begin_src perl
+  $inet_socket_port = [10024,10026]; # listen on two ports
+  $max_servers      = 4;
+#+end_src
+
+** Postfix   - add second amavis service
+
+#+NAME: master.cf
+#+begin_src sh
+  # Service to pass to Amavis (incoming mail)
+  lmtp-amavis-inc unix - - - - 2 lmtp
+  -o lmtp_data_done_timeout     = 1200
+  -o lmto_send_xforward_command = yes
+  -o max_use                    = 20
+  # Service to pass to Amavis (outgoing mail)
+  lmtp-amavis-out unix - - - - 2 lmtp
+  -o lmtp_data_done_timeout     = 1200
+  -o lmtp_send_xforward_command = yes
+  -o max_use                    = 20
+
+  submission...
+  -o content_filter = lmtp-amavis-out:[127.0.0.1]:10026 # yes 6
+#+end_src
+
+#+NAME: main.cf
+#+begin_src sh
+  content_filter = lmtp-amavis-inc:[127.0.0.1]:10024
+#+end_src
+
+** Amavis    - DKIM
+
+#+NAME: /etc/amavis/conf.d/50-user
+#+begin_src perl
+  $interface_policy{'10026'} = 'ORIGINATING'; # coming for this port, should run this made up policy name
+  $policy_bank{'ORIGINATING'} = { # the policy
+      # allow DKIM signing
+      originating => 1,
+      # force MTA to convert mail to 7-bit before DKIM signing
+      # to avoid later conversions which could destroy sinature:
+      smtpd_discard_ehlo_keywords => ['8BITMIME'],
+  };
+  @dkim_signature_options_bysender_maps = ( {
+      '.' => { # "." means all mail
+          a => 'rsa-sha256',
+          c => 'relaxed/relaxed', # how canonalize the email header/body
+          ttl => 21*24*3600 # how long considered it valid, 21 days
+      }
+                                            } );
+#+end_src
+
+** ??        - DMARC
+
+- forces to mail to pass either or both SPF and DMARC
+- add DNS TXT record "_dmarc.example.com"
+- the record (no new lines)
+  "v=DMARC1;
+   p=none;  # what to do if it fails (quarentine/none/reject)
+   adkim=s; # alignment mode r=relaxed s=strict
+   aspf=s;  # alignment mode r=relaxed s=strict
+   rua=mailto:dmarcreporting@example.com"
+
+- ruf, "f" for "forensics", report when an error occurs, risky can be a lot
+  pct, percentage of email to take action if DMARC fails, default 100
+
+** opendmarc - check incoming DMARC
+
+- we are going to need to split again the postfix configuration
+  to run after DKIM had run
+
+- on a submission port that is different that the one handling outgoing email
+
+** postfix   - DMARC
+
+1:23
+
+#+NAME: master.cf
+#+begin_src sh
+#+end_src
+
+
+* 22 | Email Server / Correo Electrónico  | LastDragon
 
 https://www.youtube.com/playlist?list=PLxJguiVqgxl9P4jiymf00asbQoTMD-CN_
 
@@ -257,277 +883,12 @@ https://www.youtube.com/watch?v=CP8VoPaBkms
   - spamassassin unix - n n  - - pipe user=smapd argv=/usr/bin/spamc -s 20971520-f -e /usr/bin/sendmail -oi -f ${sender} ${recipient}
     - where 20971520 (20M) is the max size of things to verify
 
-* 20 | Building a Functional Email Server with Dominick LoBraico
+** 6) mail rate limiting
 
-- video https://www.youtube.com/watch?v=cM6mRLvFw54
+- https://mxtoolbox.com
 
-- replacing XXXX?
-  - INI config format, key=value, section {}
-  - advanced macros (looked to function calls)
-  - non explicit routing of mails
+- /etc/postfix/main.cf
+  anvil_rate_time_unit              = 60s # creates "cycles" of 60s, the longer the more restrictive
+  smtpd_client_message_rate_limit   = 100 # you cannot send more than 100 mails on that "cycle"
+  smtpd_client_recipient_rate_limit = 100 # you cannot send to more than 100 recipients on that "cycle"
 
-- wanted to change
-  - because they were scared of making changes
-  - configuration required specialized knowledge on the configuration DSL
-
-- final product
-  - written and configurable on OCaml
-
-- benefits
-  - tools: using editor tools for the configuration language
-    - jump to definition
-    - checks for unused values
-    - exhaustive case match
-  - culture: people treat code and configuration different
-    - refactoring
-    - testing
-
-- downsides
-  - needs to keep it up to date with smtp
-
-* 20 | Building an Ubuntu mail server with Postfix, Amavis, SpamAssassin, ClamAV, Dovecot, and OpenDMARC
-
-https://www.youtube.com/watch?v=6SfXXtb-nHM
-
-- blogposts
-  - postfix https://web.archive.org/web/20220217012541/https://www.sidequestninja.com/blog/hello-world-this-is-an-email/
-  - amavis https://web.archive.org/web/20220217012645/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-2/
-  - postgresql https://web.archive.org/web/20220217012747/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-3/
-  - dovecot https://web.archive.org/web/20220217012855/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-4/
-  - spf,dkim,dmarc https://web.archive.org/web/20220217012924/https://www.sidequestninja.com/blog/hello-world-this-is-an-email-part-5/
-
-#+NAME: main.cf
-#+begin_src conf
-  # "mydomain" is by default equal to "myhostname" TLD
-  # "myorigin" is by default equal to "myhostname"
-  myorigin                 = $mydomain
-  masquerade_domains       = $mydomain # helps strip TLD (?)
-  myhostname               = mail.example.com
-  mydestination            = $myhostname, localhost.$mydomain, $mydomain
-  smtpd_relay_restrictions = permit_mynetworks,permit_sasl_authenticated,defer_unauth_destination
-
-  smtpd_tls_cert_file         = /etc/letsencrypt/live/example.com/fullchain.pem
-  smtpd_tls_key_file          = /etc/letsencrypt/live/example.com/privkey.pem
-  smtpd_tls_dh1024_param_file = /etc/letsencrypt/ssl-dhparams.pem
-  smtpd_tls_security_level    = may # since we can't require it, to receive
-  smtp_tls_security_level     = may # to send
-  smtp_tls_loglevel           = 1
-#+end_src
-
-#+NAME: master.cf
-#+begin_src conf
-  smtp       inet n - y - - smtpd
-  submission inet n - y - - smtpd
-    -o syslog_name=postfix/submission
-    -o smtpd_tls_wrappermode=no         # disable a legacy mode
-    -o smtpd_tls_security_level=encrypt # disable non encrypted
-    -o smtpd_sasls_auth_enable=yes
-    -o smtpd_relay_restrictions=permit_mynetworks,permit_sasl_authenticated,defer
-  cleanup unix n - y - 0 cleanup
-    -o header_checks=regexp:/etc/postfix/header_checks
-#+end_src
-
-#+NAME: /etc/postfix/header_checks
-#+begin_src
-/^Received:.*with ESMTPSA/ IGNORE
-#+end_src
-
-** postfix virtual mailbox / postgres
-
-$ sudo groupadd mailreader
-$ sudo useradd -g mailreader -d /home/mail -s /sbin/nologin mailreader
-$ sudo mkdir /home/mail
-$ sudo chown mailreader:mailreader /home/mail
-$ sudo apt-get install postgresql postfix-pgsql
-
-#+begin_src sql
-  CREATE USER mailreader_admin;
-  -- \password mailreader_admin
-  CREATE DATABASE mail WITH OWNER mailreader_admin;
-  -- \c mail
-  REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-  REVOKE USAGE  ON SCHEMA public FROM PUBLIC;
-
-  GRANT CREATE ON SCHEMA public to mailreader_admin;
-  GRANT USAGE  ON SCHEMA public to mailreader_admin;
-  ALTER SCHEMA public OWNER TO mailreader_admin;
-
-  CREATE TABLE users (
-    email TEXT PRIMARY KEY,
-    password TEXT NOT NULL,
-    realname TEXT,
-    maildir TEXT NOT NULL,
-    created TIMESTAMP WITH TIME ZONE DEFAULT now()
-  );
-#+end_src
-
-#+NAME: /etc/postgresql/10/main/pg_hba.conf
-#+begin_src conf
-  # TYPE DATABASE USER METHOD
-  # TYPE DATABASE USER ADDRESS METHOD
-  local all postgres         peer
-  # comment out # local all all              peer
-  # comment out # host  all all 127.0.0.1/32 md5
-  # comment out # host  all all ::1/128      md5
-  host  mail mailreader       127.0.0.1/32 md5
-  host  mail mailreader       ::1/128      md5
-  local mail mailreader_admin              md5
-#+end_src
-
-$ sudo apt-get install dovecot-imap dovecot-pgsql
-$ doveadm pw -l # list password hashing algorithms
-$ doveadm pw -s PBKDF2
-
-#+begin_src sql
-  insert into users (
-    email,
-    password,
-    realname,
-    maildir
-  ) values (
-    'octavius@example.com',
-    '{PBKDF2}alkjqpwxqj' -- what "doveadm pw -s PBKDF2" returned
-    'Octavius the OCtopus',
-    'octavius/'
-  );
-#+end_src
-
-
-#+begin_src sql
-  create table transports (
-    domain text primary key,
-    gid integer unique not null,
-    transport text not null
-  );
-
-  insert into transports (
-    domain,
-    gid,
-    transport
-  ) values (
-    'example.com',
-    1002,
-    'virtual:' -- final destination
-  );
-#+end_src
-
-
-#+begin_src sql
-  create table aliases (
-    alias text primary key,
-    email text not null
-  );
-
-  insert into aliases (
-    alias,
-    email
-  ) values (
-    'octaviustheoctopus@example.com', -- '@example.com' would be a "catch-all", not recommended
-    'octavius@example.com'
-  );
-#+end_src
-
-
-#+begin_src sql
-  GRANT USAGE ON SCHEMA public TO mailreader;
-  GRANT SELECT ON ALL TABLES IN SCHEMA public TO mailreader;
-#+end_src
-
-#+NAME: /etc/postfix/pgsql/mailboxes.cf
-#+begin_src
-  user=mailreader
-  password=your_mailreader_password
-  dbname=mail
-  table=mail
-  select_field=maildir
-  where_field=email
-  hosts=localhot
-#+end_src
-
-#+NAME: /etc/postfix/pgsql/transport.cf
-#+begin_src
-  user=mailreader
-  password=your_mailreader_password
-  dbname=mail
-  table=transports
-  select_field=transport
-  where_field=domain
-  hosts=localhost
-#+end_src
-
-#+NAME: /etc/postfix/pgsql/alias.cf SELECT email FROM aliases WHERE alias = "some@example.com";
-#+begin_src
-  user=mailreader
-  password=your_mailreader_password
-  dbname=mail
-  table=aliases
-  select_field=email
-  where_field=alias
-  hosts=localhost
-#+end_src
-
-#+NAME: main.cf
-#+begin_src conf
-  local_recipient_maps = # turn it off, we don't want to deliver mail the normal way
-  virtual_uid_maps     = static:1002
-  virtual_gid_maps     = static:1002
-  virtual_mailbox_base = /home/mail/ # preppended to what is on the db
-  virtual_mailbox_maps = pgsql:/etc/postfix/pgsql/mailboxes.cf
-  virtual_alias_maps   = pgsql:/etc/postfix/pgsql/aliases.cf
-  transport_maps       = pgsql:/etc/postfix/pgsql/transport.cf
-#+end_src
-
-#+NAME: redict root on errors /root/.forward
-#+begin_src sql
-octavius@example.com
-#+end_src
-
-** dovecot
-
-#+NAME: /etc/dovecot/dovecot.conf
-#+begin_src conf
-  protocols = imap
-  ssl_protocols = TLSv1.2
-  ssl_cipher_list = ...
-  ssl_prefer_server_ciphers = yes # prefer above order
-#+end_src
-
-#+NAME: /etc/dovecot/conf.d/10-ssl.conf "<" tell it to put the content of the file into the variable
-#+begin_src conf
-  ssl = yes
-  ssl_cert = </etc/letsencrypt/live/example.com/fullchain.pem
-  ssl_key = </etc/letsencrypt/live/example.com/privkey.pem
-#+end_src
-
-#+NAME: /etc/dovecot/conf.d/auth-sql.conf.ext
-#+begin_src conf
-  passdb {
-    driver = sql
-    args   = /etc/dovecot/dovecot-sql.conf.ext
-  }
-
-  userdb { # we already put all the user/pass info on 1 table, so we don't use this
-    driver = prefetch
-  }
-#+end_src
-
-#+NAME: /etc/dovecot/onf.d/10-auth.conf
-#+begin_src conf
-  #!include auth-system.conf.ext
-  !include auth-sql.conf.ext
-#+end_src
-
-#+NAME: /etc/dovecot/dovecot-sql.conf.ext
-#+begin_src conf
-  driver = pgsql
-  connect = host=localhost dbname=mail user=mailreader password=yourpassword_here
-  default_pass_scheme = PBKDF2
-  password_query = SELECT email as user, password, 'maildir:/home/mail'||maildir as userdb_mail FROM users WHERE email = '%u'
-  # %u is a placeholder for the full email address
-#+end_src
-
-#+NAME: /etc/dovecot/conf.d/10-mail.conf
-#+begin_src conf
-  mail_uid = 1002
-  mail_gid = 1002
-#+end_src
