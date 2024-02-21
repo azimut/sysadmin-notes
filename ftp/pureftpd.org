@@ -1,0 +1,10 @@
+- https://wiki.gentoo.org/wiki/Security_Handbook/Securing_services#Pure-ftpd
+  - Use virtual users (never system accounts) by enabling the AUTH option.
+  - Set this to -lpuredb:/etc/pureftpd.pdb and create your users by using /usr/bin/pure-pw.
+  - Configure the MISC_OTHER setting to
+    + deny anonymous logins (-E)
+    + chroot everyone (-A)
+    + prevent users from reading or writing to files beginning with a . (dot) (-X)
+    + max idle time (-I)
+    + limit recursion (-L)
+    + and a reasonable umask value.

@@ -1,0 +1,17 @@
+- wiki https://en.wikipedia.org/wiki/Lftp
+  - Author: Alexander V. Lukyanov
+  - ftp/sftp/http/https/torrent client and file transfer program
+
+- source (C++) https://github.com/lavv17/lftp
+
+- home        http://lftp.yar.ru/
+  description http://lftp.yar.ru/desc.html
+  man         http://lftp.yar.ru/lftp-man.html
+
+- https://renenyffenegger.ch/notes/tools/lftp
+- https://scicomp.ethz.ch/wiki/Lftp
+- https://whatbox.ca/wiki/lftp
+- https://linux.overshoot.tv/wiki/lftp
+  https://linux.overshoot.tv/wiki/networking/lftp_backup_and_mirroring
+- 21 https://linuxconfig.org/lftp-tutorial-on-linux-with-examples
+- 15 https://web.archive.org/web/20111024014512/http://tutorials.papamike.ca/pub/lftp.html

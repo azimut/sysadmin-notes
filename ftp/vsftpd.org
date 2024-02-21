@@ -1,0 +1,15 @@
+- wiki https://en.wikipedia.org/wiki/Vsftpd
+- wiki arch https://wiki.archlinux.org/title/Very_Secure_FTP_Daemon
+- wiki gentoo https://wiki.gentoo.org/wiki/Vsftpd
+- wiki ubuntu https://help.ubuntu.com/community/vsftpd
+- wiki debian https://wiki.debian.org/vsftpd
+- wiki dd-wrt https://wiki.dd-wrt.com/wiki/index.php/Vsftpd
+- home https://security.appspot.com/vsftpd.html
+- Active Directory https://wiki.gentoo.org/wiki/Vsftpd/AD_Authentication
+
+- https://wiki.gentoo.org/wiki/Security_Handbook/Securing_services#Vsftpd
+  - It is simple and does not have as many features as pureftp and proftp.
+  - As you can see, ~there is no way for this service to have individual
+    permissions~, but when it comes to anonymous settings it is quite
+    good. Sometimes it can be nice to have an anonymous ftp server (for
+    sharing open source), and vsftpd does a really good job at this.
