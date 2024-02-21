@@ -1,12 +1,19 @@
 - https://www.sshaudit.com/hardening_guides.html
 - ? https://www.daemonology.net/blog/2012-08-30-protecting-sshd-using-spiped.html
 
-- ssh_config
+
+#+NAME: .ssh/config
+#+begin_src sh
+  Host github.com
+    IdentitiesOnly yes
+    IdentityFile   ~/.ssh/id_rsa
 
   ServerAliveInterval 60
-  ControlMaster auto
-  ControlPath ~/.ssh/conn/%r@%h:%p
-  ControlPersist 1h
+  ControlMaster       auto
+  ControlPath         ~/.ssh/conn/%r@%h:%p
+  ControlPersist      1h
+#+end_src
+
 
 - sshd_config
 

@@ -1,9 +1,13 @@
+- wiki https://en.wikipedia.org/wiki/Exim
+  - Original Author: Philip Hazel
+  - Authors: https://git.exim.org/exim.git/blob/HEAD:/src/ACKNOWLEDGMENTS
+  - "Exim 4" default on Debian
+  - widely used with "GNU Mailman" and "Cpanel"
+
 - home https://www.exim.org/
 - doc https://www.exim.org/exim-html-current/doc/html/spec_html/index.html
 - source (C) https://github.com/Exim/exim
-- wiki https://en.wikipedia.org/wiki/Exim
-  - "Exim 4" default on Debian
-  - widely used with "GNU Mailman" and "Cpanel"
+
 - patch https://duncanthrax.net/exiscan-acl/
 - wiki https://wiki.archlinux.org/title/Exim
 - wiki https://wiki.gentoo.org/wiki/Exim

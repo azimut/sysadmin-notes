@@ -1,10 +1,11 @@
 - channel system design https://www.youtube.com/@ByteByteGo/videos
 
-- https://github.com/donnemartin/system-design-primer
 - https://github.com/checkcheckzz/system-design-interview
-- https://github.com/shashank88/system_design
-- https://github.com/lei-hsia/grokking-system-design
+- https://github.com/donnemartin/system-design-primer
 - https://github.com/karanpratapsingh/system-design
+- https://github.com/lei-hsia/grokking-system-design
+- https://github.com/shashank88/system_design
+
 - https://github.com/ashishps1/awesome-behavioral-interviews
 - https://github.com/mxssl/sre-interview-prep-guide
 - https://github.com/bregman-arie/devops-exercises
@@ -13,19 +14,19 @@
 
 * Course: System Design Interview    | NeetCode
 
-+ https://colin-scott.github.io/personal_website/research/interactive_latency.html
-+ https://en.wikipedia.org/wiki/Token_bucket
-  https://en.wikipedia.org/wiki/Consistent_hashing
-+ https://en.wikipedia.org/wiki/Least_frequently_used
-  https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU
-+ https://cloud.google.com/learn/what-is-object-storage
-+ https://en.wikipedia.org/wiki/Content_delivery_network#Content_networking_techniques
-+ https://en.wikipedia.org/wiki/Webhook
-  https://en.wikipedia.org/wiki/Server-sent_events
-  https://gist.github.com/CMCDragonkai/6bfade6431e9ffb7fe88 (one way?)
-+ https://discord.com/blog/how-discord-stores-billions-of-messages
-  https://discord.com/blog/how-discord-stores-trillions-of-messages
-+ https://vitess.io/docs/resources/presentations/
+1. https://colin-scott.github.io/personal_website/research/interactive_latency.html
+2. https://en.wikipedia.org/wiki/Token_bucket
+   https://en.wikipedia.org/wiki/Consistent_hashing
+3. https://en.wikipedia.org/wiki/Least_frequently_used
+   https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU
+4. https://cloud.google.com/learn/what-is-object-storage
+5. https://en.wikipedia.org/wiki/Content_delivery_network#Content_networking_techniques
+6. https://en.wikipedia.org/wiki/Webhook
+   https://en.wikipedia.org/wiki/Server-sent_events
+   https://gist.github.com/CMCDragonkai/6bfade6431e9ffb7fe88 (one way?)
+7. https://discord.com/blog/how-discord-stores-billions-of-messages
+   https://discord.com/blog/how-discord-stores-trillions-of-messages
+8. https://vitess.io/docs/resources/presentations/
 
 ** 0 How to Approach
 

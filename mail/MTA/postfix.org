@@ -15,15 +15,23 @@
   $ sudo alternatives --set mta /usr/sbin/sendmail.postfix
 
 - usr/libexec/postfix
-
 - wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/securing_networks/assembly_securing-the-postfix-service_securing-networks
-- 11 video | Postfix and Postscreen: Stopping Spam Safely | Rob McGee https://www.youtube.com/watch?v=aq1LUZwWPXg
-- 12 video | Postfix: past, present and future            | Wietse Venema https://www.youtube.com/watch?v=ll7zF5MnHPs
-- 14 video | Postfix OSS Mail Server: Lessons Learned     | Wietse Venema https://www.youtube.com/watch?v=T046ku3z8xM
-- 14 video | Postfix recent adoption of new technologies  | Wietse Venema https://www.youtube.com/watch?v=eNAqg1pI7f0
-- 14 video | DNS Based Auth of Named Entities DANE        | Tony Cargile https://www.youtube.com/watch?v=ky8soThQ_GM
-- 18 video | A case study on building a mail archive      | Dr. Stephan Rein https://www.youtube.com/watch?v=8kxIlZ8ckYY
 
+- postscreen
+  - source (C) https://github.com/vdukhovni/postfix/tree/master/postfix/src/postscreen
+  - config https://github.com/iredmail/iRedMail/blob/master/samples/postfix/main.cf.postscreen
+  - config https://github.com/mailcow/mailcow-dockerized/blob/8d4ef147d2d7d8eda9575c0c3069fc6944fb6bd0/data/conf/postfix/main.cf#L35
+  - man https://www.postfix.org/postscreen.8.html
+  - tool https://github.com/stevejenkins/postwhite
+  - doc https://www.postfix.org/POSTSCREEN_README.html
+    - should be used on port 25 (for MTAs), not on 587 (for MUA)
+    - what? protection against mail server overload ("keeps the zombies away")
+    - how?
+      - handles multiple inbound SMTP connections, and decides which can talk to postfix
+      - keeps a list of clients that passed the test, to make them skip the test
+  - 21 https://opensecure.nl/blog/mail-postfix-postscreen-how-to/
+  - 22 https://www.linuxbabe.com/mail-server/configure-postscreen-in-postfix-to-block-spambots
+    - enabled by default in ireadmail, modoboa, mailcow?
 
 * General
 ** configuration files
@@ -187,6 +195,16 @@ root:  marc
 |      defer      |                                                                     |
 |      trace      |                                                                     |
 |-----------------+---------------------------------------------------------------------|
+
+
+* videos
+
+- 18 video | A case study on building a mail archive      | Dr. Stephan Rein https://www.youtube.com/watch?v=8kxIlZ8ckYY
+- 14 video | Postfix OSS Mail Server: Lessons Learned     | Wietse Venema https://www.youtube.com/watch?v=T046ku3z8xM
+- 14 video | Postfix recent adoption of new technologies  | Wietse Venema https://www.youtube.com/watch?v=eNAqg1pI7f0
+- 14 video | DNS Based Auth of Named Entities DANE        | Tony Cargile https://www.youtube.com/watch?v=ky8soThQ_GM
+- 12 video | Postfix: past, present and future            | Wietse Venema https://www.youtube.com/watch?v=ll7zF5MnHPs
+- 11 video | Postfix and Postscreen: Stopping Spam Safely | Rob McGee https://www.youtube.com/watch?v=aq1LUZwWPXg
 
 * 05 | The Book of Postfix
 

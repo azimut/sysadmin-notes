@@ -1,18 +1,45 @@
 - wiki https://en.wikipedia.org/wiki/Firewalld
-  - default on RedHat & SUSE
-  - can admin different firewall /zones profiles/
-  - for example, one zone for wifi another for ethernet
-  - external programs, like NetworkManager can switch between them
+  - default on RedHat & Fedora & SUSE
   - ~D-Bus~ interface, uses polkit for authentication
+  - external programs (eg NetworkManager) can switch between zones
   - Author: Eric Garver, Thomas Woerner
+
 
 - Description
   - ipv4 and ipv6 simultanous
   - can load ~kernel modules~ along a /service/ in the form of a /helper/ to help keep track of dependencies
-  - 1(one) zone per connection/interface
-  - default config =/var/lib/firewalld=
+  - default config =/var/lib/firewalld= or =/usr/lib/firewalld=
   - system config =/etc/firewalld=
   - only tracking incoming packets, outgoing can be tracked with the *direct interface*
+  - no DOS protection, rate limiting?
+  - Direct Rules: (DEPRECATED)
+    - to add your own ip*tables/ebtables rules in that syntax
+  - ~Rich Rules~
+    - source      (address)
+    - destination (address)
+    - one of:
+      - service, port, protocol, icmp-block, icmp-type, masquerade, forward-port, source-port
+    - log
+    - audit
+    - accept, reject, drop, mark
+  - ~zones~
+    - Similar to a complete firewall
+    - 1 zone per connection/iface
+    - A zone can be bound to several connections/iface
+    - Made of:
+      * services
+      * ports (ranges) with protocols
+      * rich rules
+      * icmp blocks
+      * masquerading
+      * port/packet forwarding
+      * default rule
+  - ~services~
+    - Made of:
+      * port (range) with protocol
+      * netfilter helper modules
+      * destination address (range)
+
 
 - home https://firewalld.org/
 - man richlanguage https://firewalld.org/documentation/man-pages/firewalld.richlanguage.html
@@ -29,6 +56,14 @@
 | --list-all                                | ZoneName ...               |
 | --get-active-zones                        | ZoneName interfaces: wlan0 |
 | --list-services                           | mdns sambda-client ssh     |
+|-------------------------------------------+----------------------------|
+| --permanent                               |                            |
+| --add-masquerade                          |                            |
+| --add-port=                               | 21-22/tcp                  |
+| --add-interface=                          | eth0                       |
+| --add-rule=                               |                            |
+| --remove-service=                         | mdns                       |
+|-------------------------------------------+----------------------------|
 | --direct                                  | DEPRECATED                 |
 | --direct --get-all-rules                  |                            |
 |-------------------------------------------+----------------------------|
@@ -43,13 +78,6 @@
 | --ipset=NAME --add-entry=IP               |                            |
 | --ipset=NAME --add-entries-from-file=FILE |                            |
 | --ipset=NAME --get-entries                |                            |
-|-------------------------------------------+----------------------------|
-| --permanent                               |                            |
-| --add-masquerade                          |                            |
-| --add-port=                               | 21-22/tcp                  |
-| --add-interface=                          | eth0                       |
-| --add-rule=                               |                            |
-| --remove-service=                         | mdns                       |
 |-------------------------------------------+----------------------------|
 
 
@@ -75,18 +103,28 @@
   $ firewall-cmd --permanent --zone=drop --add-source=ipset:blocklist_v4
   $ firewall-cmd --reload
 
+- https://github.com/firewalld/firewalld/issues/696
+  $ firewall-cmd --zone <zone> --add-rich-rule='rich icmp-type name="echo-request" accept'
+   rich
+   icmp-type name="echo-request"
+   accept
+
 * articles
 
+- 23 https://www.computernetworkingnotes.com/linux-tutorials/firewalld-rich-rules-explained-with-examples.html
 - 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-1-nftables/
 - 23 https://ejaaskel.dev/yocto-hardening-firewalls-part-2-firewalld/
-- 22 article | https://major.io/p/build-tailscale-exit-node-firewalld/
+- 22 https://major.io/p/build-tailscale-exit-node-firewalld/
 - 21 https://firewalld.org/2021/06/the-upcoming-1-0-0
 - 18 https://firewalld.org/2018/07/nftables-backend
-- 18 article | https://opensource.com/article/18/9/linux-iptables-firewalld
-- 15 article | http://geertj.me/2015/07/18/systemd-firewalld-tarsnap-ultimate-backup.html
+- 18 https://opensource.com/article/18/9/linux-iptables-firewalld
+- 15 http://geertj.me/2015/07/18/systemd-firewalld-tarsnap-ultimate-backup.html
 
+- https://datacadamia.com/os/linux/firewalld/rich-rule
+- https://www.golinuxcloud.com/firewalld-cheat-sheet/
 - wiki fedora
   https://fedoraproject.org/wiki/Firewalld
+  https://fedoraproject.org/wiki/Features/FirewalldRichLanguage
   https://docs.fedoraproject.org/en-US/quick-docs/firewalld/
 - wiki arch https://wiki.archlinux.org/title/Firewalld
 - wiki gentoo https://wiki.gentoo.org/wiki/Firewalld
@@ -104,16 +142,84 @@
 
 * videos
 
-** 20 video | Firewalld Changes Coming to Your OS | Eric Garver
+** 21 video | blocking icmp traffic firewalld     | mrwhitep
 
-https://www.youtube.com/watch?v=yy87quTsdVw
+https://www.youtube.com/watch?v=iaK6twfAJDk
 
-** TODO 15 video | firewalld - present and future      | Thomas Woerner
+- To block only allow ICMP for a specific IP
+  $ firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 192.168.1.181/32 -j ACCEPT
+  $ firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -j DROP
+  $ firewall-cmd --reload
+  $ firewall-cmd --direct --get-all-rules
 
-https://www.youtube.com/watch?v=L8rwSqONmCY
+- --runtime-to-permanent does NOT work with --direct iptables
+- rich-rule didn't worked for him, since icmp firewalld took precedence
 
-- new firewalld integration
-- firewall-offline-cmd, to make changes when firewalld is NOT running
+** 19 video | Firewalld Changes Coming to Your OS | Eric Garver
+
+- video: https://www.youtube.com/watch?v=yy87quTsdVw
+
+- new features (0.7)
+
+  - nftables
+    - nftables does NOT assume complete control of firewalling
+    - FirewallBackend=iptables
+
+  - rich rule priorities
+    - gives control of where they were be put, aka sorted
+    - priority=0 for old behaviour
+    - priority=32767 catch-all rule
+    - rule priority=32767
+      log prefix="UNEXPECTED: "
+      limit value="5/m"
+    - rule priority=-100 family="ipv4"
+      source address="10.1.1.0/24"
+      service name="ssh"
+      accept
+    - rule priority=-99
+      service name="ssh"
+      log
+      reject
+
+  - RFC3964 (6to4) ipv4 address filtering
+  - ~--check-config~
+  - FlushAllOnReload for direct rules
+
+** 15 video | firewalld - present and future      | Thomas Woerner
+
+- video: https://www.youtube.com/watch?v=L8rwSqONmCY
+- slides: https://docplayer.net/2696979-Firewalld-thomas-woerner-red-hat-inc-nfws-2015-june-22.html
+
+- Supports: iptables, ip6tables, ebtables (for bridges)
+- new firewalld integrations: fail2ban
+- ~firewall-offline-cmd~ to make changes when firewalld is NOT running
+
+- Rich rules - examples
+  - =Allow new ipv4/6 connections for ftp service and log 1 per minute using audit=
+    rule
+    service name="ftp"
+    log
+    limit value="1/m"
+    audit
+    accept
+  - =Allot ipv4 connections from 192.168.0.0/24 for ftp service, log 1 per minute using syslog*=
+    rule family="ipv4"
+    source address="192.168.0.0/24"
+    service name="tftp"
+    log prefix="tftp" level="info"
+    limit value="1/m"
+    accept
+  - =New ipv6 conenctions from 1:2:3:4:6:: to service radius are rejected and logged 3m. New ipv6 from other accepted.=
+    rule family="ipv6"
+    source address="1:2:3:4:6::"
+    service name="radius"
+    log prefix="radius" level="info"
+    limit value="3/m"
+    reject
+
+    rule family="ipv6"
+    service name="radius"
+    accept
 
 ** 13 video | Dynamic firewall with firewalld     | Thomas Woerner
 
