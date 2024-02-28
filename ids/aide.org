@@ -1,0 +1,104 @@
+- home https://aide.github.io/
+  - supports different
+    1) digest algorithms
+    2) file attributes
+    3) posix acl, selinux, xattrs, e2fs attributes
+
+- source (C) https://github.com/aide/aide
+
+- wiki https://en.wikipedia.org/wiki/Advanced_Intrusion_Detection_Environment
+  - Authors: Rami Lehti, Pablo Virolainen
+  - initially developed as an OSS alternative of Tripwire
+  - Functionality
+    1) takes a snapshot of the defined system files
+       - register hashes
+       - modification times
+    2) builds a database
+    3) later runs integrity tests with that database
+
+- Keep the database, offline and read-only
+
+- Initialize the database, and manually copy the db
+  $ aide --init --config=/etc/aide/aide.conf
+  $ cd /var/lib/aide; cp aide.db.new aide.db
+- Check config
+  $ aide --check --config=/etc/aide/aide.conf
+
+* /etc/aide/aide.conf
+
+** example
+
+#+begin_src sh
+  # recommended to not use the same output for the ones below
+  database           file:/var/lib/aide/aide.db     # OLD known values
+  database_out       file:/var/lib/aide/aide.db.new # for NEW databases
+  Logs               p+i+n+u+g+S
+  Binlib             p+i+n+u+g+S+b+m+c+md5+sha1
+  /bin               Binlib
+  /sbin              Binlib
+  /var/log           Logs
+  !/var/log/portage
+  # Authentication databases
+  /etc/selinux       ConfFiles
+  /etc/passwd        ConfFiles
+  /etc/shadow        ConfFiles
+  /etc/nsswitch.conf ConfFiles
+  # AUthentication configuration
+  /etc/pam.d         ConfFiles
+  /etc/securetty     ConfFiles
+  /etc/security      ConfFiles
+  # PAM libraries
+  /lib(64)?/security BinLib
+#+end_src
+
+** shorthand notation
+|--------+------------------------------------------|
+| p      | permissions                              |
+| i      | inode number                             |
+| n      | number of (hard) links                   |
+| u      | user information                         |
+| g      | group information                        |
+| s      | size                                     |
+| S      | size (only report for shrinking in size) |
+| b      | block count                              |
+| m      | modification time                        |
+| a      | access time                              |
+| c      | creation time                            |
+| md5    |                                          |
+| sha1   |                                          |
+| rmd160 |                                          |
+| tiger  |                                          |
+| R      | p+i+n+u+g+s+m+c+md5                      |
+| L      | p+i+n+u+g                                |
+| E      | empty group                              |
+| >      | grouwing log file "p+u+g+i+n+S"          |
+|--------+------------------------------------------|
+** supported macros
+
+- @@if[n]def "name"
+- @@define "name" "value"
+- @@undef "name"
+- @@if[n]host "hostname"
+- @@endif
+
+
+* wikis
+
+- wiki ubuntu https://help.ubuntu.com/community/FileIntegrityAIDE
+- wiki fedora https://docs.fedoraproject.org/en-US/quick-docs/aide-checking-file-integrity/
+- wiki suse https://doc.opensuse.org/documentation/leap/security/html/book-security/cha-aide.html
+- wiki arch https://wiki.archlinux.org/title/AIDE
+- wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/checking-integrity-with-aide_security-hardening
+- wiki gentoo https://wiki.gentoo.org/wiki/AIDE
+  - offline scanning (on article)
+
+* articles
+
+- 21 article | https://www.redhat.com/sysadmin/linux-security-aide
+- 17 article | https://www.hiroom2.com/2017/06/09/debian-8-file-integrity-check-with-aide/
+- 17 article | https://blog.rapid7.com/2017/06/30/how-to-install-and-configure-aide-on-ubuntu-linux/
+- 17 article | https://www.tecmint.com/check-integrity-of-file-and-directory-using-aide-in-linux/
+- 16 article | https://www.stephenrlang.com/2016/03/using-aide-for-file-integrity-monitoring-fim-on-ubuntu/
+- 11 article | https://web.archive.org/web/20141027162321/http://aide.sourceforge.net/stable/manual.html
+- 09 article | https://www.cyberciti.biz/faq/debian-ubuntu-linux-software-integrity-checking-with-aide/
+- https://www.howtoforge.com/how-to-configure-the-aide-advanced-intrusion-detection-environment-file-integrity-scanner-for-your-website

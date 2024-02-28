@@ -8,7 +8,7 @@
   - docs author? Jamie Strandboge
 
 - wiki gentoo https://wiki.gentoo.org/wiki/Ufw
-- wiki ubuntu https://wiki.ubuntu.com/UncomplicatedFirewall
+- wiki ubuntu https://wiki.ubuntu.com/UncomplicatedFirewall https://help.ubuntu.com/community/UFW
 - wiki arch https://wiki.archlinux.org/title/Uncomplicated_Firewall
 - man https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html
 
@@ -25,5 +25,7 @@
     https://github.com/Paul-Reed/cloudflare-ufw/
   - ufw and firewalld rules to block VPS bots and scrapers
     https://blog.abctaylor.com/ufw-and-firewalld-rules-to-block-vps-bots-and-scrapers/
+  - fix docker+ufw flaws?
+    https://github.com/chaifeng/ufw-docker
 
 - 21 video | Linux Security - UFW Complete Guide (Uncomplicated Firewall) https://www.youtube.com/watch?v=-CzvPjZ9hp8

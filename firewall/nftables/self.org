@@ -1,5 +1,6 @@
 - wiki https://en.wikipedia.org/wiki/Nftables
 - wiki gentoo https://wiki.gentoo.org/wiki/Nftables
+- wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/getting-started-with-nftables_firewall-packet-filters
 - home https://www.netfilter.org/projects/nftables/index.html
 - go source https://github.com/google/nftables
 

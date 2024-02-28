@@ -1,0 +1,7 @@
+- https://en.wikipedia.org/wiki/Preboot_Execution_Environment
+- https://wiki.archlinux.org/title/Preboot_Execution_Environment
+- https://wiki.gentoo.org/wiki/PXE
+- https://wiki.debian.org/PXEBootInstall
+
+- tool: all in one https://github.com/danderson/netboot
+- tool: all in one https://wiki.gentoo.org/wiki/Dnsmasq

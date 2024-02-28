@@ -1,17 +1,70 @@
+- source (Python) https://github.com/fail2ban/fail2ban
+  - filters https://github.com/fail2ban/fail2ban/tree/master/config/filter.d
+  - actions https://github.com/fail2ban/fail2ban/tree/master/config/action.d
+
 - wiki https://en.wikipedia.org/wiki/Fail2ban
   - 2004-
   - Author: Cyril Jaquier (French only speaker?)
-  - IPS
+  - A combination of a filter+action is called /jail/
   - prevents brute-force attacks
     - by monitoring log files
     - running scripts based of those
 
+- Description
+  - Try the regular expressions with =fail2ban-regex=
+    $ fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd.conf
+  - $ sudo =fail2ban-client=
+    |---------------------+------------------------------------|
+    | status              | to list jails                      |
+    | status JAIL         | to get stats                       |
+    | banned              | show all banned hosts on all jails |
+    | banned IP           | show jails banning this IP         |
+    | set JAIL unbanip IP | no restart needed                  |
+    | set JAIL banip IP   | ban IP by for *bantime*            |
+    |---------------------+------------------------------------|
+  - $ sudo iptables -nL # shows REJECT, with icmp
+  - logs
+    - /var/log/fail2ban.log
+  - configuration files
+    - /etc/fail2ban/jail.conf (do NOT modify this one)
+    - /etc/fail2ban/jail.local
+    - /etc/fail2ban/jail.d/*.conf
+  - Options
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | [DEFAULT]    |                                                |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | bantime      | 10m                                            |                                                                |
+    | findtime     | 10m                                            | the size of the *maxretry* window                              |
+    | ignoreip     | 127.0.0.1/8 ::1                                | loopback is already added, space separated (ip, cidr, domains) |
+    | loglevel     | INFO                                           |                                                                |
+    | maxretry     | 5                                              | threshold of failures                                          |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | [Definition] |                                                |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | _daemon      | postfix(-\w+)?/w+(?:/smtp[ds])?                |                                                                |
+    | failregex    | warning:.*\[<HOST>\]: SASL ERROR               |                                                                |
+    | ignoreregex  |                                                |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | [Init]       |                                                |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | journalmatch | _SYSTEMD_UNIT=postfix.service                  |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | ~jail~       |                                                |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
+    | enabled      | true                                           | default: false                                                 |
+    | filter       | postfix-login-failed                           |                                                                |
+    | action       | iptables-multiport[name=SMTP,port="smtp,imap"] |                                                                |
+    |              | ufw[name=SSH, port=ssh, protocol=tcp]          |                                                                |
+    | mode         | normal                                         |                                                                |
+    | port         | ssh                                            |                                                                |
+    | logpath      | $(sshd_log)                                    | fullpath                                                       |
+    | backend      | $(sshd_backend)s                               |                                                                |
+    |--------------+------------------------------------------------+----------------------------------------------------------------|
 
 - wiki gentoo https://wiki.gentoo.org/wiki/Fail2ban
 - wiki arch https://wiki.archlinux.org/title/Fail2ban
 - wiki source https://github.com/fail2ban/fail2ban/wiki
 - wiki ubuntu https://help.ubuntu.com/community/Fail2ban
-- source (Python) https://github.com/fail2ban/fail2ban
 
 
 - snippet
@@ -19,7 +72,64 @@
     https://github.com/ritsu/ipset-fail2ban
 
 
-- 23 article | https://ittavern.com/getting-started-with-fail2ban-on-linux/
-- 20 article | https://ww.telent.net/2020/12/22/fail2ban_or_ban_2_fail
-- 20 article | https://j3s.sh/thought/fail2ban-sux.html https://news.ycombinator.com/item?id=38834627
+- 06 article | https://www.ducea.com/2006/07/03/using-fail2ban-to-block-brute-force-attacks/
+- 14 article | f2b-loop https://blog.shanock.com/fail2ban-increased-ban-times-for-repeat-offenders/
+- 15 article | http://freesoftwaremagazine.com/articles/how_to_protect_your_linux_computer_from_remote_attacks_with_fail2ban/
+- 16 article | https://www.linuxjournal.com/content/server-hardening
 - 17 article | https://www.redpill-linpro.com/techblog/2017/12/07/fail2ban.html
+
+* 20 article | Fail2ban or ban 2 fail
+
+https://ww.telent.net/2020/12/22/fail2ban_or_ban_2_fail
+
+- nixos
+- postfix
+- systemd
+- blocks using a custom regex
+
+* 20 article | fail2ban sucks
+
+- https://j3s.sh/thought/fail2ban-sux.html
+
+- https://news.ycombinator.com/item?id=38834627
+  - Someone secured their SIP, configured ~huge security tokens~
+    which make expensive to process on bruteforce.
+    Affecting legitimate calls quality.
+  - machines ddos because ran out of disk space due logs
+  - "many real-life stories of caught/thwarted attacks include
+     the threat actor sucessfully breaching, but ultimately
+     getting suck on something relatively simple"
+  - preserve unprivileged ports with
+    =net.ipv4.ip_local_reserved_ports=
+
+
+- author's arguments
+  1) do not change the default port
+     - if under 1024
+       - ~if it dies any userland process can take it's place~
+     - weird rsync/scp flags
+     - you have to communicate the port
+  2) do not use fail2ban
+     - will not stop:
+       - APT (actors with a lot of resources can spawn ips)
+       - curious users (likely unsuccessful)
+       - bots (password strength makes them unsuccessful)
+  3) harden with build-in mechanism
+  4) whitelist ips/ranges
+
+* 23 article | Getting started with Fail2Ban on Linux
+
+https://ittavern.com/getting-started-with-fail2ban-on-linux/
+
+- ssh/iptables/Ubuntu 22.04
+- you CANNOT ban ips permanently
+  - workaround: create a jail with the same config, but different ~bantime~
+    #+begin_src sh
+      [perm]
+      enabled = true
+      port    = ssh
+      filter  = sshd
+      action  = iptables-multiport[name=sshd, port="ssh", protocol=tcp]
+      bantime = 999y
+    #+end_src
+  - then "set perm banip IP"

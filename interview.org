@@ -12,6 +12,84 @@
   https://github.com/bregman-arie/devops-resources
   https://github.com/Tikam02/DevOps-Guide
 
+- https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam
+
+* Course: InfraExpert
+** 2 Welcome
+
+- Interview Topics
+  1) Networking
+     - tcp/ip, udp, icmp, mac, ip, osi, load balancers
+  2) OS:
+     - processes
+     - threads
+     - concurrency
+     - locks
+     - mutex
+     - semaphores
+     - monitors
+     - deadlocks
+     - live locks
+     - context switching
+     - scheduling
+  3) Unix/Linux
+     - kernel, libraries, syscalls, memory managment, permissions, client server protocols
+  4) NALSD (Non abstract design thinking)
+     - design large scale system
+     - give estimates (from a proposed solution)
+     - answer vague design questions
+     - provide specifics
+     - mainly for SRE roles
+  5) Troubleshooting
+     - diagnose
+     - roleplay with interviewer
+  6) Coding
+     - test code
+     - corner cases
+     - troubleshooting
+     - large system applications
+  7) Behavioural
+
+** 3 What is a network?
+
+- 1960-
+- why? to share resources
+  - printer, cds, exchange files, communication
+
+- ~data link~ (me: the medium) through physical cables
+- ~data exchange~ between devices
+
+** 4 How the internet works?
+
+- Client server model
+
+** 5 Network Latency
+
+- ~Latency~ is the difference between
+  - when a packet was send and
+  - when a packet was received
+
+- RTT - ~Round Trip Time~ (aka x2 latency)
+  - the time it takes to get a response back
+
+- ~Throughput~
+  - /average/ ammount of data that i can pass through a network
+
+- ~Bandwith~
+  - /maximum/ ammount of data that it can pass through a network.
+
+** 6 Caching
+
+- Can happen at many points of the system
+
+- Goals (either)
+  1) speed up the system
+  2) minimize work
+
+- ~Cache Invalidation~
+  - Introduced by Mutable content.
+  - To avoid /stale cache/
+
 * Course: System Design Interview    | NeetCode
 
 1. https://colin-scott.github.io/personal_website/research/interactive_latency.html

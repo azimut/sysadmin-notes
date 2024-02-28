@@ -1,0 +1,1 @@
+- wiki arch https://wiki.archlinux.org/title/Rkhunter

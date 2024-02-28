@@ -1,0 +1,15 @@
+- source (C) https://github.com/mkj/dropbear
+
+- wiki https://en.wikipedia.org/wiki/Dropbear_(software)
+  - 2003
+  - Author: Matt Johnston
+  - Client and Server
+  - for environment with low memory and cpu
+  - used in OpenWrt
+
+- home https://matt.ucc.asn.au/dropbear/dropbear.html
+  - statically compiles to 110kB with uClibc
+  - can run from initd or standalone (?)
+
+- 16 video | PLUG: Dropbear SSH - Matt Johnston
+  https://www.youtube.com/watch?v=WO9iqd0MPhA

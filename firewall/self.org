@@ -2,8 +2,6 @@
 ipfirewall -> ipchains -> iptables -> nftables
 (ipfwadm)  ->          -> 2.6      -> 3.3?
 
-- psad is a collection of three lightweight system daemons (two main daemons and one helper daemon) that run on Linux machines and analyze iptables log messages to detect port scans and other suspicious traffic. A typical deployment is to run psad on the iptables firewall where it has the fastest access to log data.
-  https://www.cipherdyne.org/psad/
 - fwsnort parses the rules files included in the SNORT ® intrusion detection system and builds an equivalent iptables ruleset for as many rules as possible.
   https://www.cipherdyne.org/fwsnort/
 

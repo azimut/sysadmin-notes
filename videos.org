@@ -1,0 +1,118 @@
+* Course | Complete Home Network Security Monitoring
+
+- Security onion essentials https://www.youtube.com/playlist?list=PLljFlTO9rB17azL-HwV4BUWUv7Egmcx3T
+
+- playbook https://docs.securityonion.net/en/2.3/playbook.html
+- strelka https://github.com/target/strelka
+- osquery https://www.osquery.io/
+- wazuh https://wazuh.com/
+- suricata https://github.com/OISF/suricata
+- zeek https://zeek.org/
+- elastalert https://github.com/Yelp/elastalert
+- aptcacherng https://www.unix-ag.uni-kl.de/~bloch/acng/
+- idstools https://github.com/jasonish/py-idstools
+- kratos https://github.com/ory/kratos
+- filebeat https://github.com/elastic/beats/tree/main/filebeat
+- metricbeat https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-overview.html
+- auditbeat https://www.elastic.co/guide/en/beats/auditbeat/current/auditbeat-overview.html
+- fleet https://github.com/elastic/fleet-server
+- curator https://github.com/elastic/curator
+- sensoroni https://github.com/sensoroni/sensoroni
+- steno https://github.com/google/stenographer
+
+
+** Hardware
+
+- Cat6 Ethernet Cable
+
+- Wifi Bridge:
+  - GL.iNet GL-MT1300 / GL AR750S
+
+- Managed Switch:
+  - Tp-LInk TL-SG105E
+  - Must have ~port mirroring~
+
+- Onion Server (close to minimum)
+  - Dell Optiplex 9020
+  - Quad Core i5 4570
+  - 32GB RAM
+  - 2TB HDD (not SSD)
+  - PCI Extra network adaptor
+    - Make sure is older than Security Onion's Linux kernel
+
+** Building the network
+
+- Managed Switch
+  - will get assigned an IP
+  - one port will be setup as mirroring
+  - other ports can be limited in speed to avoid congestion on mirror
+
+- Bridge router
+  - switch it to "access point" mode
+  - this might not need bridge necesarilly
+
+** Setting up and deploying Security Onion
+
+- gpg4win
+  - Kleopatra is the name of its GUI
+  - should return "the data could not be verified",
+    because the .key downloaded is not trusted by anyone (?
+  - instead compare the "audit log" on Kleopatra
+
+- balena etcher
+  - Windows will ask permission for "Window Command Processor" to run
+
+- UEFI
+  - usually you need do these changes to be able to change the boot sequence
+    - disable "secure boot"
+    - enable legacy option ROMs
+  - To power on after a power outage occurs:
+    Power Management > AC Recovery > Power On
+
+- "Standalone installation" type
+- "Standard" network installation (not airgap)
+- Automatic updates installations (updates non security onion software)
+- Choose ~zeek~ (formerly Bro) to generate metadata instead of going for ~suricata~ for both metadata and NIDS alerts
+- Select ETOPEN (Emerging Threats Open) for the IDS ruleset
+- Keep the additional services on
+  - playbook https://docs.securityonion.net/en/2.3/playbook.html
+  - strelka https://github.com/target/strelka
+  - osquery https://www.osquery.io/
+  - wazuh https://wazuh.com/
+** Using Security Onion
+
+- ossec = wazuh
+- it can take up to 18 minutes for ALL Security Onion services to properly start
+
+$ sudo init 6     # restart
+$ sudo yum update
+$ sudo soup       # Security Onion UPdated
+$ ssh onion-host
+$ sudo so-status
+
+- Security onion essentials https://www.youtube.com/playlist?list=PLljFlTO9rB17azL-HwV4BUWUv7Egmcx3T
+
+- List of containers $ sudo so-status
+  - sensoroni https://github.com/sensoroni/sensoroni
+  - steno https://github.com/google/stenographer
+  - soc (security onion console)
+  - soctopus ????
+  - aptcacherng https://www.unix-ag.uni-kl.de/~bloch/acng/
+  - idstools https://github.com/jasonish/py-idstools
+  - kratos https://github.com/ory/kratos
+  - filebeat https://github.com/elastic/beats/tree/main/filebeat
+  - fleet https://github.com/elastic/fleet-server
+  - curator https://github.com/elastic/curator
+  - mysql
+  - playbook
+  - redis
+  - influxdb
+  - nginx
+  - kibana
+  - logstash
+  - elastalert
+  - elasticsearch
+  - suricata
+  - telegraf
+  - wazuh
+  - zeek

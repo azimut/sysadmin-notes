@@ -17,6 +17,8 @@
 - usr/libexec/postfix
 - wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/securing_networks/assembly_securing-the-postfix-service_securing-networks
 
+What is postfix in linux?
+
 - postscreen
   - source (C) https://github.com/vdukhovni/postfix/tree/master/postfix/src/postscreen
   - config https://github.com/iredmail/iRedMail/blob/master/samples/postfix/main.cf.postscreen

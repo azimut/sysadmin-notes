@@ -1,10 +1,14 @@
+- https://linux-audit.com/audit-and-harden-your-ssh-configuration/
 - https://www.sshaudit.com/hardening_guides.html
 - ? https://www.daemonology.net/blog/2012-08-30-protecting-sshd-using-spiped.html
 
 - =client= $ ssh-keygen -t ed25519
 - =client= $ ssh-copy-id user@foo
 
-#+NAME: .ssh/config
+- wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/securing_networks/assembly_using-secure-communications-between-two-systems-with-openssh_securing-networks
+
+* ~/.ssh/config
+
 #+begin_src sh
   Host github.com
     IdentitiesOnly yes
@@ -16,7 +20,8 @@
   ControlPersist      1h
 #+end_src
 
-#+NAME: /etc/sshd_config
+* /etc/sshd_config
+
 #+begin_src sh
   # do NOT enable DSA or ECDSA
   HostKey /etc/ssh/ssh_host...
