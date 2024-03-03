@@ -1,0 +1,1 @@
+https://unix.stackexchange.com/questions/684879/why-xfs-under-luks-encryption-is-so-slow-samsung-980-pro-ssd

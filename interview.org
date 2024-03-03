@@ -90,6 +90,8 @@
   - Introduced by Mutable content.
   - To avoid /stale cache/
 
+- 09:00
+
 * Course: System Design Interview    | NeetCode
 
 1. https://colin-scott.github.io/personal_website/research/interactive_latency.html
