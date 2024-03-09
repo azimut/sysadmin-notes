@@ -15,7 +15,7 @@
 - https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam
 
 * Course: InfraExpert
-** 2 Welcome
+**  2 Welcome
 
 - Interview Topics
   1) Networking
@@ -50,7 +50,7 @@
      - large system applications
   7) Behavioural
 
-** 3 What is a network?
+**  3 What is a network?
 
 - 1960-
 - why? to share resources
@@ -59,17 +59,17 @@
 - ~data link~ (me: the medium) through physical cables
 - ~data exchange~ between devices
 
-** 4 How the internet works?
+**  4 How the internet works?
 
 - Client server model
 
-** 5 Network Latency
+**  5 Network Latency
 
 - ~Latency~ is the difference between
   - when a packet was send and
   - when a packet was received
 
-- RTT - ~Round Trip Time~ (aka x2 latency)
+- ~Round-Trip Time~ RTT (aka x2 latency)
   - the time it takes to get a response back
 
 - ~Throughput~
@@ -78,19 +78,163 @@
 - ~Bandwith~
   - /maximum/ ammount of data that it can pass through a network.
 
-** 6 Caching
+**  6 Caching
 
 - Can happen at many points of the system
 
-- Goals (either)
-  1) speed up the system
+- Goals (either) by storing in a more convenient location
+  1) minimize latency
   2) minimize work
 
 - ~Cache Invalidation~
-  - Introduced by Mutable content.
+  - Introduced by /mutable content/
   - To avoid /stale cache/
 
-- 09:00
+- When to consider caching?
+  - if you only are going to be doing a read or a write of data
+  - if you don't care about staleness
+  - if you can invalidate stale data
+  - if using a distributed system
+
+- Types of cache
+  - =Spatial=: caches also elements "near" the requested item.
+  - =Temporal=: you keep the data with a timestamp
+  - =Distributed=: temporal+spatial
+
+- Implementations
+  - =Write Through Cache=:
+    - slow
+    - solves inconsistency problem
+    - new data is written to both simultaneuosly
+      - main storage
+      - cache
+  - =Write Back Cache=
+    - fast/asynchronous
+    - more complex (difficult to maintain consistency)
+      - algorithms used: fifo, lifo, lru, lfu
+    - writes directly to cache
+    - cache will handle the write to the main storage
+
+- ~CDN~ proxy and content caching
+
+**  7 OSI & TCP/IP models
+
+- 1969
+  There were no standarization for local network protocols between different vendors
+  Neither on protocols or cables.
+
+- "Protocol Wars" - TCP/IP vs OSI
+
+**  8 OSI    Model
+
+- 1994-
+- Open Systems Interconnection
+- Conceptual Framework
+- Mnemonic:
+  "A Priest Saw Two Nuns Doing Pushups"
+  "All People Should Try New Dog Parks"
+- Seven(7) Abstraction Layers
+  1) Physical: hubs, voltages, electronic pulses, cables
+  2) Data link: node to node data transfer, MAC, ~frames~, LLC (logical link control)
+  3) Network: rcv/snd, IP, ~packets~
+  4) Transport: delivery, error checking, tcp
+  5) Session: controls conversation, sql
+  6) Presentation: translates data, jpg, ascii, encrypt/decrypt
+  7) Application: end user and app layer, web browser, http, https, smtp, ftp, dns
+
+**  9 TCP/IP Model
+
+- Mnemonic: "Always Try New Dog Parks"
+
+- IPv4: 4 billion unique addresses
+- IPv6: 340 undecillion
+  - larger packages
+  - more straighforward header
+
+- Layers
+  |----------------+---------------+------------------|
+  | Application    | http ftp smtp | data             |
+  | Transport      | tcp udp       | segments         |
+  | Internet       | ip icmp arp   | packets/datagram |
+  | Data Link      | ethernet      | frames           |
+  | Physical (New) | cables NICs   | bits             |
+  |----------------+---------------+------------------|
+
+- IPv4 to IPv6 migration strategies
+  - dual stacking
+  - tunneling
+  - NAT (has performance overhead)
+
+** 10 TCP & UDP
+
+- TCP Fields
+  - Sequence Number: counter to keep track of each byte sent
+    - 32 bit value
+    - 5 bit timestampts
+    - 3 bit MSS (maximum segment size)
+    - 24 bit cryptographic hash function
+  - Checksum: checks corrupted segments (16bit)
+
+- Communication
+  - < SYN 1
+  - > ACK 1+N (N=Size of data)
+
+- Handshake for ending a connection
+  - < FIN N'
+  - > SYN/ACK N'+1
+  - > FIN 1
+  - < SYN 2
+
+- =Syn Cookies=
+  - _Previously_
+    After a SYN is received, a "buffer" is kept to keep
+    the connection status while waiting for
+    a response to the SYN/ACK.
+  - _What?_
+    In response this was created to avoid Syn-Flood attacks.
+  - _How?_
+    We reply with a SYN/ACK and forget about the connection
+    By also sending the ~sequence number~ generated used a special function.
+    Forgets about the connection.
+    When receives an ACK, it checks the ~sequence number~ validity and accept or rejects based on it.
+
+** 11 Routing Final (PPP,IP)
+
+- At the data link level hosts can communicate through
+  - Ethernet
+  - PPP
+
+- CIDR (Classless Inter-Domain Routing)
+
+- Routing matches the longer prefix matched
+
+- ~MTU~ Maximum Transmission Unit
+  - Largest packet size of data that a device on the network can accept.
+  - =1500 by Ethernet
+
+- MSS
+  - is detemined by  MTU
+  - 1500 - 40 (of headers)
+    1460
+
+- Each devide on the route decreases the ~TTL~ value
+
+** 12 Troubleshooting Final
+
+- Mac: List all hardware
+  $ networksetup -listallhardwareports
+
+** 13 Operating Systems
+
+- Before OS's, you had to manually load different programs into a computer.
+
+- An OS is an intermediary between the user and the hardware.
+- An os can
+  - run other programs
+  - have ~device drivers~ communicate between each other
+  - thanks to ~scheduling~ allow to run multiple programs at the same time
+
+08:00
 
 * Course: System Design Interview    | NeetCode
 

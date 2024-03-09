@@ -24,3 +24,5 @@
   https://superuser.com/questions/650291/how-to-get-video-duration-in-seconds
 - get slice of video
   ffmpeg -ss 00:01:21 -to 00:01:24
+- Remove all audio streams / tracks https://stackoverflow.com/questions/38161697/how-to-remove-one-track-from-video-file-using-ffmpeg
+  ffmpeg -i input -map 0 -map -0:a -c copy output
