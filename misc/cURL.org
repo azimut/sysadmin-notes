@@ -10,6 +10,8 @@
 - developed by ~Daniel Stenberg~
 - stands for "client for URL"
 
+- article https://hackaday.com/2024/02/15/linux-fu-curling-c/
+
 * command
 
 |----+--------------+----------------------------+---------------------------|

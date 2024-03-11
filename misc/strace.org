@@ -1,0 +1,10 @@
+- video https://media.ccc.de/v/all-systems-go-2023-228-why-would-you-still-want-to-use-strace-in-2023-
+  - https://lobste.rs/s/fi5w51/why_would_you_still_want_use_strace_2023
+    Some new (to me) things I’ve learned from the video:
+    --seccomp-bpf to attach a BPF filter to limit ptrace stops to relevant syscalls. And also the limitations and caveats that go with this.
+    -k to record stack traces (I’ve used this before but learned some new tricks)
+    -y and -yy to print paths, sockets and other information related to file descriptors
+    -Y to show command names associated with PIDs, handy when tracing multiple PIDs with -f. There is also an option to show PID namespace mappings.
+    -z/-Z to show only successful/failed syscalls
+    --trace-fds to limit tracing to selected file descriptors
+    --inject to fake errors or return values or arguments --tips to have the ascii ostrich dispense a random tip
