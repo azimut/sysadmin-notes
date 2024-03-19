@@ -1,0 +1,7 @@
+- https://github.com/itsthejb/docker-ispconfig
+
+* jobs
+
+- path https://github.com/cyberkathosting/ispconfig3/blob/47fb178ff7a21bea0bd688376292146d83a18fce/interface/web/remote/json.php#L4
+- remote/json.php https://github.com/cyberkathosting/ispconfig3/blob/develop/interface/web/remote/json.php
+  class https://github.com/cyberkathosting/ispconfig3/blob/develop/interface/lib/classes/json_handler.inc.php

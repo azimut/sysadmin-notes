@@ -1,0 +1,49 @@
+- wiki https://en.wikipedia.org/wiki/Squid_(software)
+  - 1996-
+  - Fork of "Havest Object Cache"
+  - Author: Duane Wessels
+
+- home http://www.squid-cache.org/
+- doc http://www.squid-cache.org/Doc/
+- source (C++) https://github.com/squid-cache/squid
+
+- caching and forwarding cache HTTP proxy
+- does NOT support SOCKS
+- special configuration is needed to support resume downloads and cache them
+- reduces the ammount of bandwith
+
+* articles
+
+- wiki https://wiki.archlinux.org/title/squid
+- wiki https://wiki.gentoo.org/wiki/Squid
+- https://www.theregister.com/2023/10/13/squid_proxy_bugs_remain_unfixed
+  - https://megamansec.github.io/Squid-Security-Audit/
+    https://github.com/MegaManSec/Squid-Security-Audit
+  - https://joshua.hu/squid-security-audit-35-0days-45-exploits
+
+* Jobs
+
+** the user:pass authentication system is not working
+
+https://www.upwork.com/jobs/Squid-Proxy-Ubuntu-Fix_~010f03f51c8c5ac63b/?referrer_url_path=find_work_home
+
+You'll be required to fix ongoing issues with Squid Proxy. We have
+IP addresses routed to our server and assigning them with a custom
+script. However _the user:pass authentication system is not working_
+at all after the server has been rebooted.
+
+_Some IP subnets are not pinging at all_ while the others are not
+working with the necessary authentication protocol. Your job will be:
+
+1) to finally identify this issue and make sure this won't happen for future server restarts
+2) explain the issue in great detail and also how the script may be responsible for it
+3) provide a solution to us / our hosting provider
+
+The functionality of the custom script (basically executing squid and
+configuring the ip addresses) will be provided in detail so you won't
+have any issues understanding the ongoing processes.
+
+You will be asked to answer the following questions when submitting a proposal:
+
+1) Describe your experience with Squid Proxy
+2) Are you familiar with the setup of ip addresses for proxy authentication?

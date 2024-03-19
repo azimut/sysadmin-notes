@@ -1,0 +1,5 @@
+- home https://www.irif.fr/~jch/software/polipo/
+  - _No longer maintained_
+    When it was first written, Polipo was probably the best HTTP proxy available.
+    Since then, the web has changed, and HTTP proxies are no longer useful:
+    most traffic is encrypted, and a web proxy merely acts as a dumb intermediary for encrypted traffic.
