@@ -1,2 +1,12 @@
+* disable interface
+
+#+begin_src
+[main]
+plugins=ifcfg-rh,keyfile
+
+[keyfile]
+unmanaged-devices=interface-name:wlo1
+#+end_src
+
 * get password from Networkmanager
   # nmcli --show-secrets connection show id Speedy-Fibra-carlos

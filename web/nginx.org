@@ -7,6 +7,8 @@
 - https://github.com/denji/nginx-tuning
 - https://github.com/h5bp/server-configs-nginx
 - https://github.com/h5bp/server-configs-apache
+- https://github.com/dev-sec/ansible-collection-hardening/tree/master/roles/nginx_hardening
+  https://dev-sec.io/baselines/nginx/
 - https://gist.github.com/radupotop/2aef0bdc0ccbd3a706044e3598b12cf5
   #+begin_src conf
     # Nginx default Dummy server

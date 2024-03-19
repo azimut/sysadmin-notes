@@ -1,3 +1,4 @@
+- supervisord https://docs.docker.com/config/containers/multi-service_container/
 - tool https://github.com/wagoodman/dive
 
 * Article: https://fasterthanli.me/series/building-a-rust-service-with-nix/part-5

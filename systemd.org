@@ -5,19 +5,19 @@
 * XORG
   journalctl _COMM=Xorg
 * Disable services
-|--------------------+---------------------------------------------------------------------------|
-| bluetooth          |                                                                           |
-| cups               | printer support                                                           |
-| dmraid-activation  | raid                                                                      |
-| iio-sensor-proxy   | *dbus* extension for sensors (light, rotation, speed)                     |
-| iscsi              |                                                                           |
-| mdmonitor          | raid                                                                      |
-| ModemManager       | 2G/3G/4G usb modem support                                                |
-| multipathd         | remote disk?                                                              |
-| *packagekit        | UI for OS package removal                                                 |
-| switcheroo-control | *dbus* extension for 2 gpu cards                                          |
+|--------------------+-------------------------------------------------------------------------------|
+| bluetooth          |                                                                               |
+| cups               | printer support                                                               |
+| iscsi                |                                                                               |
+| multipathd         | remote disk?                                                                  |
+| *packagekit        | UI for OS package removal                                                   |
 | *udisks2           | implements *dbus* interfaces used to query and manipulate storage devices |
-|--------------------+---------------------------------------------------------------------------|
+| dmraid-activation  | raid                                                                           |
+| mdmonitor         | raid                                                                           |
+| ModemManager     | 2G/3G/4G usb modem support                                                |
+| switcheroo-control | *dbus* extension for 2 gpu cards                                           |
+| iio-sensor-proxy  | *dbus* extension for sensors (light, rotation, speed)                       |
+|--------------------+-------------------------------------------------------------------------------|
 udisks2: > authselect disable-feature with-fingerprint
 packagekit: needs mask besides disable
 * Other services
