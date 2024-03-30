@@ -1,2 +1,4 @@
 - https://github.com/sovereign/sovereign
 - https://github.com/lobsters/lobsters-ansible
+- https://github.com/dev-sec/ansible-collection-hardening
+- https://github.com/ansible-lockdown

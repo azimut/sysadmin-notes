@@ -17,6 +17,7 @@
 |----+--------------+----------------------------+---------------------------|
 | -A | --user-agent | Wget/1.0                   | user agent                |
 | -H | --header     | "Content-Type: text/plain" | header                    |
+| -I | --head       | -                          | fetch headers only        |
 | -X | --request    | POST                       | http method               |
 | -d | --data       | foo=bar                    |                           |
 | -L | --location   | -                          | folows redirections       |
