@@ -20,6 +20,13 @@
   https://gist.github.com/ktnr74/60ac7bcc2cd17b43f2cb
   https://stackoverflow.com/questions/35275828/is-there-a-way-to-check-if-android-device-screen-is-locked-via-adb
   https://ktnr74.blogspot.com/2014/09/calling-android-services-from-adb-shell.html
+* webcam
+- .deb for ubuntu https://iriun.com/
+  - closed source
+- driodam
+  - source (C) https://github.com/dev47apps/droidcam
+  - releases https://github.com/dev47apps/droidcam/releases
+  - faq https://www.dev47apps.com/droidcam/help/
 * error: insufficient permissions for device error
 https://itsfoss.com/fix-error-insufficient-permissions-device/
 When "adb shell" fails with that error

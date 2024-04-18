@@ -1,0 +1,44 @@
+- Open Source operating system for mobile devices (smartphones and tablets)
+- The first beta version of /e/ was released back in 2018 based on Android 7.
+- based on Google's open source Android
+- It is a fork of LineageOS
+- does NOT include =Google Play Services=
+  - uses =microG= as a free and open source replacement
+
+- Company
+  - ad$ https://www.youtube.com/@murenacorp
+  - Distributes phones with /e/OS, an LinageOS fork https://e.foundation/e-os/
+    - https://www.youtube.com/watch?v=2hJ-1243pzE
+      - has a physical switch to disable mic/camera and other to disable connectivity
+      - fingerprint sensor
+      - shit mic
+      - kickstarter phone (murena 2) is being delivered on 2024 (!)
+    - degoogled OS
+    - "Open source means auditable privacy"
+    - Born in 2022-
+    - Uses an OSS implemtation of Google's apis https://en.wikipedia.org/wiki/MicroG
+    - From Mandrake Linux creator Gael Duval
+  - Services for the cloud apps
+  - Contains non-free binaries (per FSF)
+
+- 2001 https://www.youtube.com/watch?v=Z-v986-oIO8
+  - there is a market for privacy
+
+- Products
+  - meta search engine https://spot.ecloud.global/
+    - fork of https://docs.searxng.org/
+
+- https://doc.e.foundation/devices
+  - 246 devices, 19 stable
+  - some android 10, some 13
+
+- gael twitter https://mastodon.social/@gael
+- forum https://community.e.foundation/c/e-foundation-community/16
+
+- /e/: Privacy friendly does not necessarily mean secure – Custom ROMs Part6
+  https://www-kuketz--blog-de.translate.goog/e-datenschutzfreundlich-bedeutet-nicht-zwangslaeufig-sicher-custom-roms-teil6/?_x_tr_sl=de&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc
+
+- Instructions
+  - https://doc.e.foundation/devices/gta4l/community
+  - https://doc.e.foundation/devices/gta4l/install
+  - https://doc.e.foundation/support-topics/build-e
