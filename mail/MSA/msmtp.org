@@ -1,0 +1,5 @@
+- home https://marlam.de/msmtp/
+- doc https://marlam.de/msmtp/msmtp.html
+- wikipedia https://en.wikipedia.org/wiki/Msmtp
+- wiki arch https://wiki.archlinux.org/title/msmtp
+- source (C) https://github.com/marlam/msmtp

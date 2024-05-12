@@ -1,0 +1,32 @@
+- https://www.superlinked.com/vectorhub
+
+- comparisons https://superlinked.com/vector-db-comparison/
+
+- weaviate Go
+- milnvus  Go
+- chroma   based on clickhouse
+- pinecone Close Source
+
+* Video 24: Vector embeddings at the center of your data stack/ Daniel Svonava (Superlinked)
+
+https://www.youtube.com/watch?v=tqSkfRbGzpk
+
+- For enterprise, LLMs are not enough
+
+* Video 24: Vector databases are so hot right now. WTF are they?
+
+https://www.youtube.com/watch?v=klTvEwg3oJ4
+
+- a vector is an array of numbers
+- they can represent more complex objects
+  - words
+  - sentences
+  - images
+  - audio
+- in a continuous high-dimensional space called ~embedding~
+- can be used in applications like
+  - recommendation systems
+  - search engines
+  - generative ai (chatgpt)
+- you query the vector by similarity
+- they can add /long-term memory/ to LLMs
