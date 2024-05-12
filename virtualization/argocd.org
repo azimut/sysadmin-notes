@@ -1,0 +1,6 @@
+- GitOps CD for Kubernetes (git as the single interface for making changes)
+- Instead of externally accessing the cluster like Jenkins
+  The tool is part of the cluster.
+- Separate pipelines for CI (for developers) and CD (for Ops)
+- https://www.youtube.com/watch?v=MeU5_k9ssrs
+  TODO 13:30

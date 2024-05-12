@@ -5,6 +5,10 @@ https://www.emacswiki.org/emacs/EmacsNewbieKeyReference
 | C-x C-o | remove all but 1 empty line |
 | C-i     | TAB                         |
 
+- blog, some emacs https://xenodium.com/
+- literate emacs config https://drollery.org/emacs/
+- package: https://github.com/riscy/shx-for-emacs
+- package: terminal emulator https://codeberg.org/akib/emacs-eat
 - Why company with lsp does NOT show anything on the "echo area"?
   - company-box-doc
     - (company-call-backend 'doc-buffer candidate)

@@ -1,0 +1,52 @@
+- home https://www.qemu.org/
+- source (C) https://gitlab.com/qemu-project/qemu
+- wiki https://en.wikipedia.org/wiki/QEMU
+  - Author: Peter Maydell
+- https://en.wikipedia.org/wiki/OVirt
+  - Components
+    - Ansible
+    - PatternFly
+    - https://en.wikipedia.org/wiki/Libvirt
+    - https://en.wikipedia.org/wiki/Gluster
+- https://en.wikipedia.org/wiki/Paravirtualization
+- hypervisor https://en.wikipedia.org/wiki/Hypervisor
+  - aka (VMM) Virtual Machine Monitor
+  - aka supervisor
+  - creates and runs virtual machines
+  - types
+    1) native/bare-metal
+    2) hosted
+- KVM https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine
+  - Author: Avi Kivity, Paolo Bonzini
+  - Kernel-based Virtual Machine
+  - Kernel module
+  - Allows the Kernel to run as an hypervisor
+  - 2.6.20- (2007-)
+  - Requires Hardware with "Intel VT" or "AMD-V"
+- doc https://www.qemu.org/docs/master/
+- doc https://wiki.qemu.org/Category:User_documentation
+
+
+- https://qemu-advent-calendar.org/2023/
+  1) http://tinycorelinux.net/
+     - in memory
+     - for old systems?
+     - 36MB usage of ram
+  2) ASM - bootable .pdf
+     - https://github.com/pablojimenezmateo/curriculum-bootloader
+     - https://github.com/eldondev/pdf-bootloader/
+  3) ASM - wordle game
+     https://github.com/icebreaker/flordle/
+  4) ASM - programming language
+     https://github.com/akkartik/mu
+
+- CTRL+ALT
+
+* flags
+|----------+------------|
+| -drive   | file=[ISO] |
+|          | format=raw |
+|          | if=ide     |
+|----------+------------|
+| -display | [sdl]      |
+|----------+------------|

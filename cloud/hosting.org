@@ -1,3 +1,24 @@
+- github pages https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#usage-limits
+  - only static content
+  - 1GB max size
+  - 100GB traffic per month
+  - Http-Range support
+
+- netlify https://www.netlify.com/pricing/
+  - Http-Range support
+  - 100GB traffic per month
+  - static content
+  - dynamic serverless content (?
+  - without credit card?
+
+- https://pico.sh/pgs
+  - only static
+  - 25MB storage (free)
+  - rsyn/sftp/ssh
+  - redirects
+  - headers
+
+
 - heroku is dead
 - https://render.com/ - free no credit card
 - https://fly.io/     - free credit card

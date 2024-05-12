@@ -1,0 +1,3 @@
+- home https://geminiprotocol.net/
+- https://github.com/kr1sp1n/awesome-gemini
+- article 20 | https://drewdevault.com/2020/11/01/What-is-Gemini-anyway.html

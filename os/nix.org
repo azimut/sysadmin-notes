@@ -1,3 +1,4 @@
+- 2024 drama https://github.com/KFearsoff/nix-drama-explained
 - https://terinstock.com/post/2021/01/Setting-up-a-git-server-on-NixOS/
 - article https://ersei.net/en/blog/nix-all-the-way-down
 - https://github.com/humancalico/nix-learning

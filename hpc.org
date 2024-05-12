@@ -1,0 +1,3 @@
+- tool: HPC - Oracle Grid Engine https://en.wikipedia.org/wiki/Oracle_Grid_Engine https://en.wikipedia.org/wiki/Qsub
+- tool: HPC - Slurm (sbatch,srun,salloc,scancel,squeue,sinfo,sacct) https://slurm.schedmd.com/documentation.html
+- tools: https://github.com/dstdev/awesome-hpc
