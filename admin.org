@@ -1,3 +1,9 @@
+- Tools
+  - stap https://man7.org/linux/man-pages/man1/stap.1.html
+  - sar https://man7.org/linux/man-pages/man1/sar.1.html
+  - pidstat https://man7.org/linux/man-pages/man1/pidstat.1.html
+  - vmstat https://man7.org/linux/man-pages/man8/vmstat.8.html
+
 - https://roadmap.sh/devops
 
 - AWS https://github.com/livialima/linuxupskillchallenge

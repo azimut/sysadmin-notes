@@ -5,6 +5,7 @@
 | copy audio   | -acodec copy     |
 | remove video | -vn              |
 |--------------+------------------|
+- filters https://ffmpeg.org/ffmpeg-filters.html
 - https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
 - join video with audio

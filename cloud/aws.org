@@ -1,2 +1,108 @@
 - https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1
-- https://github.com/itsmostafa/certified-aws-developer-associate-notes
+
+
+- Regions:
+  eg: us-east-1
+
+- Availability Zones: aka datacenters available on a Region
+  eg: a
+
+* Certifications
+
+DVA https://github.com/itsmostafa/certified-aws-developer-associate-notes
+SAA https://github.com/skulltech/aws-solutions-architect-associate-notes
+
+https://www.whizlabs.com/blog/aws-saa-c01-or-saa-c02/
+The difference between SAA-C02 and SAA-C03 is that the SAA-C03 is the
+new AWS Solutions Architect Associate certification exam. Since the
+SAA-C02 exam was about to retire on August 29th 2022 , many candidates
+might have made up their minds to sit for SAA-C03.
+
+- Certifications
+  - AWS (Certified) SysOps Administrator Associate   (SOA)
+  - AWS (Certified) Developer Associate              (DVA)
+  - AWS (Certified) Solutions Architect Associate    (SAA)
+  - AWS (Certified) Solutions Architect Professional (SAP)
+
+* Course 22: AWS for =Frontend= Engineers | FrontendMasters
+
+- source https://github.com/stevekinney/aws-v2
+  - react app
+
+Speaker: Steve Kinney
+ - works at Temporal (a CI? company)
+ - work(ed) at Sendgrid
+
+** 1 Introduction
+
+- Goal is to deploy your own vercel/netlify mini-service
+- Initially Servers were at Chicago.
+  |-----------+-----+-----|
+  | Denver    | 5.6 | 1.4 |
+  | Germany   |  11 | 1.8 |
+  | India     | 9.6 | 1.3 |
+  | Australia |  12 | 0.8 |
+  |-----------+-----+-----|
+- With *Cloudfront* you put it everywhere.
+  Once user has to "pay" the (time)cost of going to Chicago, everyone else has a cache nearby.
+- Technical Details
+  - S3
+  - Distributed Globally
+  - SSL
+  - Automatically deployed (Github Actions)
+  - Lambda Edge, Cloudfront Functions
+
+** 2 Setup
+
+- Billing preferences
+  - Receive Free Tier Usage Alerts
+
+- Budgets
+  - Cost budget
+  - Montly
+
+- IAM = Identity and Access Managment
+
+- Create a new non-root user
+  - Types of access
+    - Access Key (API)
+    - Password
+  - Add AdministratorAccess Policy
+
+** 3 S3
+
+- ARN = Amazon Resource Number
+  - arn:aws:s3:::${BucketName}/${KeyName}
+
+- S3 = Simple Storage Service
+  - You have Buckets
+  - Where you put Objects
+  - a key value store
+    - you can fake a directory by using a key like
+      "scripts/script.js"
+  - tiers ($$ -> $)
+    - normal?
+    - infrequently accessed
+    - glaciar
+  - operations (?
+    - insert: immediately
+    - update/remove: eventually consistent
+  - create
+    - bucket name
+    - region
+    - object ownership (disable ACL)
+    - unblock public access (for now...)
+  - permissions/bucket policy
+    #+begin_src json
+      {
+        "Version": "2012-10-17",
+        "Statement": [ 
+        ]
+      }
+    #+end_src
+
+- You can host web pages out of your buckets
+  - .js, .css, images
+
+- Route 53
+  - dns
