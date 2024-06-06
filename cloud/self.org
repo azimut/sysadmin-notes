@@ -1,0 +1,2 @@
+- Building Repeatable Infrastructure with Terraform and Ansible on AWS
+  https://faun.pub/building-repeatable-infrastructure-with-terraform-and-ansible-on-aws-3f082cd398ad

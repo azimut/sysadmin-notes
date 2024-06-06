@@ -5,7 +5,17 @@
 | copy audio   | -acodec copy     |
 | remove video | -vn              |
 |--------------+------------------|
+
+- tool: web UI
+  source https://github.com/antiboredom/ffmpeg-explorer
+  ui https://lav.io/notes/ffmpeg-explorer/
+  filters map https://raw.githubusercontent.com/antiboredom/ffmpeg-explorer/main/filternames.txt
+  discussion https://news.ycombinator.com/item?id=37269425
+
+- snippet: stream to twitch https://corvid.cafe/ffstream.html
+
 - filters https://ffmpeg.org/ffmpeg-filters.html
+  - convolution https://igor.technology/interesting-things-you-can-do-with-ffmpeg/
 - https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
 - join video with audio
