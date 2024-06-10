@@ -13,8 +13,10 @@ $ perf record --call-graph dwarf && hotspot perf.data
   source https://github.com/brendangregg/perf-tools
 
 * 12 Article: Latency Numbers Every Programmer Should Know
+
   https://gist.github.com/jboner/2841832
-  #+begin_src
+
+#+begin_src
 Latency Comparison Numbers (~2012)
 ----------------------------------
 L1 cache reference                           0.5 ns
@@ -48,7 +50,9 @@ Contributions
 'Humanized' comparison:  https://gist.github.com/hellerbarde/2843375
 Visual comparison chart: http://i.imgur.com/k0t1e.png
   #+end_src
+
 * 14 Article: strace Wow Much Syscall
+
   https://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html
 - ptrace() pauses the process for each syscall, for strace to read state.
   When it begins and when it ends.
@@ -58,7 +62,9 @@ Visual comparison chart: http://i.imgur.com/k0t1e.png
 - lgetxattr, reads extended attributes
 - you can bypass 1 *stat()* syscall by doing
   TZ=US/Pacific ls -l /etc
+
 * 18 Course: MIT 6.172 Performance Engineering of Software Systems
+
 aka software performance enginnering
 2018 https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf
 2010 https://www.youtube.com/watch?v=JzpkXLH9zLQ

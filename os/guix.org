@@ -1,0 +1,11 @@
+- home https://guix.gnu.org/
+
+- wiki https://en.wikipedia.org/wiki/GNU_Guix
+  - 2013-
+  - functional ~Package Manager~ Based on =Nix=
+  - Guile Scheme API's
+
+- wiki https://en.wikipedia.org/wiki/GNU_Guix_System
+  - 2015-
+  - aka GuixSD
+  - aka the OS build on top of Guix

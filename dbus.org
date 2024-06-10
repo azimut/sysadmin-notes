@@ -2,6 +2,8 @@
 - https://wiki.archlinux.org/title/MPRIS
 - Firefox does NOT have support for Position
   https://github.com/FichteFoll/discordrp-mpris/issues/18
+  https://bugzilla.mozilla.org/show_bug.cgi?id=1659199
+  update 2024? https://phabricator.services.mozilla.com/D212939
 * get mpv player position
 - busctl --user introspect org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 | grep Posi
 - qdbus org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player Position
