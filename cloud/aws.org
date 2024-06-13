@@ -1,11 +1,25 @@
 - https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1
 
+- OS distributions
+  - Amazon Linux 1 (AL1, AMazon Linux AMI)
+  - Amazon Linux 2 (AL2)
+    - https://docs.aws.amazon.com/linux/al2/ug/what-is-amazon-linux.html
+  - Amazon Linux 2023
+    - Fedora based
+    - https://aws.amazon.com/linux/amazon-linux-2023/
+    - https://github.com/amazonlinux/amazon-linux-2023
 
 - Regions:
   eg: us-east-1
 
-- Availability Zones: aka datacenters available on a Region
-  eg: a
+- Availability Zones:
+  - aka datacenters available on a Region
+  - region + letter
+  eg: us-east-1a
+
+- =AWS CloudFormation=:
+  - a service running in AWS
+  - uses flatfile templates to provision what services you need on AWS
 
 * Certifications
 
@@ -18,12 +32,64 @@ new AWS Solutions Architect Associate certification exam. Since the
 SAA-C02 exam was about to retire on August 29th 2022 , many candidates
 might have made up their minds to sit for SAA-C03.
 
-- Certifications
-  - AWS (Certified) SysOps Administrator Associate   (SOA)
-  - AWS (Certified) Developer Associate              (DVA)
-  - AWS (Certified) Solutions Architect Associate    (SAA)
-  - AWS (Certified) Solutions Architect Professional (SAP)
+- Certifications https://aws.amazon.com/certification/
+  - AWS Certified
+    - Cloud Practicioner               (CLF)
+    - Data Engineer Associate          (DEA)
+    - Developer Associate              (DVA)
+    - SysOps Administrator Associate   (SOA)
+    - DevOps Engineer Professional     (DOP)
+    - Solutions Architect Associate    (SAA)
+    - Solutions Architect Professional (SAP)
 
+* CLI
+
+aws s3 ls
+aws sts get-caller-identity
+
+* Course 24: Build Go Apps That Scale in AWS | meley
+
+- Works at twitch
+- source https://github.com/Melkeydev/FrontEndMasters
+
+** Introduction
+
+- Requirements
+  - .aws/credentials
+    .aws/condig
+  - CDK installed
+    - AWS framework
+    - in Go
+    - Terraform alternative
+
+- Go
+  - Design patterns
+  - Common gotchas
+
+- System Diagram / Architecture
+  - Amazon API Gateway
+  - An ~AWS Lambda~ runs a =Lambda Function= in an =IAM Role=
+  - Amazon DynamoDB
+  #+begin_src
+    client -> API Gateway -> Lambda(Go) -> DynamoDB
+  #+end_src
+
+** Go
+
+- 00:31:00 meme yt engineers
+- Frontend Masters uses it, sounds like they build their streaming platform.
+- uses LSP/gopls for vscode
+- go applications can have multiple entry points (packages main)
+  - as long as they are separated by folder
+
+** AWS
+
+- When dealing with complex services/architectures like Redshift clusters
+  it makes more sense to use a precise IaaC tool like CDK.
+
+- go -> CDK -> AWS CF -> infra
+
+* Course 22: AWS Certified Devoper        | ITProTV
 * Course 22: AWS for =Frontend= Engineers | FrontendMasters
 
 - source https://github.com/stevekinney/aws-v2

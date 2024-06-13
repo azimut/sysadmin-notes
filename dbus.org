@@ -9,17 +9,24 @@
 - qdbus org.mpris.MediaPlayer2.mpv /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player Position
 * get browser player position
 https://stackoverflow.com/questions/70737550/how-to-connect-to-mediaplayer2-player-playbackstatus-signal-using-pygtk
-- qdbus org.mpris.MediaPlayer2.firefox.instance682367 /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player Position
+
+- qdbus | grep Player2
+- qdbus $(qdbus | grep Player2) /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player Position
+- qdbus $(qdbus | grep Player2) /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 - dbus-send --print-reply --dest=org.mpris.MediaPlayer2.firefox.instance682367 /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Position'
+
 - get all props
   #+begin_src shell
-  $ busctl --user list | grep -i MediaPlayer2
-   org.mpris.MediaPlayer2.firefox.instance62995  62995 GeckoMain
-  $ busctl --user tree org.mpris.MediaPlayer2.firefox.instance62995
-   └─/org
-     └─/org/mpris
-       └─/org/mpris/MediaPlayer2
-  $ busctl --user introspect org.mpris.MediaPlayer2.firefox.instance62995 /org/mpris/MediaPlayer2
+    $ busctl --user list | grep -i MediaPlayer2
+     org.mpris.MediaPlayer2.firefox.instance62995  62995 GeckoMain
+
+    $ busctl --user tree $(busctl --user list | awk '/MediaPlayer2/{ print $1 }')
+    $ busctl --user tree org.mpris.MediaPlayer2.firefox.instance62995
+     └─/org
+       └─/org/mpris
+         └─/org/mpris/MediaPlayer2
+
+    $ busctl --user introspect $(busctl --user list | awk '/MediaPlayer2/{ print $1 }') /org/mpris/MediaPlayer2
   #+end_Src
 - code
   #+begin_src python
