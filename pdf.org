@@ -1,3 +1,7 @@
+* pdfdetach - extract embedded files
+
+pdfdetach -list file.pdf
+
 * images to pdf
 
 img2pdf *.png -o file.pdf

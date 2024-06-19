@@ -1,0 +1,36 @@
+- v1 source (C) https://git.savannah.gnu.org/cgit/wget.git
+- v2 source (C) https://gitlab.com/gnuwget/wget2
+- man/info
+- wiki https://en.wikipedia.org/wiki/Wget
+  - Author: Hrvoje Nikšić
+  - 1996-
+  - aka GNU Wget
+  - HTTP/FTP
+  - Features
+    - recursive downloads
+    - conversion of links for offline viewing
+    - (1.14) save WARC (Web Archiving Standard)
+      - https://en.wikipedia.org/wiki/WARC_(file_format)
+  - Wget2: faster
+    - 2021-
+    - HTTP/2
+    - HTTP Compression
+    - Parallel connections
+    - If-modified
+    - TCP Fast Open (tcp cookies)
+
+* flags
+|----------+------------------------+------------------------------------------|
+| -i FILE  | --input-file=FILE      | read links from FILE                     |
+| -O FILE  | --output-document=FILE |                                          |
+| -c       | --continue             |                                          |
+|          | --limit-rate=RATE      | sets a max download rate speed           |
+|          | --limit=RATE           | "                                        |
+|----------+------------------------+------------------------------------------|
+|          | --random-wait          |                                          |
+| -nc      | --no-clobber           | prevents new versions from being saved   |
+| -r       | --recursive            |                                          |
+| -p       | --page-requisites      |                                          |
+| -k       | --convert-links        | after download, convert for local view   |
+| -l DEPTH | --level=DEPTH          | number of levels to retrieve (default=5) |
+|----------+------------------------+------------------------------------------|

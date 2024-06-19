@@ -47,6 +47,11 @@ might have made up their minds to sit for SAA-C03.
 aws s3 ls
 aws sts get-caller-identity
 
+* CDK
+
+cdk init app --language go
+cdk deploy
+
 * Course 24: Build Go Apps That Scale in AWS | meley
 
 - Works at twitch
