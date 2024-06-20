@@ -15,22 +15,80 @@
     - 2021-
     - HTTP/2
     - HTTP Compression
-    - Parallel connections
+    - =Parallel connections=
     - If-modified
     - TCP Fast Open (tcp cookies)
+    - RSS parser
+
+* articles
+
+- https://daniel.haxx.se/docs/curl-vs-wget.html
+- 23 https://daniel.haxx.se/blog/2023/09/04/the-curl-wget-venn-diagram/
+- 19 https://nilsnh.no/2019/10/06/case-study-archiving-web-sites-with-wget-and-puppeteer/
+- 19 https://web.archive.org/web/20190827154638/https://apex.sh/blog/post/pre-render-wget/
+- 18 Archiving web sites https://lwn.net/Articles/766374/
+  - "As the web moves toward using the browser as a virtual machine
+     to run arbitrary code, archival methods relying on
+     pure HTML parsing need to be adapt."
+  - wget
+    - some links might cause an infinite loop
+    - can use --reject-regex to ignore those resources
+    #+begin_src sh
+      $ nice wget -m -erobots=off -nv -k \
+            --backup-converted -p --adjust-extension \
+            --base=./ --directory-prefix=./ -H \
+            --domains=www.example.com,example.com \
+            http://www.example.com/
+    #+end_src
+- 10 https://web.archive.org/web/20130307221406/http://eigenjoy.com/2010/09/06/a-crawler-using-wget-and-xargs
+  - source: https://github.com/jashmenn/bashpider
+  - wget uses gethostbyname/getaddrinfo is thread-safe
+    which might cause resource starvation when hundreds of
+    wget process all try calling BIND at the same time
+    https://dl.acm.org/doi/pdf/10.1145/304065.304092
+- 04 https://veen.com/jeff/archives/000573.html
+  - $ wget -r -l1 -H -t1 -nd -N -np -A.mp3 -erobots=off -i ~/mp3blogs.txt
+
+* videos
+
+- 19 Wget 2
+  - TODO
+  - https://www.youtube.com/watch?v=GQNCrYbBovo
+  - Wget
+    - single-threaded design
+      - blocking sockets
+      - static/global variables
+      - non reentrant code
+  - Wget2
+    - plugin framework
 
 * flags
-|----------+------------------------+------------------------------------------|
-| -i FILE  | --input-file=FILE      | read links from FILE                     |
-| -O FILE  | --output-document=FILE |                                          |
-| -c       | --continue             |                                          |
-|          | --limit-rate=RATE      | sets a max download rate speed           |
-|          | --limit=RATE           | "                                        |
-|----------+------------------------+------------------------------------------|
-|          | --random-wait          |                                          |
-| -nc      | --no-clobber           | prevents new versions from being saved   |
-| -r       | --recursive            |                                          |
-| -p       | --page-requisites      |                                          |
-| -k       | --convert-links        | after download, convert for local view   |
-| -l DEPTH | --level=DEPTH          | number of levels to retrieve (default=5) |
-|----------+------------------------+------------------------------------------|
+|--------------+------------------------+----------------------------------------|
+| -i  FILE     | --input-file=FILE      | read links from FILE                   |
+| -O  FILE     | --output-document=FILE |                                        |
+| -c           | --continue             |                                        |
+|              | --limit-rate=RATE      | sets a max download rate speed         |
+|              | --limit=RATE           | "                                      |
+| -nv          | --no-verbose           | print only errors and basic info       |
+|--------------+------------------------+----------------------------------------|
+| -w  SEC      | --wait=SECONDS         | number of SEConds to wait between      |
+|              | --random-wait          |                                        |
+|--------------+------------------------+----------------------------------------|
+| -A  GLOB     | --accept GLOB          | list of patterns to download           |
+| -R  GLOB     | --reject GLOB          | list of patterns to NOT download       |
+| -N           | --timestamping         | do NOT download again, Last-Modified   |
+| -e  CMD      | --execute CMD          | execute .wgetrc command                |
+| -erobots=off |                        | ignore robots.txt                      |
+|--------------+------------------------+----------------------------------------|
+| -r           | --recursive            | recursively follow links               |
+| -m           | --mirror               | -r -N -l inf --no-remove-listing       |
+| -H           | --span-hosts           | follow domains away                    |
+|              | --no-remove-listing    | keep wget's ".listing" files           |
+| -nd          | --no-directories       | do NOT create directory tree           |
+| -np          | --no-parent            | do NOT ascend to parent directory      |
+| -nc          | --no-clobber           | prevents new versions from being saved |
+| -p           | --page-requisites      |                                        |
+| -k           | --convert-links        | after download, convert for local view |
+| -l  DEPTH    | --level=DEPTH          | number of levels to retrieve           |
+|              |                        | (default=5) (infinite=0)               |
+|--------------+------------------------+----------------------------------------|
