@@ -1,5 +1,3 @@
-$ perf stat
-$ perf record --call-graph dwarf && hotspot perf.data
 - https://github.com/leandromoreira/linux-network-performance-parameters
 - Diagrams https://www.brendangregg.com/linuxperf.html
 - https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/monitoring_and_managing_system_status_and_performance/index
@@ -11,6 +9,40 @@ $ perf record --call-graph dwarf && hotspot perf.data
   1 https://www.youtube.com/watch?v=FJW8nGV4jxY
   2 https://www.youtube.com/watch?v=zrr2nUln9Kk
   source https://github.com/brendangregg/perf-tools
+
+* perf
+
+- Events
+  - syscalls
+  - reads from block devices
+  - context switches / page faults
+  - kernel functions (kprobes)
+
+- tool: https://github.com/brendangregg/FlameGraph
+  - constructed from lots (1k+) of stack traces sampled from a program
+
+$ perf record -e syscalls:sys_enter_connect -ag
+$ perf record --call-graph dwarf && hotspot perf.data
+$ perf script | stackcollapse-perf.pl| flamegraph.pl > graph.svg
+
+|----------+------------+---------------------------+-----------|
+| cmd      | flag       | description               | until     |
+|----------+------------+---------------------------+-----------|
+| stat     |            |                           |           |
+| top      |            |                           |           |
+|----------+------------+---------------------------+-----------|
+| record   |            | events into ~perf.data~   |           |
+|          | EXE        | runs and profile EXE      | EXE exits |
+|          | PID        | profile PID               | ^C        |
+|          | PID¦-a EXE | profile it, until         | EXE exits |
+|          | -a         | profile everything        | ^C        |
+|          | -g         | collect stack trace       |           |
+|          | -e EVENT   |                           |           |
+|----------+------------+---------------------------+-----------|
+| report   |            | top fns ~perf.data~       |           |
+| annotate |            | asm profiling ~perf.data~ |           |
+| script   |            | dump as text ~perf.data~  |           |
+|----------+------------+---------------------------+-----------|
 
 * 12 Article: Latency Numbers Every Programmer Should Know
 
