@@ -1,7 +1,8 @@
-- v1 source (C) https://git.savannah.gnu.org/cgit/wget.git
-- v2 source (C) https://gitlab.com/gnuwget/wget2
-- man/info
 - wiki https://en.wikipedia.org/wiki/Wget
+- man/info
+
+- Wget
+  - v1 source (C) https://git.savannah.gnu.org/cgit/wget.git
   - Author: Hrvoje Nikšić
   - 1996-
   - aka GNU Wget
@@ -11,14 +12,16 @@
     - conversion of links for offline viewing
     - (1.14) save WARC (Web Archiving Standard)
       - https://en.wikipedia.org/wiki/WARC_(file_format)
-  - Wget2: faster
-    - 2021-
-    - HTTP/2
-    - HTTP Compression
-    - =Parallel connections=
-    - If-modified
-    - TCP Fast Open (tcp cookies)
-    - RSS parser
+
+- Wget2
+  - v2 source (C) https://gitlab.com/gnuwget/wget2
+  - 2021-
+  - HTTP/2
+  - HTTP Compression
+  - =Parallel connections=
+  - If-modified
+  - TCP Fast Open (tcp cookies)
+  - RSS parser
 
 * articles
 

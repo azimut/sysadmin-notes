@@ -14,20 +14,22 @@
 
 * command
 
-|----+--------------+----------------------------+---------------------------|
-| -A | --user-agent | Wget/1.0                   | user agent                |
-| -H | --header     | "Content-Type: text/plain" | header                    |
-| -I | --head       | -                          | fetch headers only        |
-| -X | --request    | POST                       | http method               |
-| -d | --data       | foo=bar                    |                           |
-| -L | --location   | -                          | folows redirections       |
-| -k | --insecure   | -                          | skip cert verification    |
-| -o | --output     | index.html                 | output file               |
-|----+--------------+----------------------------+---------------------------|
-| -w | --write-out  | '%{http_code}\n'           | print format              |
-| -i | --include    | -                          | print response headers    |
-| -s | --silent     | -                          | do NOT print progress bar |
-|----+--------------+----------------------------+---------------------------|
+|----+------------------+----------------------------+---------------------------|
+| -A | --user-agent     | Wget/1.0                   | user agent                |
+| -H | --header         | "Content-Type: text/plain" | header                    |
+| -I | --head           | -                          | fetch headers only        |
+| -G | --get            | GET                        | http method               |
+| -X | --request        | POST                       | http method               |
+| -d | --data           | foo=bar                    |                           |
+|    | --data-urlencode | foo=bar                    | urlencode "bar"           |
+| -L | --location       | -                          | folows redirections       |
+| -k | --insecure       | -                          | skip cert verification    |
+| -o | --output         | index.html                 | output file               |
+|----+------------------+----------------------------+---------------------------|
+| -w | --write-out      | '%{http_code}\n'           | print format              |
+| -i | --include        | -                          | print response headers    |
+| -s | --silent         | -                          | do NOT print progress bar |
+|----+------------------+----------------------------+---------------------------|
 
 
 * video: 23 | Mastering the curl command line | Daniel Stenberg

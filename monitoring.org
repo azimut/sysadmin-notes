@@ -1,0 +1,5 @@
+- Zabbix
+  - Frontend: PHP
+  - Server on Linux/Bsd
+  - Needs a SQL database
+- Nagios

@@ -54,7 +54,15 @@ disable YAS on comment?
 - http://pragmaticemacs.com/emacs/dired-human-readable-sizes-and-sort-by-size/
 - ibuffer
 - 804101
-,* replace-string new line
+* sly
+https://joaotavora.github.io/sly/#Multiple-Lisps
+|-------------+-----------------+------------------------------------------------|
+|         <r> |                 |                                                |
+|     M-x sly |                 | starts ~inferior-lisp-program~                 |
+| M-u M-x sly | prefix argument | empty prompt                                   |
+| M-- M-x sly | negative prefix | menu select between ~sly-lisp-implementations~ |
+|-------------+-----------------+------------------------------------------------|
+* replace-string new line
 https://stackoverflow.com/questions/613022/how-to-replace-a-character-with-a-newline-in-emacs
 M-x replace-string
 STRINGTOREPLACE
@@ -63,6 +71,37 @@ C-q C-j
   (setq display-buffer-alist
       (quote (("\\*inferior-lisp\\*" display-buffer-pop-up-frame
          (nil)))))
+* org-mode - youtube embed
+
+http://endlessparentheses.com/embedding-youtube-videos-with-org-mode-links.html
+
+#+begin_src
+[ [yt:A3JAlWM8qRM] ]
+#+end_src
+
+#+begin_src elisp
+(defvar yt-iframe-format
+  ;; You may want to change your width and height.
+  (concat "<iframe width=\"440\""
+          " height=\"335\""
+          " src=\"https://www.youtube.com/embed/%s\""
+          " frameborder=\"0\""
+          " allowfullscreen>%s</iframe>"))
+
+(org-add-link-type
+ "yt"
+ (lambda (handle)
+   (browse-url
+    (concat "https://www.youtube.com/embed/"
+            handle)))
+ (lambda (path desc backend)
+   (cl-case backend
+     (html (format yt-iframe-format
+                   path (or desc "")))
+     (latex (format "\href{%s}{%s}"
+                    path (or desc "video"))))))
+#+end_src
+
 * compile - in file
 https://stackoverflow.com/questions/4540793/emacs-set-compilation-command-per-buffer
 https://www.gnu.org/software/emacs/manual/html_node/emacs/File-Variables.html

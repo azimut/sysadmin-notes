@@ -1,0 +1,6 @@
+- Channel https://www.youtube.com/@LZ_YTChannel
+- 24 History of IBM mainframe operating systems - M243 https://www.youtube.com/watch?v=ip0cQiQjd18
+  - there were MANY IBM OS flavors that ran on mainframe
+- 21 video History of the mainframe - from S/360 to Linux https://www.youtube.com/watch?v=5386GSX_9Bc
+- https://en.wikipedia.org/wiki/Z/OS
+- article mainframe https://securelist.com/zos-mainframe-pentesting/113427/

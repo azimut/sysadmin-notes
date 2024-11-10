@@ -37,3 +37,28 @@
   ffmpeg -ss 00:01:21 -to 00:01:24
 - Remove all audio streams / tracks https://stackoverflow.com/questions/38161697/how-to-remove-one-track-from-video-file-using-ffmpeg
   ffmpeg -i input -map 0 -map -0:a -c copy output
+
+- https://stackoverflow.com/questions/5015771/merge-video-and-audio-with-ffmpeg-loop-the-video-while-audio-is-not-over
+  - join short video - long audio
+    $ ffmpeg  -stream_loop -1 -i input.mp4 -i input.mp3 -shortest -map 0:v:0 -map 1:a:0 -y out.mp4
+  - join long audio - short video
+    $ ffmpeg  -i input.mp4 -stream_loop -1 -i input.mp3 -shortest -map 0:v:0 -map 1:a:0 -y out.mp4
+
+- instagram https://www.reddit.com/r/davinciresolve/comments/1bab2yp/instagram_uploads_are_always_terrible_any_ideas/
+  - example
+    - Profile: High
+    - 720x720 (720x960????)
+    - yuv420p
+    - level: 31
+    - fps: 30??
+  - ffmpeg
+    -i "final_export.mov"
+    -vf "scale=-2:1920,format=yuv420p"
+    -c:v libx264
+    -profile:v main
+    -level:v 4.0
+    -pix_fmt yuv420p
+    -movflags +faststart
+    -r 30Q
+    -c:a aac
+    -b:a 192k "instagram_optimized_export.mp4"

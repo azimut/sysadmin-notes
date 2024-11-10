@@ -13,6 +13,31 @@
   https://github.com/Tikam02/DevOps-Guide
 
 - https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam
+- Systems Design 2.0 by jordanhasnolife https://www.youtube.com/playlist?list=PLjTveVh7FakLdTmm42TMxbN8PvVn5g4KJ
+* Course: Backend System Design      | FEM Erik Reinert
+
+- When talking about System Design, it could refer to:
+  1) Patterns
+  2) Architecture
+
+- Course is about architecture
+
+- Devops: is about
+  - how can you help developers
+  - how can you make the system flow
+- Platform Engineering
+  - is focusing on the entire platform
+  - how things interconnect
+  - how designs get propagated through the company
+
+- Goals
+  - show what architectures are available
+  - show how to transition from one to another
+
+- =Architecture Design=
+  - Facilitate communication, a common language
+  - What?
+    - the process of defining the *modularity*, *interfaces*, and *data flow* for a system to satisfy specified requirements.
 
 * Course: InfraExpert
 **  2 Welcome

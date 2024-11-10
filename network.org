@@ -1,0 +1,5 @@
+- tool: traffic shaper https://man.freebsd.org/cgi/man.cgi?dummynet
+- tool: ipfw
+  $ sudo ipfw pipe 1 config bw 20KByte/s
+  $ sudo ipfw add 1 pipe 1 src-port 9418
+  $ sudo ipfw delete 1

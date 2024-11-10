@@ -19,6 +19,7 @@
   - headers
 
 
+- https://coolify.io/
 - heroku is dead
 - https://render.com/ - free no credit card
 - https://fly.io/     - free credit card

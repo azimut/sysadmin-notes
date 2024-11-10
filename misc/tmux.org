@@ -1,3 +1,5 @@
+#+TITLE: tmux
+
 - https://github.com/rothgar/awesome-tmux
 - https://github.com/tmux/tmux/wiki/Clipboard#common-issues---xclip1
   There seems to be some troubleshooting with some TERMs and copymode
@@ -5,6 +7,11 @@
   https://man.openbsd.org/tmux#WINDOWS_AND_PANES
   set -g mode-keys emacs
   Copy mode differerences between modes (incomplete!)
+
+#+CAPTION: default keybindings
+#+ATTR_ORG: :width 1000
+[[./tmux.png]]
+
 * Book: Painless Tmux by Nate Dickson
   Session>Window>Pane
   Sessions are for projects

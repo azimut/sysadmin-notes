@@ -9,6 +9,9 @@
     - https://aws.amazon.com/linux/amazon-linux-2023/
     - https://github.com/amazonlinux/amazon-linux-2023
 
+- S3
+  - the pricing and latency of GET queries favours the storage of large files +100M each
+
 - Regions:
   eg: us-east-1
 
