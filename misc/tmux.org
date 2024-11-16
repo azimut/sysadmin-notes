@@ -1,5 +1,3 @@
-#+TITLE: tmux
-
 - https://github.com/rothgar/awesome-tmux
 - https://github.com/tmux/tmux/wiki/Clipboard#common-issues---xclip1
   There seems to be some troubleshooting with some TERMs and copymode

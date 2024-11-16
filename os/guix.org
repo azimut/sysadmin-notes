@@ -1,4 +1,10 @@
 - home https://guix.gnu.org/
+- https://gitlab.com/nonguix/nonguix
+- https://systemcrafters.net/craft-your-system-with-guix
+- https://futurile.net/resources/guix
+- https://github.com/franzos/awesome-guix
+  - GNU Guix https://www.youtube.com/playlist?list=PLZmotIJq3yOI0cPPQ07urjm6VMnb8GDSQ
+  - Craft Your System with GNU Guix https://www.youtube.com/playlist?list=PLEoMzSkcN8oNxnj7jm5V2ZcGc52002pQU
 
 - wiki https://en.wikipedia.org/wiki/GNU_Guix
   - 2013-
