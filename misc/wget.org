@@ -23,6 +23,36 @@
   - TCP Fast Open (tcp cookies)
   - RSS parser
 
+* flags
+|--------------+------------------------+----------------------------------------|
+| -i  FILE     | --input-file=FILE      | read links from FILE                   |
+| -O  FILE     | --output-document=FILE |                                        |
+| -c           | --continue             |                                        |
+|              | --limit-rate=RATE      | sets a max download rate speed         |
+|              | --limit=RATE           | "                                      |
+| -nv          | --no-verbose           | print only errors and basic info       |
+|--------------+------------------------+----------------------------------------|
+| -w  SEC      | --wait=SECONDS         | number of SEConds to wait between      |
+|              | --random-wait          |                                        |
+|--------------+------------------------+----------------------------------------|
+| -A  GLOB     | --accept GLOB          | list of patterns to download           |
+| -R  GLOB     | --reject GLOB          | list of patterns to NOT download       |
+| -N           | --timestamping         | do NOT download again, Last-Modified   |
+| -e  CMD      | --execute CMD          | execute .wgetrc command                |
+| -erobots=off |                        | ignore robots.txt                      |
+|--------------+------------------------+----------------------------------------|
+| -r           | --recursive            | recursively follow links               |
+| -m           | --mirror               | -r -N -l inf --no-remove-listing       |
+| -H           | --span-hosts           | follow domains away                    |
+|              | --no-remove-listing    | keep wget's ".listing" files           |
+| -nd          | --no-directories       | do NOT create directory tree           |
+| -np          | --no-parent            | do NOT ascend to parent directory      |
+| -nc          | --no-clobber           | prevents new versions from being saved |
+| -p           | --page-requisites      |                                        |
+| -k           | --convert-links        | after download, convert for local view |
+| -l  DEPTH    | --level=DEPTH          | number of levels to retrieve           |
+|              |                        | (default=5) (infinite=0)               |
+|--------------+------------------------+----------------------------------------|
 * articles
 
 - https://daniel.haxx.se/docs/curl-vs-wget.html
@@ -64,34 +94,3 @@
       - non reentrant code
   - Wget2
     - plugin framework
-
-* flags
-|--------------+------------------------+----------------------------------------|
-| -i  FILE     | --input-file=FILE      | read links from FILE                   |
-| -O  FILE     | --output-document=FILE |                                        |
-| -c           | --continue             |                                        |
-|              | --limit-rate=RATE      | sets a max download rate speed         |
-|              | --limit=RATE           | "                                      |
-| -nv          | --no-verbose           | print only errors and basic info       |
-|--------------+------------------------+----------------------------------------|
-| -w  SEC      | --wait=SECONDS         | number of SEConds to wait between      |
-|              | --random-wait          |                                        |
-|--------------+------------------------+----------------------------------------|
-| -A  GLOB     | --accept GLOB          | list of patterns to download           |
-| -R  GLOB     | --reject GLOB          | list of patterns to NOT download       |
-| -N           | --timestamping         | do NOT download again, Last-Modified   |
-| -e  CMD      | --execute CMD          | execute .wgetrc command                |
-| -erobots=off |                        | ignore robots.txt                      |
-|--------------+------------------------+----------------------------------------|
-| -r           | --recursive            | recursively follow links               |
-| -m           | --mirror               | -r -N -l inf --no-remove-listing       |
-| -H           | --span-hosts           | follow domains away                    |
-|              | --no-remove-listing    | keep wget's ".listing" files           |
-| -nd          | --no-directories       | do NOT create directory tree           |
-| -np          | --no-parent            | do NOT ascend to parent directory      |
-| -nc          | --no-clobber           | prevents new versions from being saved |
-| -p           | --page-requisites      |                                        |
-| -k           | --convert-links        | after download, convert for local view |
-| -l  DEPTH    | --level=DEPTH          | number of levels to retrieve           |
-|              |                        | (default=5) (infinite=0)               |
-|--------------+------------------------+----------------------------------------|

@@ -3,7 +3,30 @@
 - wiki redhat https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_firewalls_and_packet_filters/getting-started-with-nftables_firewall-packet-filters
 - home https://www.netfilter.org/projects/nftables/index.html
 - go source https://github.com/google/nftables
+- scripting https://wiki.nftables.org/wiki-nftables/index.php/Scripting
+- example: scripting
+  #+begin_src sh
+    # nft flush ruleset ; nft -f - <<'FWRULES'
+    define gw = 192.168.1.1
+    define intnets = { 10.100.0.0/24, 100.200.0.0/24 }
+    define http_allowed = { $gw, $intnets, 10.150.0.0/24, 10.250.0.250, 10.2.3.4-10.5.6.6 }
 
+    table ip filter {
+        set ssh_allowed {
+            type ipv4_addr
+            flags interval
+            elements = { $gw, 172.16.24.32, $intnets, 192.168.224.192/28 }
+        }
+        chain input {
+            type filter hook input priority 0;
+            policy drop;
+
+            ip saddr $http_allowed tcp dport { 80, 443, 8080, 8443 } counter accept
+            ip saddr @ssh_allowed tcp dport ssh counter accept
+        }
+    }
+    FWRULES
+  #+end_src
 
 - # nft list ruleset
   # nft list tables

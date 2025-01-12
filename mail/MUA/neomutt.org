@@ -5,6 +5,7 @@
 - ??https://meli-email.org/
 
 - config
+  - luke's config https://youtu.be/0MiP1Ei_UQw?t=377 https://youtu.be/1h-Qr_Ricik?t=351
   - https://github.com/LukeSmithxyz/mutt-wizard
     https://muttwizard.com/
 

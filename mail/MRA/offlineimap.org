@@ -4,4 +4,8 @@
 - home https://www.offlineimap.org/
 - arch wiki https://wiki.archlinux.org/title/OfflineIMAP
 - doc https://www.offlineimap.org/documentation.html
-- source https://github.com/OfflineIMAP/offlineimap3
+- source (Python) https://github.com/OfflineIMAP/offlineimap3
+- config [sections]
+  - general: accounts
+  - Account: localrepository, remoterepository
+  - Repository: type
