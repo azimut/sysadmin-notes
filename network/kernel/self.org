@@ -1,0 +1,6 @@
+- https://en.wikipedia.org/wiki/TUN/TAP
+  - 2000
+  - Kernel Virtual Network Devices
+  - They simulate a device in it's layer.
+  - TUN - Layer 3 - IP (aka routing)
+  - TAP - Layer 2 - Ethernet (user space nbridge)
