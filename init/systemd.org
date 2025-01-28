@@ -1,0 +1,131 @@
+- home https://systemd.io/
+- source (C) https://github.com/systemd/systemd
+- wiki https://en.wikipedia.org/wiki/Systemd
+  - 2010
+  - Lennart Poettering
+  - Adoption: Fedora(10), Debian (12), Arch(12), Ubuntu(15)
+
+#+ATTR_ORG: :width 500
+[[https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Systemd_components.svg/1024px-Systemd_components.svg.png]]
+
+* units
+** Example: nginx
+
+#+begin_src systemd
+[Unit]
+Description=A very simple service
+Documentation=man:nginx(8)
+After=network-up.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -q -g 'daemon on; master_process on;'
+ExecStart=/usr/sbin/nginx/nginx -g 'deamon on; master_process on;'
+ExecReload=/usr/sbin/nginx -g 'deamon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target # when the system is up
+#+end_src
+
+** locations
+|-------------------------+--------------------|
+|                     <r> |                    |
+|     /lib/systemd/system | standard ones      |
+| /usr/lib/systemd/system | installed packages |
+|     /run/systemd/system | transient          |
+|     /etc/systemd/system | root custom        |
+|  ~/.config/systemd/user | user custom        |
+|-------------------------+--------------------|
+** types
+- service
+- socket
+- device
+- mountpoint/auto-mountpoint
+- swap file
+- partition
+- startup target
+- watched filesystem path
+- group of externally created processes
+* articles
+- critique
+  - https://www.agwa.name/blog/post/how_to_crash_systemd_in_one_tweet
+  - https://suckless.org/sucks/systemd/
+  - https://tim.siosm.fr/blog/2016/10/02/tweet-systemd/
+  - 15 Structural and semantic deficiencies in the systemd architecture for real-world service management, a technical treatise https://blog.darknedgy.net/technology/2015/10/11/0/
+  - 20 systemd, 10 years later: a historical and technical retrospective https://blog.darknedgy.net/technology/2020/05/02/0/index.html
+** Lennart's blog - 0pointer
+
+https://0pointer.net/blog/projects/systemd-for-admins-1.html
+https://0pointer.net/blog/projects/systemd-for-admins-2.html
+https://0pointer.net/blog/projects/systemd-for-admins-3.html
+https://0pointer.net/blog/projects/systemd-for-admins-4.html
+https://0pointer.net/blog/projects/three-levels-of-off.html
+https://0pointer.net/blog/projects/changing-roots.html
+https://0pointer.net/blog/projects/blame-game.html
+https://0pointer.net/blog/projects/the-new-configuration-files.html
+https://0pointer.net/blog/projects/systemd-pdf.html
+https://0pointer.net/blog/projects/on-etc-sysinit.html
+https://0pointer.net/blog/projects/instances.html
+https://0pointer.net/blog/projects/inetd.html
+https://0pointer.net/blog/projects/security.html
+https://0pointer.net/blog/projects/systemctl-journal.html
+https://0pointer.net/blog/projects/self-documented-boot.html
+https://0pointer.net/blog/projects/watchdog.html
+https://0pointer.net/blog/projects/serial-console.html
+https://0pointer.net/blog/projects/journalctl.html
+https://0pointer.net/blog/projects/resources.html
+https://0pointer.net/blog/projects/detect-virt.html
+https://0pointer.net/blog/projects/socket-activated-containers.html
+
+** systemd by example
+https://seb.jambor.dev/posts/systemd-by-example-part-1-minimization/
+https://seb.jambor.dev/posts/systemd-by-example-part-2-dependencies/
+https://seb.jambor.dev/posts/systemd-by-example-part-3-defining-services/
+https://seb.jambor.dev/posts/systemd-by-example-part-4-installing-units/
+https://seb.jambor.dev/posts/systemd-by-example-part-5-timers/
+* commands
+** systemctl
+|------------------------+---------------------------|
+|          <c>           |                           |
+|       list-units       | ~--type=service~          |
+|    list-unit-files     | including disabled/masked |
+|     daemon-reload      |                           |
+|         status         | ~-l~ for long lines       |
+|         reload         |                           |
+|          kill          |                           |
+| start ¦ stop ¦ restart |                           |
+|    enable ¦ disable    |                           |
+|------------------------+---------------------------|
+** journalctl
+|------------------+----------------|
+|              <r> |                |
+| -t systemd-sleep | suspension log |
+|       _COMM=Xorg | XORG           |
+|------------------+----------------|
+* services
+- https://www.freedesktop.org/wiki/Software/systemd/NetworkTarget/
+** Disable services
+|--------------------+---------------------------------------------------------------------------|
+| bluetooth          |                                                                           |
+| cups               | printer support                                                           |
+| iscsi              |                                                                           |
+| multipathd         | remote disk?                                                              |
+| *packagekit        | UI for OS package removal                                                 |
+| *udisks2           | implements *dbus* interfaces used to query and manipulate storage devices |
+| dmraid-activation  | raid                                                                      |
+| mdmonitor          | raid                                                                      |
+| ModemManager       | 2G/3G/4G usb modem support                                                |
+| switcheroo-control | *dbus* extension for 2 gpu cards                                          |
+| iio-sensor-proxy   | *dbus* extension for sensors (light, rotation, speed)                     |
+|--------------------+---------------------------------------------------------------------------|
+udisks2: > authselect disable-feature with-fingerprint
+packagekit: needs mask besides disable
+** Other services
+|----------+-------------------|
+| vmtoolsd | vmware tools      |
+| vboxdrv  | virtual box tools |
+|----------+-------------------|

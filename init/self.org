@@ -1,0 +1,7 @@
+- https://en.wikipedia.org/wiki/Init
+- https://wiki.archlinux.org/title/Init
+  - PID=1
+  - the 1st process started by the kernel during a system boot
+    - kernel hardcoded filename at "/sbin/init"
+  - is the in/direct ancestor of all other processes
+  - automatically adopts all orphaned processes
