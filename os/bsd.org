@@ -6,6 +6,9 @@
   https://news.ycombinator.com/item?id=37387392
 - https://justine.lol/pledge/
 
+- course: free bsd livelessons
+  - https://archive.org/details/LiveLessons_Introduction_to_the_FreeBSD_Operating_System
+
 * Channels
 
 - https://www.youtube.com/c/FreeBSDProject/videos

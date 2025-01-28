@@ -43,7 +43,7 @@ https://dingdingsherrywang.medium.com/system-design-instagram-4658eeb0423a
   https://www.youtube.com/playlist?list=PLOE1GTZ5ouRPbpTnrZ3Wqjamfwn_Q5Y9A
 - (2020/2021) CSE138 Distributed systems - Lindsey Kuper
   https://www.youtube.com/channel/UCekZUWSJkX9kHuvfPbt_gvg
-- Distributed Systemd - Cambridge - Martin Kleppmann
+- Distributed Systems - Cambridge - Martin Kleppmann
   https://www.youtube.com/playlist?list=PLeKd45zvjcDFUEv_ohr_HdUFe97RItdiB
   https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf
   https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/materials.html
