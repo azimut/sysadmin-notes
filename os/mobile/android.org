@@ -1,3 +1,5 @@
+- https://github.com/topjohnwu/Magisk
+  - can patch flashrom images
 - sudo root https://github.com/topjohnwu/Magisk
 - https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md
 - Standalone toolchains (obsolete)
@@ -42,16 +44,20 @@ $ adb shell
 |              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
 * adb
 |--------------------+-----------------------------------------+---------------------------------------|
-| CMD                | ARGS                                    | Desc                                  |
+|        <c>         |                                         |                                       |
+|        CMD         | ARGS                                    | Desc                                  |
 |--------------------+-----------------------------------------+---------------------------------------|
 | exec-out screencap | -p > screen.png                         | pipe to display or feh --scale-down - |
-| install            | -r some.apk                             | install apk                           |
-| logcat             | --regex 'containsthiststring' -v color  | tailf of system logs                  |
+|      install       | -r some.apk                             | install apk                           |
+|       logcat       | --regex 'containsthiststring' -v color  | tailf of system logs                  |
 | service call power | N                                       |                                       |
-| shell am start     | -n PACK.NAME/android.app.NativeActivity | run package                           |
-| shell dumpsys*     | nfc/window/power                        | screen status                         |
-| tcpip              | 5555                                    | wireless pair after usb connected     |
-| uninstall          | PACKAGE.NAME                            | uninstall apk                         |
+|   shell am start   | -n PACK.NAME/android.app.NativeActivity | run package                           |
+|   shell dumpsys*   | nfc/window/power                        | screen status                         |
+|       tcpip        | 5555                                    | wireless pair after usb connected     |
+|     uninstall      | PACKAGE.NAME                            | uninstall apk                         |
+|       reboot       | efex                                    | FEL mode                              |
+|       reboot       | bootloader                              |                                       |
+|      fastboot      | oem unlock                              |                                       |
 |--------------------+-----------------------------------------+---------------------------------------|
 - * grep mScreenState=/mDreamingLockscreen/mHolding
 * TODO build APK

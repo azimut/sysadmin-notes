@@ -1,0 +1,5 @@
+#+CAPTION: format pendrive
+#+begin_src sh
+  $ sudo fdisk /dev/sdb
+  $ sudo mkfs.vfat /dev/sdb1
+#+end_src

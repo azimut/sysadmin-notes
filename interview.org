@@ -14,6 +14,18 @@
 
 - https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam
 - Systems Design 2.0 by jordanhasnolife https://www.youtube.com/playlist?list=PLjTveVh7FakLdTmm42TMxbN8PvVn5g4KJ
+- https://huyenchip.com/2023/01/24/what-we-look-for-in-a-candidate.html
+  - https://news.ycombinator.com/item?id=34519268
+  - pictures of companies
+  - sites as resume work
+  - use keywords as partof the job accomplishments
+  - big companies
+    - look for a reason to say no
+    - automatized keyword filters
+  - small companies
+    - look for a reason to say yes
+    - read every resume
+
 * Course: Backend System Design      | FEM Erik Reinert
 
 - When talking about System Design, it could refer to:

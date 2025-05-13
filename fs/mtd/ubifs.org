@@ -1,0 +1,10 @@
+- https://en.wikipedia.org/wiki/UBIFS
+- 2008
+- NAND
+- Unsorted Block Image File System
+- MTD -> UBI -> UBIFS
+- for unmanaged flash memory devices
+- vs JFFS2
+  - supports write caching
+  - indexes in flash
+  - better performance on large devices

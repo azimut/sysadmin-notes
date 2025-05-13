@@ -3,6 +3,7 @@
 - tool: web UI
   source https://github.com/antiboredom/ffmpeg-explorer
   ui https://lav.io/notes/ffmpeg-explorer/
+  live https://ffmpeg.lav.io/
   filters map https://raw.githubusercontent.com/antiboredom/ffmpeg-explorer/main/filternames.txt
   discussion https://news.ycombinator.com/item?id=37269425
 
@@ -17,6 +18,7 @@
 - examples https://hhsprings.bitbucket.io/docs/programming/examples/ffmpeg/index.html
 
 * cli
+
 |------------------+------------------------------------|
 |       <c>        |                                    |
 | -filter:v fps=30 | 60 to 30 fps                       |
@@ -28,21 +30,57 @@
 |      -crf N      | Constant Rate Factor (aka quality) |
 |    -pixfmt P     |                                    |
 |------------------+------------------------------------|
+
+* language
+
+- truthy: non zero
+- falsy: zero
+
 ** expressions
 
 https://www.ffmpeg.org/ffmpeg-all.html#Expression-Evaluation
 
+operators
+binary: + - * / ^
+ unary: + -
+
 bitand(x, y)
 bitor(x, y) x and y are converted to integers before executing the bitwise operation.
-ld(idx) Load the value of the internal variable with index idx, which was previously stored with st(idx, expr). The function returns the loaded value.
+
 print(exp)
 print(exp, level)
+
+time(0) Return the current (wallclock) time in seconds.
+
+*** local internal variables
+
+root(expr, max)
+    Find an input value for which the function represented by expr with argument ld(0) is 0 in the interval 0..max.
+
+    The expression in expr must denote a continuous function or the result is undefined.
+
+    ld(0) is used to represent the function input value, which means that the given expression will be evaluated multiple times with various input values that the expression can access through ld(0). When the expression evaluates to 0 then the corresponding input value will be returned.
+
+ld(idx)
+    Load the value of the internal variable with index idx, which was previously stored with st(idx, expr).
+    The function returns the loaded value.
+
+st(idx, expr)
+    Store the value of the expression expr in an internal variable.
+    idx specifies the index of the variable where to store the value, and it is a value ranging from 0 to 9.
+    The function returns the value stored in the internal variable.
+
+    The stored value can be retrieved with ld(var).
+
+    Note: variables are currently not shared between expressions.
+
+*** random
 random(idx)
 
-    Return a pseudo random value between 0.0 and 1.0. idx is the index of the internal variable used to save the seed/state, which can be previously stored with st(idx).
+    Return a pseudo random value between 0.0 and 1.0.
+    idx is the index of the internal variable used to save the seed/state, which can be previously stored with st(idx).
 
     To initialize the seed, you need to store the seed value as a 64-bit unsigned integer in the internal variable with index idx.
-
     For example, to store the seed with value 42 in the internal variable with index 0 and print a few random values:
 
     st(0,42); print(random(0)); print(random(0)); print(random(0))
@@ -52,32 +90,6 @@ randomi(idx, min, max)
     Return a pseudo random value in the interval between min and max. idx is the index of the internal variable which will be used to save the seed/state, which can be previously stored with st(idx).
 
     To initialize the seed, you need to store the seed value as a 64-bit unsigned integer in the internal variable with index idx.
-root(expr, max)
-
-    Find an input value for which the function represented by expr with argument ld(0) is 0 in the interval 0..max.
-
-    The expression in expr must denote a continuous function or the result is undefined.
-
-    ld(0) is used to represent the function input value, which means that the given expression will be evaluated multiple times with various input values that the expression can access through ld(0). When the expression evaluates to 0 then the corresponding input value will be returned.
-st(idx, expr)
-
-    Store the value of the expression expr in an internal variable. idx specifies the index of the variable where to store the value, and it is a value ranging from 0 to 9. The function returns the value stored in the internal variable.
-
-    The stored value can be retrieved with ld(var).
-
-    Note: variables are currently not shared between expressions.
-taylor(expr, x)
-taylor(expr, x, idx)
-
-    Evaluate a Taylor series at x, given an expression representing the ld(idx)-th derivative of a function at 0.
-
-    When the series does not converge the result is undefined.
-
-    ld(idx) is used to represent the derivative order in expr, which means that the given expression will be evaluated multiple times with various input values that the expression can access through ld(idx). If idx is not specified then 0 is assumed.
-
-    Note, when you have the derivatives at y instead of 0, taylor(expr, x-y) can be used.
-time(0) Return the current (wallclock) time in seconds.
-
 *** boolean
 between(x, min, max) Return 1 if x is greater than or equal to min and lesser than or equal to max, 0 otherwise.
 eq(x, y) Return 1 if x and y are equivalent, 0 otherwise.
@@ -128,6 +140,16 @@ pow(x, y) Compute the power of x elevated y, it is equivalent to "(x)^(y)".
 sgn(x) Compute sign of x.
 squish(x) Compute expression 1/(1 + exp(4*x)).
 sqrt(expr) Compute the square root of expr. This is equivalent to "(expr)^.5".
+taylor(expr, x)
+taylor(expr, x, idx)
+
+    Evaluate a Taylor series at x, given an expression representing the ld(idx)-th derivative of a function at 0.
+
+    When the series does not converge the result is undefined.
+
+    ld(idx) is used to represent the derivative order in expr, which means that the given expression will be evaluated multiple times with various input values that the expression can access through ld(idx). If idx is not specified then 0 is assumed.
+
+    Note, when you have the derivatives at y instead of 0, taylor(expr, x-y) can be used.
 
 ** encoders (-vcodec -codec:v)
 
@@ -144,7 +166,10 @@ sqrt(expr) Compute the square root of expr. This is equivalent to "(expr)^.5".
    .....D = Supports direct rendering method 1
 #+end_src
 
-** filters (-vf -filter:v -filter_script)
+- source filters: do NOT have inputs
+- sink filters: do NOT generate outputs
+
+** simple filters (-vf/-af)
 
 https://ffmpeg.org/ffmpeg-filters.html
 
@@ -161,25 +186,47 @@ https://ffmpeg.org/ffmpeg-filters.html
     | = Source or sink filter
 #+end_src
 
+- -filter:a or -af
+- -filter:v or -vf
+
+- have 1 input, 1 output
+- typeof(input) == type(output)
+- you can daisy-chain multiple *simple filters*, to create a ~filter chain~
+  - uses ~,~ between filters
 - timeline support is given through the ~enable~ parameter which accepts ~between(t,N,M)~ joined by ~+~
 - variables https://www.ffmpeg.org/ffmpeg-filters.html#Options-1
   - iw,ih - input width and input height
   - t - point of time of the video, in seconds
 - filtering doesn't allow stream copy
-- filter1=opt1=arg1:opt2=arg2,filter2=opt1=arg1
-- filter1=arg1:arg2
-- options
-  - can have a shortform
-  - separated by colon (:)
 
-** _filter_complex
+#+begin_src sh
+  filter1=          # space optional
+    opt1=arg1:
+    opt2=arg2,
+  filter2=
+    opt1=arg1
+  filter3=arg1:arg2 # shortform
+#+end_src
 
-- for multiple inputs/outputs
+** complex filtergraph (-filter_complex)
+
+- can have multiple (or none) inputs and multiple outputs
+  - of different types
 - filtergraph
 - each ~-i~ should be mapped into a "[N]" in the script
+- between non-liner/complex filters use ~;~ as a delimiter
+- can't use the same output stream label twice
+  - use filters split/asplit if needed
+- automatic labels: [in] and [out]
+- you can directly output many videos by
+  #+begin_src sh
+    $ ffmpag .. -map '[foo]' output1.mp4 -map '[bar]' output2.mp4
+  #+end_src
 
 * snippets
 
+- examples https://github.com/antiboredom/infinite-video-fall-2023/blob/main/02_basics/02-ffmpeg.md
+- examples https://github.com/williamgilpin/howto/blob/597f49fe02d1692c01b09e9c16af732e8c6cfe19/howto_ffmpeg.md
 - art filter effect #1 https://youtu.be/nobWeGycSe8?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13&t=1244
 - dropshadow https://stackoverflow.com/questions/70368647/how-to-use-ffmpeg-to-add-a-drop-shadow
 - stream to twitch https://corvid.cafe/ffstream.html
@@ -243,6 +290,22 @@ https://www.reddit.com/r/davinciresolve/comments/1bab2yp/instagram_uploads_are_a
     -r 30Q
     -c:a aac
     -b:a 192k "instagram_optimized_export.mp4"
+** bouncing text
+
+- video without input video https://stackoverflow.com/questions/11640458/how-can-i-generate-a-video-file-directly-from-an-ffmpeg-filter-with-no-actual-in
+  - ffmpeg -f lavfi -i color=color=red -t 30 red.mp4
+
+- video text moving
+  #+begin_src sh
+    ffmpeg -f lavfi -i color=c=black:s=1280x720:d=10:r=30 -vf "
+    drawtext=text='Bounce!'
+            :fontcolor=white
+            :fontsize=40
+            :x='(W-tw) * abs(sin(t*2))'
+            :y='(H-th) * abs(cos(t*2))'
+        " -y bouncing_text.mp4
+  #+end_src
+
 * articles
 
 - https://drewdevault.com/2022/10/12/In-praise-of-ffmpeg.html
@@ -254,4 +317,8 @@ https://www.reddit.com/r/davinciresolve/comments/1bab2yp/instagram_uploads_are_a
 - https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/
 - https://xeiaso.net/blog/video-compression/
 * videos
+- PhreakNIC20: FFmpeg I didn't know it could do that! - poiupoiu https://www.youtube.com/watch?v=Dl2kUskbIo4
+- FFMPEG Advanced Techniques
+  - goes over many effects https://www.youtube.com/watch?v=M58rc7cxl_s
+  - Filtergraphs & Timeline https://www.youtube.com/watch?v=hElDsyuAQDA
 - course: Video Art with FFMPEG https://www.youtube.com/playlist?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13

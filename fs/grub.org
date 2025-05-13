@@ -1,0 +1,6 @@
+#+CAPTION: on Ubuntu
+#+begin_src sh
+  $ nano /etc/default/grub
+    GRUB_CMDLINE_LINUX_DEFAULT=""
+  $ sudo update-grub
+#+end_src

@@ -1,0 +1,9 @@
+- https://en.wikipedia.org/wiki/JFFS
+  - Journaling Flash File System
+  - filesystem for NOR Flash memories
+
+- https://en.wikipedia.org/wiki/JFFS2
+  - filesystem for NAND/NOR Flash memories
+  - 2001
+
+- 14 [[https://wiki.emacinc.com/wiki/Mounting_JFFS2_Images_on_a_Linux_PC][Mounting JFFS2 Images on a Linux PC]]

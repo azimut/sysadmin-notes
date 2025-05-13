@@ -7,6 +7,7 @@
 
 - 20 article https://github.com/sammwyy/server-security-guide
 - 21 article https://github.com/sammwyy/ddos-mitigation
+- http://www.moria.de/tech/firewall-architecture/
 
 
 - 17 video | IPTables - Blacklisting IP's and Ports - Stop the Badguys https://www.youtube.com/watch?v=qruazgOjMMY

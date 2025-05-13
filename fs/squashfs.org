@@ -1,0 +1,8 @@
+- https://en.wikipedia.org/wiki/SquashFS
+- 2002
+- Phillip Lougher, Robert Loughner
+- transparent compression through kernel support
+  - gzip, lzma/2, lzo, lz4, zstd
+- readonly
+- block sized from 4k to 1M
+- tools: https://github.com/plougher/squashfs-tools

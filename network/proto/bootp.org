@@ -1,0 +1,9 @@
+- https://en.wikipedia.org/wiki/Bootstrap_Protocol
+  - BOOTP
+  - 1985 by Bill Croft & John Gilmore
+  - [[https://www.rfc-editor.org/rfc/rfc951][RFC951]]
+  - RARP replacement with multinetwork support
+  - UDP protocol to assign IP from a configuration server
+    - ports: 67/server, 68/client
+  - ipv4 only
+  - parts are used to provide service to DHCP

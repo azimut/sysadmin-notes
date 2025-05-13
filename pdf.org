@@ -1,3 +1,5 @@
+- https://github.com/osnr/horrifying-pdf-experiments
+
 * pdfdetach - extract embedded files
 
 pdfdetach -list file.pdf
@@ -227,7 +229,7 @@ https://stackoverflow.com/questions/17705974/remove-the-last-page-of-a-pdf-file-
 pdftk infile.pdf cat 1-r2 output outfile.pdf
 * extract pages
 https://linuxhint.com/extract-pdf-pages-linux/
-pdftk adv_bash_scripting.pdf cat 3-8 output output.pdf
+pdftk adv_bash_scripting.pdf cat 3-8 10 15-20 output output.pdf
 53-103
 1032-1171
 1624-1933

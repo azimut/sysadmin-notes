@@ -1,0 +1,7 @@
+#+TITLE: Memory Technology Device
+
+- wiki https://en.wikipedia.org/wiki/Memory_Technology_Device
+- home http://web.archive.org/web/20000301182235/http://www.linux-mtd.infradead.org:80/
+
+- a type of _device file_ in Linux, for interacting with flash memory
+- an interface layer between hardware-specific device drivers and high-level applications

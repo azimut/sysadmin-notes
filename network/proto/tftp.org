@@ -1,0 +1,7 @@
+- https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol
+  - TFTP
+  - 1981 by Karen R. Sollins
+  - [[https://www.rfc-editor.org/rfc/rfc1350][RFC1350]]
+  - UDP protocol, on port 69
+  - it cannot list, delete, or rename files or directories
+  - it has no authentication

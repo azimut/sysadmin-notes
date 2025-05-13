@@ -1,0 +1,12 @@
+- https://en.wikipedia.org/wiki/Dnsmasq
+- https://wiki.archlinux.org/title/Dnsmasq
+- https://thekelleys.org.uk/dnsmasq/doc.html
+
+- Server: DNS + DHCP (v4,v6) + PXE + TFTP + BOOTP
+
+- https://en.wikipedia.org/wiki/Preboot_Execution_Environment
+  - PXE
+  - DHCP + TFTP
+- https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol
+  - DHCP
+  - 1984, 2003 (v6)
