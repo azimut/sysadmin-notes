@@ -1,0 +1,9 @@
+- servers https://en.wikipedia.org/wiki/Comparison_of_DHCP_server_software
+- https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol
+  - DHCP
+  - 1984, 2003 (v6)
+- https://en.wikipedia.org/wiki/DHCPv6
+  - for IPv6
+  - UDP protocol
+    - client/546
+    - server/547

@@ -1,0 +1,7 @@
+* mount .img with multiple partitions
+
+#+begin_src sh
+  $ mkdir disk
+  $ sudo losetup -P /dev/loop30 foobar.img
+  $ sudo mount /dev/loop30p2 disk
+#+end_src
