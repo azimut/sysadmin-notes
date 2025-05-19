@@ -1,0 +1,11 @@
+#+CAPTION: crosscompile example
+#+begin_src sh
+  $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+  $ cd linux/
+  $ export ARCH=arm
+  $ export CROSS_COMPILE=arm-linux-gnueabi-
+  $ make omap2plus_defconfig
+  $ make menuconfig      # add missing config manually
+  $ make -j 8
+  $ find . -name '*.dtb' # location of the Device Tree
+#+end_src

@@ -1,3 +1,4 @@
+- https://en.wikipedia.org/wiki/Link-local_address
 - tool: traffic shaper https://man.freebsd.org/cgi/man.cgi?dummynet
 - tool: ipfw
   $ sudo ipfw pipe 1 config bw 20KByte/s

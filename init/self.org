@@ -5,3 +5,22 @@
     - kernel hardcoded filename at "/sbin/init"
   - is the in/direct ancestor of all other processes
   - automatically adopts all orphaned processes
+
+* styles
+
+- BSD
+  - /etc/rc
+  - /etc/rc.local
+  - /etc/rc.conf
+  - /etc/rc.d/
+
+- SystemV (eg: busybox)
+  - /etc/inittab
+  - /etc/init.d/
+  - /etc/init.d/rcS
+
+- systemd
+  - /etc/systemd
+
+* articles
+- [[https://busybox.net/~vda/init_vs_runsv.html][SysV init must die.]]

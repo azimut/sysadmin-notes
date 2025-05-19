@@ -12,3 +12,5 @@
 - tftpd-hpa
   - source https://git.kernel.org/pub/scm/network/tftp/tftp-hpa.git
   - tuto https://chschneider.eu/linux/server/tftpd-hpa.shtml
+  - /etc/defaults/tftpd-hpa - config
+  - /var/lib/tftpboot - default shared dir

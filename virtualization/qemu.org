@@ -14,8 +14,8 @@
   - aka supervisor
   - creates and runs virtual machines
   - types
-    1) native/bare-metal
-    2) hosted
+    1) native/bare-metal (KVM?)
+    2) hosted (usermode?)
 - KVM https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine
   - Author: Avi Kivity, Paolo Bonzini
   - Kernel-based Virtual Machine
@@ -27,6 +27,10 @@
 - doc https://wiki.qemu.org/Category:User_documentation
 
 - A patch to hide qemu itself https://github.com/zhaodice/qemu-anti-detection
+
+- CTRL+ALT
+
+* qemu-advent-calendar
 - https://qemu-advent-calendar.org/2023/
   1) http://tinycorelinux.net/
      - in memory
@@ -39,14 +43,50 @@
      https://github.com/icebreaker/flordle/
   4) ASM - programming language
      https://github.com/akkartik/mu
+* cmd
 
-- CTRL+ALT
+** usermode
 
-* flags
-|----------+------------|
-| -drive   | file=[ISO] |
-|          | format=raw |
-|          | if=ide     |
-|----------+------------|
-| -display | [sdl]      |
-|----------+------------|
+- qemu-<ARCH>[el]
+  - el - for little endian
+
+|----+----------+-------------------------|
+| -L | <ROOTFS> |                         |
+| -g | -        | wait for gdb connection |
+|----+----------+-------------------------|
+** system
+
+#+begin_src
+  qemu-system-<ARCH>
+#+end_src
+
+- we are going to need a different *kernel*
+  - with QEMU drivers (eg: UART)
+  - a kernel _device tree_ could help him adapt generic drivers to the actual hardware running
+  - some embedded kernels might be a on special _format_ for bootloaders (?
+
+- we might need a different rootfs
+  - with more debug tools
+  - keeping the libc version, to reuse custom binaries
+
+#+begin_src sh
+  QEMU_AUDIO_DRIVER=none
+#+end_src
+
+|------------+----------------------+----------------------------|
+| -display   | [sdl]                |                            |
+| -cpu       | help                 |                            |
+| -M         |                      | board name                 |
+| -m         |                      | memory size                |
+| -nographic |                      | for terminal IO            |
+| -hda       | FILE                 | a filesystem file          |
+| -net       | nic,model=e1000      |                            |
+|            | user,                | to run unprivileged        |
+|            | hostfwd=tcp::HP-:GP, | host/guest port forwarding |
+| -kernel    | FILE                 |                            |
+| -no-reboot | -                    | shutdown on reboot         |
+| -append    | ???                  | append to kernel cmdline   |
+| -drive     | file=[ISO]           |                            |
+|            | format=raw           |                            |
+|            | if=ide               |                            |
+|------------+----------------------+----------------------------|

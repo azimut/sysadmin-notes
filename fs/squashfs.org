@@ -1,8 +1,13 @@
 - https://en.wikipedia.org/wiki/SquashFS
+- https://wiki.gentoo.org/wiki/SquashFS
+- https://tldp.org/HOWTO/SquashFS-HOWTO/index.html
+- https://www.kernel.org/doc/Documentation/filesystems/squashfs.txt
 - 2002
 - Phillip Lougher, Robert Loughner
-- transparent compression through kernel support
-  - gzip, lzma/2, lzo, lz4, zstd
 - readonly
+- transparent _compression_ through kernel support
+  - gzip, lzma/2, lzo, lz4, zstd
 - block sized from 4k to 1M
 - tools: https://github.com/plougher/squashfs-tools
+  - mksquashfs
+  - unsquashfs

@@ -1,0 +1,11 @@
+- home https://sourceforge.net/projects/cramfs/
+- wiki https://en.wikipedia.org/wiki/Cramfs
+- kernel https://www.kernel.org/doc/Documentation/filesystems/cramfs.txt
+- 2001
+- Compressed Rom/Ram File System
+- readonly
+- can be used without compression
+- max file size 16Mb
+- requires lower memory devices than squashfs
+- tools: https://github.com/npitre/cramfs-tools
+  - mkcramfs

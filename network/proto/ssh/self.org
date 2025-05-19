@@ -1,6 +1,9 @@
 - use jump/bastion host server
 
+- course: https://www.ssh.com/academy/ssh
 - tool: honeypot https://github.com/cowrie/cowrie
 - tool: honeypot (aggresive) https://github.com/skeeto/endlessh
 
+- /etc/motd           - text that prints on login
+- /etc/update-motd.d/ - scripts that run on login
 - https://en.wikipedia.org/wiki/Comparison_of_SSH_servers

@@ -8,3 +8,4 @@
   - supports write caching
   - indexes in flash
   - better performance on large devices
+- [[https://wiki.in-circuit.de/index.php5?title=Flashfilesystem_UBIFS][Flashfilesystem UBIFS]]

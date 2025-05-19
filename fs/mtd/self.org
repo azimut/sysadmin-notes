@@ -2,6 +2,16 @@
 
 - wiki https://en.wikipedia.org/wiki/Memory_Technology_Device
 - home http://web.archive.org/web/20000301182235/http://www.linux-mtd.infradead.org:80/
+- http://www.linux-mtd.infradead.org/faq/nand.html
 
 - a type of _device file_ in Linux, for interacting with flash memory
 - an interface layer between hardware-specific device drivers and high-level applications
+
+#+CAPTION: from https://www.youtube.com/watch?v=3yP3QOT-h98
+#+begin_src sh
+  modprobe nandsim first_id_byte=0xc8 ... cache_file=/root/nandsim.bin parts=8,8,...
+  flash_erase /dev/mtd0 0 8
+  nandwrite /dev/mtd0 foo.bin
+  ubiattach -O 2048 -m8 -d8
+  mount -tubifs /dev/ubi8_0 /mnt/jffs2
+#+end_src

@@ -1,0 +1,17 @@
+- home https://busybox.net/
+- source https://git.busybox.net/busybox
+- wiki https://en.wikipedia.org/wiki/BusyBox
+- 1999
+- Bruce Perens
+- no runlevels support
+
+* build
+
+#+begin_src sh
+  $ git clone git://git.busybox.net/busybox.git
+  $ cd busybox/
+  $ export ARCH=arm
+  $ export CROSS_COMPILE=arm-linux-gnueabi-
+  $ make defconfig
+  $ make menuconfig
+#+end_src
