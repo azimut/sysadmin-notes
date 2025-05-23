@@ -1,0 +1,18 @@
+- https://postmarketos.org/
+- https://en.wikipedia.org/wiki/PostmarketOS
+- NOT ANDROID (?
+- based
+  - on alpine (no glibc, no systemd*)
+- aka pmOS
+- for: phones, smartwatches, tablets, laptops, servers
+
+* pmbootstrap
+
+ - build packages (crosscompile)
+ - build images, kernel, initfs
+
+* videos
+
+- 25 [[https://www.youtube.com/watch?v=wbx0M3ffFkA][Linux On Phones and Tablets With postmarketOS]]
+- 24 [[https://www.youtube.com/watch?v=S6EpCmYEovY][systemd-ifying postmarketOS, our immutable future, and why Alpine is cooler than you thought]]
+  - 16:00

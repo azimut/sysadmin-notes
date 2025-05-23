@@ -1,12 +1,7 @@
-- https://github.com/topjohnwu/Magisk
-  - can patch flashrom images
-- sudo root https://github.com/topjohnwu/Magisk
-- https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md
-- Standalone toolchains (obsolete)
-  https://developer.android.com/ndk/guides/standalone_toolchain
-- Use the NDK with other build systems (>r19)
-  https://developer.android.com/ndk/guides/other_build_systems
-  - Works with CMake & ndk-build
+- https://source.android.com/docs/core/architecture/bootloader/locking_unlocking
+- https://blog.denv.it/posts/pmos-k3s-cluster/?ref=dailydev#gpl-is-not-always-respected
+- 13 course [[https://www.youtube.com/playlist?list=PLZ9NgFYEMxp50tvT8806xllaCbd31DpDy][CS 282: Systems Programming for Android]]
+- tool https://spflashtools.com/category/windows
 - Android
   https://wiki.gentoo.org/wiki/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android
   https://wiki.gentoo.org/wiki/Android/SharkBait/Clang_toolchain_with_sanitizers_support_for_Android
@@ -14,55 +9,204 @@
   2017 https://github.com/skanti/Android-Manual-Build-Command-Line
   https://github.com/facebookexperimental/ExtendedAndroidTools
   https://github.com/borodust/aw-filament/blob/master/.github/workflows/build.yaml
-- https://developer.android.com/guide/topics/sensors/sensors_motion
-- nim, apk building
-  https://github.com/akavel/dali
-  https://www.youtube.com/watch?v=wr9X5NCwPlI
 - table of "adb service power" codes
   https://gist.github.com/ktnr74/60ac7bcc2cd17b43f2cb
   https://stackoverflow.com/questions/35275828/is-there-a-way-to-check-if-android-device-screen-is-locked-via-adb
   https://ktnr74.blogspot.com/2014/09/calling-android-services-from-adb-shell.html
-* webcam
-- .deb for ubuntu https://iriun.com/
-  - closed source
-- driodam
-  - source (C) https://github.com/dev47apps/droidcam
-  - releases https://github.com/dev47apps/droidcam/releases
-  - faq https://www.dev47apps.com/droidcam/help/
-* error: insufficient permissions for device error
+- x86
+  - wiki https://en.wikipedia.org/wiki/Android-x86
+  - home https://www.android-x86.org/
+- system
+  - alexa https://github.com/jvandewiel/no-alexa
+
+* versions
+|----+-------+-------------+------------------------+---------|
+|    | <l>   |             |                        | <l>     |
+| 15 | 6.0.1 | [[https://en.wikipedia.org/wiki/Android_Marshmallow][Marshmallow]] |                        | 3.18.19 |
+| 13 | 4.4   | [[https://en.wikipedia.org/wiki/Android_KitKat][KitKat]]      | Introduced secure boot | 3.4     |
+| 09 | 1.6   | Donut       |                        | 2.6.29  |
+|----+-------+-------------+------------------------+---------|
+* rooting
+
+- https://en.wikipedia.org/wiki/Rooting_(Android)
+- https://github.com/topjohnwu/Magisk
+  - can patch flashrom images
+
+* bootloader
+
+- tool: $$$ https://en.wikipedia.org/wiki/Cellebrite_UFED
+- tool: unlock https://github.com/bkerler/mtkclient
+- tool: https://tinyhack.com/2021/01/31/dissecting-a-mediatek-bootrom-exploit/
+
+- AVB - Android Verified Boot
+  - https://source.android.com/security/verifiedboot/
+  - https://source.android.com/docs/security/features/verifiedboot/dm-verity
+
+- https://simple.wikipedia.org/wiki/Bootloop
+- https://source.android.com/docs/core/architecture/bootloader/locking_unlocking
+
+- https://android.fandom.com/wiki/Booting_(Android)
+  - PMIC -> PBL -> SBL/XBL -> ABL -> Linux -> init -> Zygote -> Dalvik VM
+- https://en.wikipedia.org/wiki/Booting_process_of_Android_devices
+  - PBL - Primary BootLoader
+    - stored in the [[https://en.wikipedia.org/wiki/Boot_ROM][Boot ROM]]
+    - written by the chipset manufacturer
+  - SBL - Secondary BootLoader
+    - on eMMC or eUFS
+    - initializes ARM security extension [[https://en.wikipedia.org/wiki/ARM_architecture_family#Security_extensions][TrustZone]]
+      - used by Samsung Knox
+    - Qualcomm = LK (little kernel) + Aboot(ABL)
+      - https://newandroidbook.com/Articles/aboot.html
+    - Qualcomm = XBL (eXtensible Bootloader) + Aboot(ABL)
+    - Samsung Exynos = S-Boot
+    - MediaTek = u-boot
+
+- https://en.wikipedia.org/wiki/Bootloader_unlocking
+  - disables secure boot
+  - to allow unsigned code to run, aka custom roms
+  - breaks Samsung Knox (counter stuck at "0x1"
+  - often through a Vendor specific tools/services
+  - it is possible to relock it back
+
+- https://github.com/melontini/bootloader-unlock-wall-of-shame
+  - avoid:
+    - [[https://github.com/melontini/bootloader-unlock-wall-of-shame/blob/main/brands/motorola/README.md][motorola]]
+
+- https://lineageos.org/engineering/Qualcomm-Firmware/
+
+** videos
+
+- 15 [[https://www.youtube.com/watch?v=5SQP0qfUDjI][Digging Into Android Startup]] by Dave Smith
+- https://www.youtube.com/watch?v=tqwFgzL5MeU
+  - /init.rc
+- https://www.youtube.com/watch?v=jVp_2uYAEfE
+- https://www.youtube.com/watch?v=JoeT9iX411U
+
+* EDL - Emergency Download *Mode*
+
+- https://en.wikipedia.org/wiki/Qualcomm_EDL_mode
+- for qualcomm
+- can be enter from the PBL manually
+
+* recovery *mode*
+
+- https://en.wikipedia.org/wiki/Android_recovery_mode
+- a mode
+- uses: install updates and wipe data
+- kernel + ramdisk, on a separate partition
+
+- official https://android.googlesource.com/platform/bootable/recovery/+/refs/heads/main
+- alternative https://en.wikipedia.org/wiki/ClockworkMod#ClockworkMod_Recovery
+- alternative https://twrp.me/FAQ/ https://en.wikipedia.org/wiki/TWRP_(software)
+
+* fastboot *mode*
+
+- https://source.android.com/docs/setup/test/running
+- https://android.googlesource.com/platform/system/core/+/refs/heads/master/fastboot/README.md
+- https://en.wikipedia.org/wiki/Fastboot
+  - is a
+    - communication protocol
+    - cli
+    - mode
+  - to
+    - modify flash filesystems via USB
+    - (sometimes) disable the bootloader
+      - installing custom recovery/rom
+
+** cli
+|-------------------------+-------------------------------|
+|           <c>           |                               |
+|         devices         | list connected devices        |
+|       getvar all        | device info                   |
+|     oem device-info     | checks bootloader state       |
+|        format ??        | formats given partition       |
+|        erase ??         | partition erase               |
+|        flash IMG        | rewrites with given IMG       |
+| flashing¦oem unlock KEY | unlocks OEM locked bootloader |
+| flashing¦oem lock   KEY | locks OEM bootloader          |
+|         reboot          |                               |
+|-------------------------+-------------------------------|
+** alternatives
+
+- samsung https://github.com/Benjamin-Dobell/Heimdall
+- samsung https://en.wikipedia.org/wiki/Odin_(firmware_flashing_software)
+  - developed by samsung (leaked)
+
+* adb - android debug bridge
+https://en.wikipedia.org/wiki/Android_Debug_Bridge
+|------------------------+-----------------------------------------+---------------------------------------|
+|          <c>           |                                         |                                       |
+|          CMD           | ARGS                                    | Desc                                  |
+|------------------------+-----------------------------------------+---------------------------------------|
+|   exec-out screencap   | -p > screen.png                         | pipe to display or feh --scale-down - |
+|        install         | -r some.apk                             | install apk                           |
+|         logcat         | --regex 'containsthiststring' -v color  | tailf of system logs                  |
+|   service call power   | N                                       |                                       |
+|         tcpip          | 5555                                    | wireless pair after usb connected     |
+|       uninstall        | PACKAGE.NAME                            | uninstall apk                         |
+|         reboot         | efex                                    | FEL mode                              |
+|         reboot         | bootloader                              |                                       |
+|        fastboot        | oem unlock                              |                                       |
+|       get-state        | -                                       | device ¦ recovery                     |
+|    backup <foo.adb>    |                                         | -apk -all -system -f                  |
+|------------------------+-----------------------------------------+---------------------------------------|
+** shell
+|------------------------+-----------------------------------------+------------------------|
+| shell am start         | -n PACK.NAME/android.app.NativeActivity | run package            |
+| shell getprop          | <PROPNAME>                              |                        |
+| shell pm list packages |                                         | -s for system packages |
+| shell pm uninstall     | --user 0 <PCK>                          |                        |
+| shell dumpsys*         | nfc/window/power                        | screen status          |
+|------------------------+-----------------------------------------+------------------------|
+- * grep mScreenState=/mDreamingLockscreen/mHolding
+** error: insufficient permissions for device error
 https://itsfoss.com/fix-error-insufficient-permissions-device/
 When "adb shell" fails with that error
 $ adb kill-server
 $ sudo adb start-server
 $ adb shell
+** Move data to internal storage
+https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
+  #+begin_src shell
+> adb shell
+> sm list-disks disk:179,128 # HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
+> sm set-force-adoptable true # IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
+> sm partition disk:179,64 mixed 60 # IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
+> sm set-force-adoptable falsep
+#+end_src
+Go to Settings and then Storage.
+Select the microSD card listed at the internal storage section and tap to enter it.
+Inside the above menu browse to the bottom and choose to move all the data to the new card.
 * aapt
+https://developer.android.com/tools/aapt2
 |--------------+---------------------------------------------------------+---|
 | CMD          | ARGS                                                    |   |
 |--------------+---------------------------------------------------------+---|
 | dump badging | some.apk                                                |   |
 | package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
 |              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
-* adb
-|--------------------+-----------------------------------------+---------------------------------------|
-|        <c>         |                                         |                                       |
-|        CMD         | ARGS                                    | Desc                                  |
-|--------------------+-----------------------------------------+---------------------------------------|
-| exec-out screencap | -p > screen.png                         | pipe to display or feh --scale-down - |
-|      install       | -r some.apk                             | install apk                           |
-|       logcat       | --regex 'containsthiststring' -v color  | tailf of system logs                  |
-| service call power | N                                       |                                       |
-|   shell am start   | -n PACK.NAME/android.app.NativeActivity | run package                           |
-|   shell dumpsys*   | nfc/window/power                        | screen status                         |
-|       tcpip        | 5555                                    | wireless pair after usb connected     |
-|     uninstall      | PACKAGE.NAME                            | uninstall apk                         |
-|       reboot       | efex                                    | FEL mode                              |
-|       reboot       | bootloader                              |                                       |
-|      fastboot      | oem unlock                              |                                       |
-|--------------------+-----------------------------------------+---------------------------------------|
-- * grep mScreenState=/mDreamingLockscreen/mHolding
-* TODO build APK
-  - 
-* Using Sockets
+|--------------+---------------------------------------------------------+---|
+* dev
+
+- 2022 | Android From Scratch: Building Your First Android Application
+  https://code.tutsplus.com/tutorials/android-from-scratch-building-your-first-android-application--cms-26024
+- 2016 | Absolutely minimal Android project
+  https://czak.pl/2016/01/13/minimal-android-project.html
+  https://github.com/czak/minimal-android-project
+- https://developer.android.com/training/basics/firstapp/index.html
+- French - https://aurelien-esnard.emi.u-bordeaux.fr/teaching/doku.php?id=android:helloworld
+- nim, apk building
+  https://github.com/akavel/dali
+  https://www.youtube.com/watch?v=wr9X5NCwPlI
+- Standalone toolchains (obsolete)
+  https://developer.android.com/ndk/guides/standalone_toolchain
+- Use the NDK with other build systems (>r19)
+  https://developer.android.com/ndk/guides/other_build_systems
+  - Works with CMake & ndk-build
+- https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md
+- https://developer.android.com/guide/topics/sensors/sensors_motion
+
+** Using Sockets
 https://stackoverflow.com/questions/6033581/using-socket-in-android-ndk
 <uses-permission android:name="android.permission.INTERNET"/>
 outside the application tag in your AndroidManifest.xml
@@ -76,15 +220,16 @@ void testSocket()
     int err = errno;
 }
 #+end_src
-* Move data to internal storage
-https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
-  #+begin_src shell
-> adb shell
-> sm list-disks disk:179,128 # HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
-> sm set-force-adoptable true # IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
-> sm partition disk:179,64 mixed 60 # IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
-> sm set-force-adoptable false
-#+end_src
-Go to Settings and then Storage.
-Select the microSD card listed at the internal storage section and tap to enter it.
-Inside the above menu browse to the bottom and choose to move all the data to the new card.
+* DE
+
+- DE https://en.wikipedia.org/wiki/Plasma_Mobile https://invent.kde.org/plasma/plasma-mobile
+- DE https://sxmo.org/
+- DE https://phosh.mobi/ https://en.wikipedia.org/wiki/Phosh
+
+* webcam
+- .deb for ubuntu https://iriun.com/
+  - closed source
+- driodam
+  - source (C) https://github.com/dev47apps/droidcam
+  - releases https://github.com/dev47apps/droidcam/releases
+  - faq https://www.dev47apps.com/droidcam/help/
