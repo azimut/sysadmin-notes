@@ -1,5 +1,9 @@
 - Pulseaudio
-  https://wiki.ubuntu.com/Audio/PositionReporting
+  - https://wiki.ubuntu.com/Audio/PositionReporting
+  - modules https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Modules/
+    - $ pulseaudio --dump-modules
+    - $ pacmd load-module <MODULE>
+  - /etc/pulse/
 * Disable automatic mute of speakers
 - Disable it on alsamixer
 * Disable automatic switch of devices

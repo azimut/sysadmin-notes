@@ -1,0 +1,7 @@
+- https://en.wikipedia.org/wiki/Dm-crypt
+- Linux 2.6
+- part of *dm* (device mapper)
+- transparent block device encryption
+- successor of *cryptoloop*
+
+- tool: ? https://wiki.archlinux.org/title/Fscrypt

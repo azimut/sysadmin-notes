@@ -1,0 +1,16 @@
+* nmcli
+
+#+begin_src sh
+  nmcli general ¦ networking ¦ radio ¦ connection ¦ device ¦ agent ¦ monitor
+#+end_src
+
+** snippets
+
+#+begin_src sh
+  $ man nmcli-examples
+  $ nmcli con add type ethernet ifname DEV ip4 IP/MASK # static ip
+  $ nmcli --show-secrets connection show id ESSID # show password
+  $ nmcli d[evice] wifi # list access points
+  $ nmcli d[evice] wifi connect ESSID --ask
+  $ nmcli d[evice] wifi connect --ask ESSID name ESSID hidden yes
+#+end_src

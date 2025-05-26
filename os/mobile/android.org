@@ -1,7 +1,8 @@
+- Android on APF build https://www.armadeus.org/wiki/index.php?title=Android
+- CPU to Brand search https://www.kimovil.com/es/
 - https://source.android.com/docs/core/architecture/bootloader/locking_unlocking
 - https://blog.denv.it/posts/pmos-k3s-cluster/?ref=dailydev#gpl-is-not-always-respected
 - 13 course [[https://www.youtube.com/playlist?list=PLZ9NgFYEMxp50tvT8806xllaCbd31DpDy][CS 282: Systems Programming for Android]]
-- tool https://spflashtools.com/category/windows
 - Android
   https://wiki.gentoo.org/wiki/Android/SharkBait/Building_a_toolchain_for_aarch64-linux-android
   https://wiki.gentoo.org/wiki/Android/SharkBait/Clang_toolchain_with_sanitizers_support_for_Android
@@ -19,6 +20,14 @@
 - system
   - alexa https://github.com/jvandewiel/no-alexa
 
+- tool: mkbootimg - creates android boot images
+  - https://github.com/osm0sis/mkbootimg
+- tool: abootimg - r/w/u android boot images
+  - requires ramdisk
+  - https://mediawiki.compulab.com/index.php/Android:_Boot_image
+- tool: skales - creates android boot images for qualcommm
+  - EOL 2016 https://git.codelinaro.org/clo/qsdk/oss/tools/skales
+
 * versions
 |----+-------+-------------+------------------------+---------|
 |    | <l>   |             |                        | <l>     |
@@ -31,19 +40,26 @@
 - https://en.wikipedia.org/wiki/Rooting_(Android)
 - https://github.com/topjohnwu/Magisk
   - can patch flashrom images
+  - https://www.thecustomdroid.com/install-magisk-root-android-devices/
 
 * bootloader
 
 - tool: $$$ https://en.wikipedia.org/wiki/Cellebrite_UFED
-- tool: unlock https://github.com/bkerler/mtkclient
-- tool: https://tinyhack.com/2021/01/31/dissecting-a-mediatek-bootrom-exploit/
 
+- https://wiki.postmarketos.org/wiki/Deviceinfo_flash_methods
 - AVB - Android Verified Boot
   - https://source.android.com/security/verifiedboot/
   - https://source.android.com/docs/security/features/verifiedboot/dm-verity
 
 - https://simple.wikipedia.org/wiki/Bootloop
+- https://source.android.com/docs/core/architecture/bootloader
 - https://source.android.com/docs/core/architecture/bootloader/locking_unlocking
+- https://github.com/littlekernel/lk/wiki/Introduction
+  - tiny OS for embedded devices, bootloaders
+  - features: threads, mutex, timers
+  - size: 15K-20K
+  - https://android.googlesource.com/kernel/lk/
+    - implements fastboot?
 
 - https://android.fandom.com/wiki/Booting_(Android)
   - PMIC -> PBL -> SBL/XBL -> ABL -> Linux -> init -> Zygote -> Dalvik VM
@@ -74,6 +90,12 @@
 
 - https://lineageos.org/engineering/Qualcomm-Firmware/
 
+** sboot (samsung)
+
+- https://hexdetective.blogspot.com/2017/02/exploiting-android-s-boot-getting.html
+- https://blog.quarkslab.com/reverse-engineering-samsung-s6-sboot-part-i.html
+- https://blog.quarkslab.com/reverse-engineering-samsung-s6-sboot-part-ii.html
+
 ** videos
 
 - 15 [[https://www.youtube.com/watch?v=5SQP0qfUDjI][Digging Into Android Startup]] by Dave Smith
@@ -98,6 +120,8 @@
 - official https://android.googlesource.com/platform/bootable/recovery/+/refs/heads/main
 - alternative https://en.wikipedia.org/wiki/ClockworkMod#ClockworkMod_Recovery
 - alternative https://twrp.me/FAQ/ https://en.wikipedia.org/wiki/TWRP_(software)
+  - https://www.thecustomdroid.com/download-install-twrp-recovery-android/
+- alternative https://github.com/msm8916-mainline/lk2nd
 
 * fastboot *mode*
 
@@ -133,7 +157,8 @@
   - developed by samsung (leaked)
 
 * adb - android debug bridge
-https://en.wikipedia.org/wiki/Android_Debug_Bridge
+- https://en.wikipedia.org/wiki/Android_Debug_Bridge
+- tool: https://github.com/T-vK/android-svc
 |------------------------+-----------------------------------------+---------------------------------------|
 |          <c>           |                                         |                                       |
 |          CMD           | ARGS                                    | Desc                                  |
@@ -151,13 +176,28 @@ https://en.wikipedia.org/wiki/Android_Debug_Bridge
 |    backup <foo.adb>    |                                         | -apk -all -system -f                  |
 |------------------------+-----------------------------------------+---------------------------------------|
 ** shell
-|------------------------+-----------------------------------------+------------------------|
-| shell am start         | -n PACK.NAME/android.app.NativeActivity | run package            |
-| shell getprop          | <PROPNAME>                              |                        |
-| shell pm list packages |                                         | -s for system packages |
-| shell pm uninstall     | --user 0 <PCK>                          |                        |
-| shell dumpsys*         | nfc/window/power                        | screen status          |
-|------------------------+-----------------------------------------+------------------------|
+
+adb shell am start
+-n com.android.certinstaller/.CertInstallerMain
+-a android.intent.action.VIEW
+-t application/x-x509-ca-cert
+-d file://"$ca_path_in_phone"
+
+
+|------------------------+-------------------------------------------------+------------------------|
+| shell am start         | -n com.android.certinstaller/.CertInstallerMain | run package            |
+|                        | -a android.intent.action.VIEW                   | (eg: install cert)     |
+|                        | -t application/x-x509-ca-cert                   |                        |
+|                        | -d file:///foo/bar.pem                          |                        |
+| shell getprop          | <PROPNAME>                                      |                        |
+| shell pm list packages |                                                 | -s for system packages |
+| shell pm uninstall     | --user 0 <PCK>                                  |                        |
+| shell dumpsys*         | nfc/window/power                                | screen status          |
+| shell input text       | "some%swacky%stext"                             | input keyboard text    |
+| shell input keyevent   | 66                                              | inputs enter key       |
+| shell input tap        | X Y                                             |                        |
+| shell input swipe      | X1 Y1 X2 Y2 DUR                                 |                        |
+|------------------------+-------------------------------------------------+------------------------|
 - * grep mScreenState=/mDreamingLockscreen/mHolding
 ** error: insufficient permissions for device error
 https://itsfoss.com/fix-error-insufficient-permissions-device/
@@ -220,6 +260,35 @@ void testSocket()
     int err = errno;
 }
 #+end_src
+* init
+
+https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/init/
+
+* partitions
+
+- https://source.android.com/docs/core/architecture/partitions/system-as-root
+- https://source.android.com/docs/core/architecture/partitions
+- https://wiki.postmarketos.org/wiki/Android_dynamic_partitions
+
+** full disk encryption
+
+- https://source.android.com/docs/security/features/encryption/full-disk
+  - full disk encryption supported by 5<=Android<=9
+  - see the added *forceencrypt* on fstab
+  - key stored on TEE (aka TrustZone)
+  - based on dm-crypt
+
+- 22 https://www.synacktiv.com/sites/default/files/2022-04/THCON22_Android_Encryption.pdf
+- 23 https://blog.quarkslab.com/android-data-encryption-in-depth.html
+- 24 [[https://www.youtube.com/watch?v=atFoYkULz5E][Becoming The Evil Maid: Hacking Android Disk Encryption For Fun And Profit]] by David Gstir
+  - Samsung Galaxy S21, Android 11
+    - full emmc dump
+    - has passcode
+    - was later upgraded to a Android 12
+  - phone (samsung) didn't allow downgrading Android to reflash it
+    - see "Trust dies in darkness: shedding light on samsung's trustzone keymaster design"
+      - https://eprint.iacr.org/2022/208.pdf
+
 * DE
 
 - DE https://en.wikipedia.org/wiki/Plasma_Mobile https://invent.kde.org/plasma/plasma-mobile

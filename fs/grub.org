@@ -4,3 +4,4 @@
     GRUB_CMDLINE_LINUX_DEFAULT=""
   $ sudo update-grub
 #+end_src
+- vuln https://unix.stackexchange.com/questions/250028/grub2-security-vulnerability-pressing-backspace-28-times-what-are-my-risks-wh/250079
