@@ -6,7 +6,9 @@
   - filesystem for NAND/NOR Flash memories
   - 2001
 
-- tool: extraction tool, used by binwalk -e https://github.com/sviehb/jefferson
+- tool: extraction tool, used by binwalk -e
+  - https://github.com/sviehb/jefferson
+  - https://github.com/onekey-sec/jefferson/
 
 - article [[https://wiki.in-circuit.de/index.php5?title=Flashfilesystem_JFFS2][Flashfilesystem JFFS2]]
 - article 14 [[https://wiki.emacinc.com/wiki/Mounting_JFFS2_Images_on_a_Linux_PC][Mounting JFFS2 Images on a Linux PC]]

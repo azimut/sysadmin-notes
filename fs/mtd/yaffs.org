@@ -1,0 +1,3 @@
+- https://en.wikipedia.org/wiki/YAFFS
+- Charles Manning
+- tool: extract https://github.com/whataday/unyaffs

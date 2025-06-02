@@ -1,3 +1,4 @@
+- https://github.com/AlikornSause/Notes-on-QIN-F21-PRO
 - Android on APF build https://www.armadeus.org/wiki/index.php?title=Android
 - CPU to Brand search https://www.kimovil.com/es/
 - https://source.android.com/docs/core/architecture/bootloader/locking_unlocking
@@ -31,8 +32,10 @@
 * versions
 |----+-------+-------------+------------------------+---------|
 |    | <l>   |             |                        | <l>     |
+| 16 | 7.0   | [[https://en.wikipedia.org/wiki/Android_Nougat][Nougat]]      |                        | 4.1     |
 | 15 | 6.0.1 | [[https://en.wikipedia.org/wiki/Android_Marshmallow][Marshmallow]] |                        | 3.18.19 |
 | 13 | 4.4   | [[https://en.wikipedia.org/wiki/Android_KitKat][KitKat]]      | Introduced secure boot | 3.4     |
+| 10 | 2.2   | [[https://en.wikipedia.org/wiki/Android_Froyo][Froyo]]       |                        |         |
 | 09 | 1.6   | Donut       |                        | 2.6.29  |
 |----+-------+-------------+------------------------+---------|
 * rooting
@@ -65,17 +68,22 @@
   - PMIC -> PBL -> SBL/XBL -> ABL -> Linux -> init -> Zygote -> Dalvik VM
 - https://en.wikipedia.org/wiki/Booting_process_of_Android_devices
   - PBL - Primary BootLoader
-    - stored in the [[https://en.wikipedia.org/wiki/Boot_ROM][Boot ROM]]
+    - stored in the [[https://en.wikipedia.org/wiki/Boot_ROM][Boot ROM]], limited size
     - written by the chipset manufacturer
+    - on Samsung SSBK (Secure Boot Key) is used to verify next stages
   - SBL - Secondary BootLoader
     - on eMMC or eUFS
-    - initializes ARM security extension [[https://en.wikipedia.org/wiki/ARM_architecture_family#Security_extensions][TrustZone]]
+    - there can be many of them (IPL/SPL - Initial/Seconday Program Load)
+      - first one runs on internal RAM
+      - first one initializes external RAM
+      - then loads next one there
+      - second one then loads android/init
+    - Initializes ARM security extension [[https://en.wikipedia.org/wiki/ARM_architecture_family#Security_extensions][TrustZone]]
       - used by Samsung Knox
-    - Qualcomm = LK (little kernel) + Aboot(ABL)
-      - https://newandroidbook.com/Articles/aboot.html
-    - Qualcomm = XBL (eXtensible Bootloader) + Aboot(ABL)
+    - Qualcomm       = LK (little kernel) + Aboot(ABL) - https://newandroidbook.com/Articles/aboot.html
+    - Qualcomm       = XBL (eXtensible Bootloader) + Aboot(ABL)
     - Samsung Exynos = S-Boot
-    - MediaTek = u-boot
+    - MediaTek       = u-boot
 
 - https://en.wikipedia.org/wiki/Bootloader_unlocking
   - disables secure boot
@@ -269,9 +277,20 @@ https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/
 - https://source.android.com/docs/core/architecture/partitions/system-as-root
 - https://source.android.com/docs/core/architecture/partitions
 - https://wiki.postmarketos.org/wiki/Android_dynamic_partitions
+- /dev/block/platform/??/??/by-name/
+- /proc/partitions
 
+** common
+|-----------+----------------------------|
+| /boot     | bootimg = kernel + ramdisk |
+| /recovery | bootimg = kernel + ramdisk |
+| /cache    |                            |
+| /system   | the OS                     |
+| /userdata | aka /data                  |
+|-----------+----------------------------|
 ** full disk encryption
 
+- https://jsteward.moe/analysis-of-android-cryptfs.html
 - https://source.android.com/docs/security/features/encryption/full-disk
   - full disk encryption supported by 5<=Android<=9
   - see the added *forceencrypt* on fstab

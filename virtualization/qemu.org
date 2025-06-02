@@ -30,6 +30,8 @@
 
 - CTRL+ALT
 
+- tool to emulate firmware https://github.com/firmadyne/firmadyne
+
 * qemu-advent-calendar
 - https://qemu-advent-calendar.org/2023/
   1) http://tinycorelinux.net/
@@ -45,20 +47,25 @@
      https://github.com/akkartik/mu
 * cmd
 
-** usermode
+** qemu-ARCH[el]
 
-- qemu-<ARCH>[el]
-  - el - for little endian
+- aka usermode
+- el - for little endian
 
 |----+----------+-------------------------|
 | -L | <ROOTFS> |                         |
 | -g | -        | wait for gdb connection |
 |----+----------+-------------------------|
-** system
+** qemu-ARCH-static
 
-#+begin_src
-  qemu-system-<ARCH>
+#+begin_src sh
+  $ ls
+    bin lib etc root var usr
+  $ cp /usr/bin/qemu-mips-static .
+  $ sudo chroot . ./qemu-mips-static bin/busybox
 #+end_src
+
+** qemu-system-ARCH
 
 - we are going to need a different *kernel*
   - with QEMU drivers (eg: UART)

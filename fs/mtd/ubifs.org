@@ -9,3 +9,5 @@
   - indexes in flash
   - better performance on large devices
 - [[https://wiki.in-circuit.de/index.php5?title=Flashfilesystem_UBIFS][Flashfilesystem UBIFS]]
+
+- tool: read/extract https://github.com/onekey-sec/ubi_reader
