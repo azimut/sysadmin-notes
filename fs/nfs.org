@@ -4,6 +4,35 @@
 - v4
   - only port 2049 TCP/UDP
 
+* CLI
+
+** server
+
 #+begin_src sh
   $ sudo apt install nfs-kernel-server
+  $ sudo systemctl restart nfs-server
 #+end_src
+
+** client
+
+#+begin_src sh
+  $ sudo mount -t nfs IP:REMOTE_PATH LOCAL_PATH
+#+end_src
+
+* exports
+
+#+begin_src
+PATH IP(OPTS)
+#+end_src
+
+** options
+|------------------+----------------------|
+|       <c>        |         <c>          |
+|     ro / rw      |     default: ro      |
+|   async / sync   |    default: sync*    |
+| no_subtree_check |  +reliable -secure   |
+|  no_root_squash  | for diskless clients |
+|     crossmnt     |                      |
+|      fsid=0      |                      |
+|------------------+----------------------|
+- * since 2005
