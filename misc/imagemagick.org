@@ -1,3 +1,36 @@
+- 1987
+- GraphicMagick (Fork)
+- video 24 Command-line image processing with ImageMagick https://www.youtube.com/watch?v=8n16CuJZJ4c
+  - Presenter: Alex Razoumov
+  - https://wgpages.netlify.app/imagemagick/
+
+- Settings: saved for later use
+  - Operator: controls how later operators will work.
+    - ex: dither gravity fill background bordercolor stroke font pointsize strokewidth box virtual-pixel interpolate
+  - Input
+  - Output
+  - Control & Debugging
+
+- Operators: executed in order, and immediately https://usage.imagemagick.org/basics/#option_stack
+  1) Creation: add 1 image
+     - file.png xc: canvas: logo: rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
+
+  2) Simple Image Processing:
+     - they modify ALL images in memory, separately
+     - INPUT: 1 image at the time
+     - OUTPUT: 1 or more
+     - ex: crop repage border frame trim chop draw annotate resize scale sample ...
+
+  3) Multi-Image List:
+     - INPUT: all images in memory
+     - OUTPUT: 1 image OR modify each OR delete some (?
+     - ex: append flatten mosaic layers composite combine fx coalesce clut evaluate-sequence
+
+  4) Stack: arrange images order in memory
+     - ) delete insert swap reverse duplicate clone (
+
+  5) Misc: geometry version list bench concurrent preview
+
 * txt to image
 convert -font FreeMono -pointsize 20 label:@what.txt what.gif && sxiv what.gif
 convert -interline-spacing -10 -font Nimbus-Mono-PS -fill white -background black -pointsize 20 label:@what.txt what.gif && identify what.gif

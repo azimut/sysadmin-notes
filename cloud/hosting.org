@@ -1,3 +1,9 @@
+- neocities https://neocities.org/supporter
+  - 1gb
+  - 200gb bw
+  - limitis file extensions https://neocities.org/site_files/allowed_types
+    - change to .bin
+
 - github pages https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#usage-limits
   - only static content
   - 1GB max size
