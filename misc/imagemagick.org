@@ -1,41 +1,213 @@
+- home https://imagemagick.org/
+- wiki https://en.wikipedia.org/wiki/ImageMagick
+- C source https://github.com/ImageMagick/ImageMagick
 - 1987
+- John Cristy
+- Changelog
+  - 2015 7
+  - 2009 6.4.9
+  - 2003 5.5.7
 - GraphicMagick (Fork)
 - video 24 Command-line image processing with ImageMagick https://www.youtube.com/watch?v=8n16CuJZJ4c
   - Presenter: Alex Razoumov
   - https://wgpages.netlify.app/imagemagick/
+- cli works with *ordered lists*, not single images
 
-- Settings: saved for later use
-  - Operator: controls how later operators will work.
-    - ex: dither gravity fill background bordercolor stroke font pointsize strokewidth box virtual-pixel interpolate
-  - Input
-  - Output
-  - Control & Debugging
+- Canvas
+- Page = Virtual Canvas + Offset (of where the VC is positioned)
+  - +repage resets VC to the actual image itself
+  - -repage GEOMETRY
+- Geometry: https://www.imagemagick.org/Magick++/Geometry.html
+  - WxH+X+Y
+  - Wx xH WH
+  - > resize if bigger than given dim
+  - < resize if smaller than given dim
+  - ! resize forced, even on distortion
 
-- Operators: executed in order, and immediately https://usage.imagemagick.org/basics/#option_stack
-  1) Creation: add 1 image
-     - file.png xc: canvas: logo: rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
+#+begin_src sh
+  $ command { [settings] [operation] }...  "implict_write"
+#+end_src
 
-  2) Simple Image Processing:
-     - they modify ALL images in memory, separately
-     - INPUT: 1 image at the time
-     - OUTPUT: 1 or more
-     - ex: crop repage border frame trim chop draw annotate resize scale sample ...
+* convert
 
-  3) Multi-Image List:
-     - INPUT: all images in memory
-     - OUTPUT: 1 image OR modify each OR delete some (?
-     - ex: append flatten mosaic layers composite combine fx coalesce clut evaluate-sequence
+** -fx operator
 
-  4) Stack: arrange images order in memory
-     - ) delete insert swap reverse duplicate clone (
+- applies a mathematical expression to each pixel =channel=
+- can reference any image in the sequence
+- usage:
+  - create canvas, gradients, colormaps
+  - move colors between images/channels
+  - translate, flip, mirror, rotate, scale, shear, distort...
+  - merge/composite images
+  - convolve/merge neighboring pixels together
+  - generate metrics or fingerprints
 
-  5) Misc: geometry version list bench concurrent preview
+- https://imagemagick.org/script/fx.php
+- https://im.snibgo.com/fxnew.htm
+- https://usage.imagemagick.org/transform/#fx
 
-* txt to image
+#+CAPTION: grabs blue channel and returns 0.5 on it
+#+begin_src sh
+$ convert -size 64x64 canvas:black -channel blue -fx "1/2" fx_navy.png
+#+end_src
+
+- conditional: if(), ternary operator
+- iterators: do() for() while()
+- constants: E, Epsilon, Opaque, Phi, Pi, QuantumRange, QuantumScale, Transparent
+- pixels:
+  - normalized 0-1
+  - alpha 0=transparent
+  - p[?,?].r relative
+  - p{?,?}.r absolute
+
+*** math functions
+
+cos   cosh        acos  acosh
+sin   sinh  sinc  asin  asinh
+tan   tanh        atan  atanh  atan2
+pow   exp   ln    log   logtwo
+hypot gauss sqrt  gcd   squish
+airy  jinc  j1    j2
+int   ceil  floor round trunc
+
+magicktime epoch
+abs clamp alt
+debug erf isnan
+max min
+mod not
+rand sign
+
+*** symbols
+- ALL single character symbols are reserved
+- case insensitive
+|--------+------------------+----------|
+|  <c>   |       <c>        |          |
+|   i    |  column offset   |          |
+|   j    |    row offset    |          |
+|   p    | pixel to use ??? | 2d array |
+|   z    |  channel depth   |          |
+|  all   |   all channels   |          |
+|  this  |   this channel   |          |
+|--------+------------------+----------|
+**** image attributes
+|---------------------+--------------|
+|         <c>         |              |
+|          w          | image width  |
+|          h          | image height |
+|       .depth        |              |
+|      .kurtosis      |              |
+|       .maxima       |              |
+|        .mean        |              |
+|       .minima       |              |
+|    .resolution.x    |              |
+|    .resolution.y    |              |
+|      .skewness      |              |
+| .standard_deviation |              |
+|---------------------+--------------|
+**** page
+|-------------+----------|
+|     <c>     |          |
+| page.width  |          |
+| page.height |          |
+|   page.x    | x offset |
+|   page.y    | y offset |
+|-------------+----------|
+**** pixel
+|------------+---------|
+|    <c>     |         |
+|     r      | red     |
+|     g      | green   |
+|     b      | blue    |
+|     a      | alpha   |
+|     o      | opacity |
+|     c      | cyan    |
+|     y      | yellow  |
+|     m      | magenta |
+|     k      | black   |
+| intensity  |         |
+|    hue     |         |
+| saturation |         |
+| lightness  |         |
+|    luma    |         |
+|------------+---------|
+**** image list
+|---+------------------------+--------|
+|   |          <c>           |        |
+| u |          fst           | image  |
+| v |          snd           | image  |
+| s |        current         | image  |
+| t | index of current image | number |
+| n |    number of images    | number |
+|---+------------------------+--------|
+** Settings: values, saved for later use
+
+- Operator: controls how later operators will work.
+  - ex: dither gravity fill background bordercolor stroke font pointsize strokewidth box virtual-pixel interpolate
+- Input: control image creation or read.
+  - ex: label delay dispose page comment size
+- Output
+  - ex: quality loop compression format path transparent-color
+- Control & Debugging
+  - ex: verbose debug warnings quiet monitor regard-warnings
+
+** Operators: executed in order, and immediately
+
+https://usage.imagemagick.org/basics/#option_stack
+
+1) Creation: add 1 image
+   - file.png xc: canvas: logo: rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
+   - xc: X Constant image
+
+2) Simple Image Processing:
+   - they modify ALL images in memory, separately
+   - INPUT: 1 image at the time
+   - OUTPUT: 1 or more
+   - ex:
+     crop repage border frame trim chop draw annotate resize scale sample thumbnail magnify
+     adaptative-resize liquid-resize distort morpohology sparse-color rotate swirl implode
+     wave flip flop transpose transverse blur gaussian-blur radial-blur motion-blur adaptative-blur
+     convolve shadow sharpen unsharp adaptative-sharpen noise despeckle median negate level level-color
+     gamma auto-level auto-gamma sigmoidal-constrast normalize linear-stretch constrast-stretch
+     colorize tint modulate contrast equalize sepia-tone solarize recolor opaque transparent colors map
+     ordered-dither random-dither raise paint sketch charcoal edge vignette emboss shade poloroid
+     encipher decipher stegano evaluate function alpha colorspace separate
+     region
+
+3) Multi-Image List:
+   - INPUT: all images in memory
+   - OUTPUT: 1 image OR modify each OR delete some (?
+   - ex: append mosaic fx  layers coalesce  composite combine flatten clut evaluate-sequence
+
+4) Stack: arrange images order in memory
+   - ) delete insert swap reverse duplicate clone (
+     - +delete == -delete -1
+     - insert: takes top image and inserts it at index
+       +insert == -insert 0
+     - some take an "index"
+       - 0 is the first image
+       - -1 is the last (the most recent aka top)
+       - may be comma separated
+       - may be a range
+       - 0--1 to DELETE ALL
+   - ()
+     - starts a new *image list*
+     - where operations on it will act,
+     - appending it's result image list to the original one
+     - NOT effect on *settings* (unles -respect-parentheses)
+
+5) Misc: geometry version list bench concurrent preview
+
+* mogrify
+
+- inplace batch processing
+  - opts: path, format
+
+* snippets
+** txt to image
 convert -font FreeMono -pointsize 20 label:@what.txt what.gif && sxiv what.gif
 convert -interline-spacing -10 -font Nimbus-Mono-PS -fill white -background black -pointsize 20 label:@what.txt what.gif && identify what.gif
 convert -list font
-* square image
+** square image
 - convert me-aoc7-silver-2.png
   -trim
   -background 'rgb(255,255,255)'
@@ -45,7 +217,7 @@ convert -list font
   -filter point
   -distort SRT 0
   me-aoc7-silver-22.png
-* color to trasnparent
+** color to trasnparent
 - https://stackoverflow.com/questions/9297967/imagick-changing-a-color-to-be-transparent
 - convert original.jpg
   -alpha set
@@ -55,20 +227,54 @@ convert -list font
   -floodfill +0+0
   black
   transparent-border.png
-* watermark
+** watermark
 https://www.the-art-of-web.com/system/imagemagick-watermark/
 - composite -compose multiply -gravity SouthEast  tt.png me-aoc7-silver-2.png what.jpg
-* remove solid color border
+** remove solid color border
 https://stackoverflow.com/questions/50847360/imagemagick-remove-black-borders
 - can delete the image into a 1x1 easily, keep the fuzz low
   mogrify -fuzz 4% -define trim:percent-background=0% -trim +repage -format jpg img.jpg
 - more lenient on fuzz
   mogrify -fuzz 25% -trim +repage -shave 7x7 -format png "${i}"
   mogrify -fuzz 25% -trim +repage -format png "${i}"
-* compose 2 image - 1 with transparencey - being of the same size
+** compose 2 image - 1 with transparencey - being of the same size
 - composite
   -compose over
   -gravity center
   tranparency-one.png
   background.jpg
   output.png
+** frames to timelapse image
+
+https://x.com/climagic/status/1196876628195823616/photo/1
+
+#+begin_src sh
+  $ convert -evaluate-sequence Min \
+    $( for i in $( seq 34 7 99 ) ; do echo $i.png ; done ) \
+    every7th-frame.jpg
+#+end_src
+
+
+#+begin_src sh
+  $ convert -evaluate-sequence Min \
+    $( printf "%s.png " $( seq 34 7 99 ) ) \
+    every7th-frame.jpg
+#+end_src
+** generate text in background
+
+https://x.com/climagic/status/1314635495280959489
+
+#+begin_src sh
+  $ convert -size 1000x600 \
+    -define gradient:radii=1000,500 radial-gradient:#884b88-#010101 \
+    -font Impact -pointsize 72 -fill white \
+    -gravity center \
+    -interline-spacing 50 \
+    -annotate 0,0 "Now with more arguments!" \
+    now-with-more-arguments.png
+#+end_src
+** color show
+
+#+begin_src sh
+  showcolor() { display -size 400x400 xc:"#${1}"; }
+#+end_src
