@@ -28,19 +28,107 @@
   $ command { [settings] [operation] }...  "implict_write"
 #+end_src
 
+* colors
+
+https://imagemagick.org/script/color.php
+
+#+begin_src bash
+  #0f0
+  #00ff0
+  device-rgb(0,0.5,0)
+         rgb(0,255,0)
+         rgb(0,100%,0)
+  device-gray(0.5)
+         gray(127)
+         gray(50%)
+         gray50
+  hsb()
+  hsl()
+#+end_src
+
 * convert
 
-** -fx operator
+** text
 
-- applies a mathematical expression to each pixel =channel=
-- can reference any image in the sequence
-- usage:
-  - create canvas, gradients, colormaps
-  - move colors between images/channels
-  - translate, flip, mirror, rotate, scale, shear, distort...
-  - merge/composite images
-  - convolve/merge neighboring pixels together
-  - generate metrics or fingerprints
+- https://usage.imagemagick.org/text/#annotate
+- https://usage.imagemagick.org/annotating/
+
+- stroke/strokewidth/fill/undercolor
+
+- -draw "text GEOM 'STR'"
+
+- "label:"
+  - creates his own canvas
+  - follows -gravity, -background, -fill
+
+- "-annotate GEOM STR"
+  - draws over the image
+  - you can -splice to add space before
+
+** -draw / MVG
+
+- command https://usage.imagemagick.org/draw/
+- language: [[https://imagemagick.org/script/magick-vector-graphics.php][Magick Vector Graphics]]
+  - has no concept of containers or sets of commands
+  - instead i uses the concept of "Graphics Contexts"
+
+*** settings
+
+- fill
+  - fill-opacity
+  - fill-rule
+- stroke / strokewidth
+  - opacity dasharray dash linecap linejoin milterlimit
+- font S / pointsize N
+- gravity
+- origin
+- tile
+- box
+
+*** methods
+**** svg path
+https://usage.imagemagick.org/draw/#paths
+|---------+------------------------+-----------------------------------|
+| COMMAND | ARGS                   | DESCRIPTION                       |
+|---------+------------------------+-----------------------------------|
+| path    |                        | [[https://www.w3.org/TR/SVG/paths.html#PathDataGeneralInformation][SVG path]] , letters=cmd number=arg |
+|         | M 1,2 l 3,4 l 2,-4     | lowercase commands are relative   |
+|         | M 1,2 L 4,6 L 6,2      | uppercase are absolute            |
+|         | M 1,2   4,6   6,2      | same as above                     |
+|         | M 1,2   4,6   6,2  1,2 | closed path                       |
+|         | M 1,2   4,6   6,2   Z  | closed path                       |
+|---------+------------------------+-----------------------------------|
+**** drawing
+|----------------+----------------------+----------------------------------------|
+| COMMAND        | ARGS                 | DESCRIPTION                            |
+|----------------+----------------------+----------------------------------------|
+| color          | x,y point            |                                        |
+| point          | x,y                  |                                        |
+| rectangle      | x,y x,y              |                                        |
+| roundrectangle | x,y x,y x,y          |                                        |
+| arc            | x,y x,y s,e          | an ellipse, inside the given rectangle |
+|----------------+----------------------+----------------------------------------|
+| circle         | xc,yc xe,ye [s,e]    | given a center an edge, optional angle |
+| ellipse        | xc,yc xe,ye [s,e]    | given a center an edge, optional angle |
+|----------------+----------------------+----------------------------------------|
+| line           | x,y x,y              |                                        |
+| polyline       | x,y x,y [x,y...]     |                                        |
+| polygon        | x,y x,y [x,y...]     |                                        |
+| bezier         | x,y x,y x,y x,y      | start knot1 knot2 end                  |
+|----------------+----------------------+----------------------------------------|
+| text           | x,y 'hello'          |                                        |
+| image          | over x,y x,y 'f.gif' |                                        |
+|----------------+----------------------+----------------------------------------|
+**** canvas transform
+|-----------+------|
+| translate | x,y  |
+| rotate    | n    |
+| scale     | n,n  |
+| skewX     | n    |
+| skewY     | n    |
+| affine    | n[6] |
+|-----------+------|
+** -fx operator
 
 - https://imagemagick.org/script/fx.php
 - https://im.snibgo.com/fxnew.htm
@@ -48,34 +136,60 @@
 
 #+CAPTION: grabs blue channel and returns 0.5 on it
 #+begin_src sh
-$ convert -size 64x64 canvas:black -channel blue -fx "1/2" fx_navy.png
+  $ convert -size 64x64 canvas:black -channel blue -fx "1/2" fx_navy.png
 #+end_src
 
-- conditional: if(), ternary operator
-- iterators: do() for() while()
+#+begin_src
+ii=(i-w/2)/w; jj=(j-h/2)/h;
+ii=((i*2)-w)/h; jj=((j*2)-h)/h; # centered [-1,+1]
+#+end_src
+
+- image list operator
+  - can reference any image in the sequence
+  - modifies the first image (u), other images are used for their data
+  - image list is later replace with it's output
+  - applies a mathematical expression
+    - to each pixel
+    - on each =channel= (set by -channel)
+- no user defined functions
+- ; statement (? does not return a value
+- conditional: if(COND,S1,S2), COND ? S1 : S2
+- iterators: while(COND,S) do(S,COND) for(INIT,COND,S)
 - constants: E, Epsilon, Opaque, Phi, Pi, QuantumRange, QuantumScale, Transparent
 - pixels:
   - normalized 0-1
   - alpha 0=transparent
-  - p[?,?].r relative
-  - p{?,?}.r absolute
+  - p[?,?].r relative indexing
+  - p{?,?}.r absolute indexing
+- misc functions
+  - magicktime/0 epoch
+  - channel/[0-5]: to set values to different channels
+  - debug      erf
 
 *** math functions
 
-cos   cosh        acos  acosh
-sin   sinh  sinc  asin  asinh
-tan   tanh        atan  atanh  atan2
-pow   exp   ln    log   logtwo
-hypot gauss sqrt  gcd   squish
-airy  jinc  j1    j2
-int   ceil  floor round trunc
+https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/fx.c
 
-magicktime epoch
-abs clamp alt
-debug erf isnan
-max min
-mod not
-rand sign
+|---------+-------+-------+-------+--------+---------|
+| cos     | cosh  |       | acos  | acosh  |         |
+| sin     | sinh  | sinc  | asin  | asinh  |         |
+| tan     | tanh  |       | atan  | atanh  | atan2/2 |
+| pow/2   | exp   | ln    | log   | logtwo |         |
+| hypot/2 | gauss | sqrt  | gcd/2 | squish |         |
+| airy    | jinc  | j1    | j2    | drc/2  |         |
+| int     | ceil  | floor | round | trunc  |         |
+| max/2   | min/2 | mod/2 |       |        |         |
+| abs     |       |       |       |        |         |
+|---------+-------+-------+-------+--------+---------|
+
+|--------+----------------------------|
+| rand/0 | between 0 and 1            |
+| clamp  | between 0 and 1            |
+| not    | 1.0 if zero, 0.0 otherwise |
+| isnan  | 1.0 if NAN,  0.0 otherwise |
+| sign   | 1.0 if pos, -1.0 if neg    |
+| alt    | 1.0 if even, -1.0 if odd   |
+|--------+----------------------------|
 
 *** symbols
 - ALL single character symbols are reserved
@@ -90,20 +204,21 @@ rand sign
 |  this  |   this channel   |          |
 |--------+------------------+----------|
 **** image attributes
-|---------------------+--------------|
-|         <c>         |              |
-|          w          | image width  |
-|          h          | image height |
-|       .depth        |              |
-|      .kurtosis      |              |
-|       .maxima       |              |
-|        .mean        |              |
-|       .minima       |              |
-|    .resolution.x    |              |
-|    .resolution.y    |              |
-|      .skewness      |              |
-| .standard_deviation |              |
-|---------------------+--------------|
+|---------------------+-------------------|
+|         <c>         |                   |
+|          w          | this image width  |
+|          h          | this image height |
+|         .p          | image pixels      |
+|       .depth        |                   |
+|      .kurtosis      |                   |
+|       .maxima       |                   |
+|        .mean        |                   |
+|       .minima       |                   |
+|    .resolution.x    |                   |
+|    .resolution.y    |                   |
+|      .skewness      |                   |
+| .standard_deviation |                   |
+|---------------------+-------------------|
 **** page
 |-------------+----------|
 |     <c>     |          |
@@ -131,14 +246,57 @@ rand sign
 |    luma    |         |
 |------------+---------|
 **** image list
-|---+------------------------+--------|
-|   |          <c>           |        |
-| u |          fst           | image  |
-| v |          snd           | image  |
-| s |        current         | image  |
-| t | index of current image | number |
-| n |    number of images    | number |
-|---+------------------------+--------|
+|------+------------------------+--------|
+| <c>  |          <c>           |        |
+|  u   |          fst           | image  |
+|  v   |          snd           | image  |
+|  s   |        current         | image  |
+|  t   | index of current image | number |
+|  n   |    number of images    | number |
+| u[N] |          Nth           | image  |
+| u[t] |        current         |        |
+|------+------------------------+--------|
+*** vs GLSL
+
+- texture(t,uv)
+  - uv: [0,1] range   = uv [0,width] range
+    - see [[https://imagemagick.org/script/command-line-options.php#interpolate][-interpolate]] for intermediate (floating point)
+    - see [[https://imagemagick.org/script/command-line-options.php#virtual-pixel][-virtual-pixel]] for outside of range behaviour
+      - tile by default (or edge?)
+- +dot(x,y)+            = x[0]*y[0]+...
+- +distance(p0,p1)+     = length(p0 - p1)
+- +length(x)+           = hypot(x[0],x[1])
+                      = sqrt(x[0]^2 + ... + x[N]^2)
+- +step(e,x)+           = x<e ? 0 : 1
+- +smoohtstep(e0,e1,x)+ = t=clamp((x-e0)/(e1-e0));
+                        t*t*(3-2*t)
+- +mix(x,y,a)+          = (x*(1-a))+(y*a)
+- +fract(x)+            = x - int(x)
+
+**** m4
+
+#+begin_src sh
+  fx() { m4 fx.m4 - <<<"$1"; }
+#+end_src
+
+#+begin_src m4
+  define(`step', `(($2) < ($1)) ? 0 : 1')dnl
+  define(`fract', `($1) - int($1)')dnl
+  define(`mix',`(($1)*(1-($3))) + (($2)*($3))')dnl
+  define(`smoothstep',`(tt=clamp((($3)-($1))/(($2)-($1)));tt*tt*(3-(2*tt)))')dnl
+  define(`length',`hypot($1,$2)')dnl
+  define(`distance',`hypot(($1)-($3),($2)-($4))')dnl
+  define(`dot',`(($1)*($3) + ($2)*($4))')dnl
+#+end_src
+
+**** sh
+#+begin_src sh
+  step() { echo "((${2}) < (${1})) ? 0.0 : 1.0"; }
+  mix() { echo "(${1}*(1-${3}))+(${2}*${3})"; }
+  fract() { echo "(${1})-int(${1})"; }
+  ss() { echo "tt=clamp(((${3})-${1})/(${2}-${1})); tt*tt*(3-2*tt)"; }
+#+end_src
+
 ** Settings: values, saved for later use
 
 - Operator: controls how later operators will work.
@@ -155,7 +313,8 @@ rand sign
 https://usage.imagemagick.org/basics/#option_stack
 
 1) Creation: add 1 image
-   - file.png xc: canvas: logo: rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
+   - file.png xc: canvas: logo:
+     rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
    - xc: X Constant image
 
 2) Simple Image Processing:
@@ -164,14 +323,14 @@ https://usage.imagemagick.org/basics/#option_stack
    - OUTPUT: 1 or more
    - ex:
      crop repage border frame trim chop draw annotate resize scale sample thumbnail magnify
-     adaptative-resize liquid-resize distort morpohology sparse-color rotate swirl implode
-     wave flip flop transpose transverse blur gaussian-blur radial-blur motion-blur adaptative-blur
+     adaptative-resize liquid-resize distort morpohology sparse-color
+     blur gaussian-blur radial-blur motion-blur adaptative-blur
      convolve shadow sharpen unsharp adaptative-sharpen noise despeckle median negate level level-color
      gamma auto-level auto-gamma sigmoidal-constrast normalize linear-stretch constrast-stretch
      colorize tint modulate contrast equalize sepia-tone solarize recolor opaque transparent colors map
      ordered-dither random-dither raise paint sketch charcoal edge vignette emboss shade poloroid
-     encipher decipher stegano evaluate function alpha colorspace separate
-     region
+     encipher decipher stegano evaluate function alpha colorspace separate region
+     flip flop transpose transverse rotate roll shear wave swirl implode https://usage.imagemagick.org/warping/
 
 3) Multi-Image List:
    - INPUT: all images in memory
