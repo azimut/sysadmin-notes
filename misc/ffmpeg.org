@@ -12,6 +12,7 @@
 - tool https://ffmpegbyexample.com/
 - tool https://github.com/smacke/ffsubsync
 - tool https://github.com/fujiawei-dev/ffmpeg-generator
+- tool https://github.com/richardpl/lavfi-preview
 
 - tutorial https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - guide https://trac.ffmpeg.org/wiki/Encode/H.264
@@ -151,7 +152,7 @@ taylor(expr, x, idx)
 
     Note, when you have the derivatives at y instead of 0, taylor(expr, x-y) can be used.
 
-** encoders (-vcodec -codec:v)
+** encoders            (-vcodec -codec:v)
 
 #+begin_src sh
   $ ffmpeg -encoders
@@ -169,7 +170,7 @@ taylor(expr, x, idx)
 - source filters: do NOT have inputs
 - sink filters: do NOT generate outputs
 
-** simple filters (-vf/-af)
+** simple filters      (-vf/-af/-filter:v/-filter:a)
 
 https://ffmpeg.org/ffmpeg-filters.html
 
@@ -178,18 +179,15 @@ https://ffmpeg.org/ffmpeg-filters.html
   $ ffmpeg -filters
   Filters:
     T.. = Timeline support
-    .S. = Slice threading
-    ..C = Command support
+    .S. = Slice threading (support)
+    ..C = Command support (aka it can be used outside the video filter)
     A = Audio input/output
     V = Video input/output
     N = Dynamic number and/or type of input/output
     | = Source or sink filter
 #+end_src
 
-- -filter:a or -af
-- -filter:v or -vf
-
-- have 1 input, 1 output
+- have 1 input, and 1 output
 - typeof(input) == type(output)
 - you can daisy-chain multiple *simple filters*, to create a ~filter chain~
   - uses ~,~ between filters
@@ -208,19 +206,22 @@ https://ffmpeg.org/ffmpeg-filters.html
   filter3=arg1:arg2 # shortform
 #+end_src
 
-** complex filtergraph (-filter_complex)
+** complex filtergraph (-lavfi/-filter_complex)
 
+- filtergraph
 - can have multiple (or none) inputs and multiple outputs
   - of different types
-- filtergraph
-- each ~-i~ should be mapped into a "[N]" in the script
 - between non-liner/complex filters use ~;~ as a delimiter
 - can't use the same output stream label twice
   - use filters split/asplit if needed
-- automatic labels: [in] and [out]
-- you can directly output many videos by
+- labels:
+  - each ~-i~ is automatically mapped to "[N]" in the script
+    - starting at 0
+  - can sub-reference audio/video streams through [N:a] or [N:v] respectively
+  - [in] and [out]
+- you can directly map OUTPUT many videos by
   #+begin_src sh
-    $ ffmpag .. -map '[foo]' output1.mp4 -map '[bar]' output2.mp4
+    $ ffmpeg .. -map '[foo]' output1.mp4 -map '[bar]' output2.mp4
   #+end_src
 
 * snippets
@@ -308,17 +309,67 @@ https://www.reddit.com/r/davinciresolve/comments/1bab2yp/instagram_uploads_are_a
 
 * articles
 
-- https://drewdevault.com/2022/10/12/In-praise-of-ffmpeg.html
 - convolution https://igor.technology/interesting-things-you-can-do-with-ffmpeg/
 - https://img.ly/blog/ultimate-guide-to-ffmpeg/
-- https://tratt.net/laurie/blog/2021/automatic_video_editing.html
-- https://www.gariany.com/2020/08/ffmpeg-step-by-step-retro-video-filter/
 - https://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 - https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/
 - https://xeiaso.net/blog/video-compression/
+- 22 https://drewdevault.com/2022/10/12/In-praise-of-ffmpeg.html
+- 21 https://tratt.net/laurie/blog/2021/automatic_video_editing.html
+- 20 https://www.gariany.com/2020/08/ffmpeg-step-by-step-retro-video-filter/
+- 19 [[https://www.glitch.cool/meii/intro-to-ffmpeg-audio-to-video-filters][Intro to ffmpeg: audio-to-video filters]]
+
 * videos
+
 - PhreakNIC20: FFmpeg I didn't know it could do that! - poiupoiu https://www.youtube.com/watch?v=Dl2kUskbIo4
 - FFMPEG Advanced Techniques
   - goes over many effects https://www.youtube.com/watch?v=M58rc7cxl_s
   - Filtergraphs & Timeline https://www.youtube.com/watch?v=hElDsyuAQDA
-- course: Video Art with FFMPEG https://www.youtube.com/playlist?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13
+
+** Course: Video Art with FFMPEG
+
+https://www.youtube.com/playlist?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13
+
+*** 1) FFMPEG Basics
+*** 2) Video Filters, Complex Filter
+
+- https://www.youtube.com/watch?v=imvrFhpk-d4
+- Artists
+  - Martin Arnold
+  - Gregg Biermann
+  - Holly Fisher
+  - Noemi Schipfer
+- Filter: =hue= an hsv filter
+  - hue=h=180
+  - hue=H=PI
+  - saturation: default 1, from -10 to 10, 0 grayscale
+    - hue=s=0
+  - brightness: default 0, from -10 to 10
+    - hue=b=
+- Filter: =setpts=
+  - setpts=0.5*PTS - twice speed
+
+*** 3) Blend, Mask, and Time Transformations
+
+https://www.youtube.com/watch?v=niGYQAHVfqs
+
+- TODO: 31:00
+- Prework:
+  - filters: lagfun, bilateral, hue, overlay
+  - in ffmpeg looping is hard, you can't say take the beginning and the end
+    ffmpeg works only on forward pass, reads until it ends
+
+- Use =-shortest= when you have +1 video input
+- Filter: =ovelay= to apply a mask
+  - Masks are images or videos
+  - Masks are meant to be mostly imported, not generated
+- Filter: =blend= 2 video frames into each other
+  - all_mode
+- Filter: =lumakey=
+- Filter: =colorhold= it removes everything else BUT that color, replacing it with neutral gray
+- Filter: =colorkey= replaces RGB color for transparency
+- Filter: =chromakey= mask to replace given to color to transparency
+  - chromakey=0x00FF00:0.25:0.08
+    chromakey=<COLOR_>:<similarity>:<blend>
+
+*** 4) Python Scripts, Gifs, Scene Detection
