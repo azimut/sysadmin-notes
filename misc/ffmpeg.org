@@ -1,3 +1,4 @@
+- tool https://www.scenedetect.com/
 - tool (dead) https://zackoverflow.dev/writing/ffmpeg-guide
 - tool https://evanhahn.github.io/ffmpeg-buddy/
 - tool: web UI
@@ -195,6 +196,7 @@ https://ffmpeg.org/ffmpeg-filters.html
 - variables https://www.ffmpeg.org/ffmpeg-filters.html#Options-1
   - iw,ih - input width and input height
   - t - point of time of the video, in seconds
+  - pts
 - filtering doesn't allow stream copy
 
 #+begin_src sh
@@ -219,6 +221,7 @@ https://ffmpeg.org/ffmpeg-filters.html
     - starting at 0
   - can sub-reference audio/video streams through [N:a] or [N:v] respectively
   - [in] and [out]
+  - can have the same label name for input and output
 - you can directly map OUTPUT many videos by
   #+begin_src sh
     $ ffmpeg .. -map '[foo]' output1.mp4 -map '[bar]' output2.mp4
@@ -307,17 +310,40 @@ https://www.reddit.com/r/davinciresolve/comments/1bab2yp/instagram_uploads_are_a
         " -y bouncing_text.mp4
   #+end_src
 
+* gotchas
+- of filters
+  - missing '' for arguments
+  - manual identation almost obligatory
+  - keeping track of the differences between
+    - :
+    - ,
+    - ;
 * articles
 
-- convolution https://igor.technology/interesting-things-you-can-do-with-ffmpeg/
-- https://img.ly/blog/ultimate-guide-to-ffmpeg/
-- https://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
-- https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/
-- https://xeiaso.net/blog/video-compression/
+- 23 [[https://www.canva.dev/blog/engineering/a-journey-through-colour-space-with-ffmpeg/][A journey through color space with FFmpeg]]
+- 23 [[https://xeiaso.net/blog/video-compression/][Video Compression for Mere Mortals]]
+- 23 https://dev.to/video/exploring-video-generators-in-ffmpeg-4ehc
+- 22 [[https://img.ly/blog/ultimate-guide-to-ffmpeg/][FFmpeg - The Ultimate Guide]]
 - 22 https://drewdevault.com/2022/10/12/In-praise-of-ffmpeg.html
+- 22 [[https://blog.gdeltproject.org/experiments-with-ffmpeg-scene-detection-to-explore-the-parallel-universe-of-russian-state-television-channel-russia1/][Experiments With FFMPEG & Scene Detection To Explore The Parallel Universe Of Russian State Television Channel RUSSIA1]]
 - 21 https://tratt.net/laurie/blog/2021/automatic_video_editing.html
-- 20 https://www.gariany.com/2020/08/ffmpeg-step-by-step-retro-video-filter/
+- 20 [[https://blog.gdeltproject.org/using-ffmpegs-scene-detection-to-generate-a-visual-shot-summary-of-television-news/][Using FFMPEG's Scene Detection To Generate A Visual Shot Summary Of Television News]]
+  - fixed output size, filled by black
+  - Examples
+    #+begin_src sh
+      -vf 'select=gt(scene,0.4),scale=160:-1,tile=6x80'                       -frames:v 1 -qscale:v 3 out.jpg
+      -f lavfi -i 'movie=bar.mp4,scdet=s=1:t=14' -vf 'scale=160:-1,tile=6x85' -frames:v 1 -qscale:v 3 scprev.jpg
+    #+end_src
+- 20 [[https://www.hellocatfood.com/motion-interpolation-for-glitch-aesthetics-using-ffmpeg-part-0/][Motion Interpolation for Glitch Aesthetics using FFmpeg part 0]]
+- 20 [[https://gariany.com/2020/08/ffmpeg-a-step-by-step-guide-to-creating-a-retro-video-filter/][FFmpeg: A Step-by-Step Guide to Creating a Retro Video Filter]]
 - 19 [[https://www.glitch.cool/meii/intro-to-ffmpeg-audio-to-video-filters][Intro to ffmpeg: audio-to-video filters]]
+- 15 [[https://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html][High quality GIF with FFmpeg]]
+
+** filters
+
+- https://trac.ffmpeg.org/wiki/FancyFilteringExamples
+- 23 [[https://igor.technology/interesting-things-you-can-do-with-ffmpeg/][Interesting things you can do with FFmpeg]]
+- 17 https://nico-lab.net/testsrc_with_ffmpeg/
 
 * videos
 
@@ -339,6 +365,13 @@ https://www.youtube.com/playlist?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13
   - Gregg Biermann
   - Holly Fisher
   - Noemi Schipfer
+- No built-in support in the filter variales to tell how long the video is.
+- Timeline supported filters may have an =enable= option
+  - to control when enable it
+  - use it with the *between()* operator
+- Filter: =rotate=
+  - can be controlled by T
+  - hypot(iw,ih)+1 to not crop on rotation
 - Filter: =hue= an hsv filter
   - hue=h=180
   - hue=H=PI
@@ -348,12 +381,35 @@ https://www.youtube.com/playlist?list=PLWuCzxqIpJs_68T4ABQGNPnOYpCJ1ln13
     - hue=b=
 - Filter: =setpts=
   - setpts=0.5*PTS - twice speed
+- Filter: =overlay=
+  - arguments in stacking order: bottom first
+- Filter: =split=
+  - creates N copies of the given input video
+  - with no arguments makes an extra copy of the video
+- Filter: =vflip=, =hflip=
+- Filter: =rgbashift=
+  - does not take T as input
+  - can be workaround with "python" templating
+  - example
+    #+begin_src python
+      import math
+      f = ""
+      v1 = 8
+      fps = 30
+      for i in range(v1*fps):
+          amt  = math.ceil(mat.cos((i/fps)*(math.pi/2))*75)
+          amt2 = math.ceil(mat.sin((i/fps)*(math.pi/2))*75)
+          if i == 0:
+              f+=f"rgbashift=enable='eq(n,{str(i)}):bv='{str(amt)}':gb='{amt2}'"
+          else:
+              f+=f"rgbashift=enable='eq(n,{str(i)}):bv='{str(amt)}'"
+       print(f)
+    #+end_src
 
 *** 3) Blend, Mask, and Time Transformations
 
 https://www.youtube.com/watch?v=niGYQAHVfqs
 
-- TODO: 31:00
 - Prework:
   - filters: lagfun, bilateral, hue, overlay
   - in ffmpeg looping is hard, you can't say take the beginning and the end
@@ -371,5 +427,51 @@ https://www.youtube.com/watch?v=niGYQAHVfqs
 - Filter: =chromakey= mask to replace given to color to transparency
   - chromakey=0x00FF00:0.25:0.08
     chromakey=<COLOR_>:<similarity>:<blend>
+- Filter: =setpts= set presentation timestamp
+  - relative to *start time*
+  - setpts=0.5*PTS faster
+  - setpts=2*PTS slower
+- Filter: =minterpolate= to interpolate frames, useful with setpts
+  - https://www.hellocatfood.com/motion-interpolation-for-glitch-aesthetics-using-ffmpeg-part-0/
+- Filter: =concat=
+  - [0][1][2]concat=n=3
+- Filter: =tpad= time padding
+  - Example: add 1 second of black at the beginning of the video
+    - tpad=start_mode=add:start_duration=1:color=0x000000
+- Filter: =trim= cuts a video by a start and end position
+  - trim=0:1.0
+  - add *setpts=PTS-STARTPTS* to preserve the start time
+
+- There are times where the *start time* position might not be 0.00
+  - if you trimmed a video
+
+**** Example: Slitscan effect
+
+- strips of video with increasing start delay
+
+#+begin_src python
+  width = 1920
+  height = 1080
+  strip = 20
+  fps = 23.98
+  offset = 3/fps
+
+  s = f"[0:v]split={int(heigh/strip)}"
+  for i in range(int(height/strip)):
+      s += f"[v{i}]"
+  s += ';'
+  print(s)
+
+  t = ''
+  for i in range(int(height/strip)):
+      t += f"tpad=start_mode=add:start_duration={offset*i}:color=0x000000,crop={width}:{strip}:0:{i*strip}[v{i}]"
+  print(t)
+
+  stack = ''
+  for i in range(int(height/strip)):
+      stack += f"[v{i}]"
+  stack += f"vstack=inputs={int(height/strip)}"
+  print(stack)
+#+end_src
 
 *** 4) Python Scripts, Gifs, Scene Detection
