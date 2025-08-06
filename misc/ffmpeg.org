@@ -183,6 +183,35 @@ https://ffmpeg.org/ffmpeg-filters.html
     $ ffmpeg .. -map '[foo]' output1.mp4 -map '[bar]' output2.mp4
   #+end_src
 
+** Filter: geq
+
+- Generates video from expression
+- values from 0-255 (?
+
+** Filter: avalsrc
+
+- https://hhsprings.bitbucket.io/docs/programming/examples/ffmpeg/audio_sources/aevalsrc.html
+- Generates audio from expression
+- values from 0-1 (?
+- Video: Making Music in Shadertoy [[https://www.youtube.com/watch?v=3mteFftC7fE][Part 1]] [[https://www.youtube.com/watch?v=CqDrw0l0tas][Part 2]] [[https://www.youtube.com/watch?v=9XeE0v5JLiQ][Part 3]]
+  - Similar workflow
+
+#+begin_src sh
+  $ ffplay -t 60 -f lavfi -i <HERE>
+  #  Generate silence:
+  aevalsrc=0
+  #  Generate a sin signal with frequency of 440 Hz, set sample rate to 8000 Hz:
+  aevalsrc='sin(440*2*PI*t):s=8000'
+  #  Generate a two channels signal, specify the channel layout (Front Center + Back Center) explicitly:
+  aevalsrc='sin(420*2*PI*t)|cos(430*2*PI*t):c=FC|BC'
+  #  Generate white noise:
+  aevalsrc='-2+random(0)'
+  #  Generate an amplitude modulated signal:
+  aevalsrc='sin(10*2*PI*t)*sin(880*2*PI*t)'
+  #  Generate 2.5 Hz binaural beats on a 360 Hz carrier:
+  aevalsrc='0.1*sin(2*PI*(360-2.5/2)*t) | 0.1*sin(2*PI*(360+2.5/2)*t)'
+#+end_src
+
 * snippets
 
 - examples https://github.com/antiboredom/infinite-video-fall-2023/blob/main/02_basics/02-ffmpeg.md

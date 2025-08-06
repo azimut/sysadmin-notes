@@ -148,6 +148,9 @@ https://usage.imagemagick.org/draw/#paths
   ii=((i*2)-w)/h; jj=((j*2)-h)/h; # centered [-1,+1]
 #+end_src
 
+- user variable names:
+  - case insensitive
+  - more than 1 letter, no numbers
 - image list operator
   - can reference any image in the sequence
   - modifies the first image (u), other images are used for their data
