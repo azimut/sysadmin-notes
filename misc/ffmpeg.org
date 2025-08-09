@@ -1,3 +1,8 @@
+#+TITLE: ffmpeg
+
+- 2000
+- Fast Forward ffmpeg
+
 - tool https://www.scenedetect.com/
 - tool (dead) https://zackoverflow.dev/writing/ffmpeg-guide
 - tool https://evanhahn.github.io/ffmpeg-buddy/
@@ -14,6 +19,7 @@
 - tool https://github.com/smacke/ffsubsync
 - tool https://github.com/fujiawei-dev/ffmpeg-generator
 - tool https://github.com/richardpl/lavfi-preview
+- tool models for arnndn https://github.com/GregorR/rnnoise-models
 
 - tutorial https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - guide https://trac.ffmpeg.org/wiki/Encode/H.264
@@ -25,13 +31,18 @@
 |       <c>        |                                    |
 | -filter:v fps=30 | 60 to 30 fps                       |
 |      -ac 1       | mono                               |
-|   -acodec copy   | copy audio                         |
-| -vcodec libx264  |                                    |
 |       -vn        | remove video                       |
 |      -r FPS      |                                    |
 |      -crf N      | Constant Rate Factor (aka quality) |
 |    -pixfmt P     |                                    |
+| -vcodec ? -c:v ? | specify video codec                |
+| -acodec ? -c:a ? | specify audio codec                |
 |------------------+------------------------------------|
+
+* codecs
+
+- copy
+- libx264
 
 * language
 
@@ -41,7 +52,8 @@
 
 ** expressions
 
-https://www.ffmpeg.org/ffmpeg-all.html#Expression-Evaluation
+- manual https://www.ffmpeg.org/ffmpeg-all.html#Expression-Evaluation
+- source https://ffmpeg.org/doxygen/2.4/eval_8c_source.html
 
 operators
 binary: + - * / ^

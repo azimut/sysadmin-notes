@@ -1,0 +1,27 @@
+#+TITLE: SoX
+#+DATE: <2025-08-08 vie>
+#+KEYWORDS: sox, sound exchange, cheatsheet, quick reference
+
+- source [[https://sourceforge.net/p/sox/code/ci/master/tree/][sourceforge]] [[https://github.com/chirlu/sox][github]]
+- home https://sourceforge.net/projects/sox/
+- wiki https://en.wikipedia.org/wiki/SoX
+- faq https://web.archive.org/web/20210413230247/http://sox.sourceforge.net/Docs/FAQ
+- effects https://codeberg.org/sox_ng/Effects-Explained/wiki
+- SoX = Sound eXchange
+- 1991
+- by Chris Bagwell (past Lance Norskog)
+
+* cli
+
+#+begin_src sh
+$ sox
+$ play -n synth <SEC> sin 347
+$ rec
+#+end_src
+
+* videos
+- https://www.youtube.com/watch?v=_lS1HFFwyD0
+- 24 [[https://www.youtube.com/watch?v=FKFTpIfTtZY][SoX Tutorial Compilation 2024]]
+* articles
+- https://github.com/madskjeldgaard/sox-tricks
+- 18 [[https://blog.benjojo.co.uk/post/encoding-data-into-dubstep-drops][Encoding data in dubstep drops]]
