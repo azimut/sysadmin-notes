@@ -11,6 +11,11 @@
 - 1991
 - by Chris Bagwell (past Lance Norskog)
 
+#+CAPTION: Processing Chain
+#+begin_src
+  Input(s) → Combiner → Effects → Output(s)
+#+end_src
+
 * cli
 
 #+begin_src sh
@@ -18,6 +23,9 @@ $ sox
 $ play -n synth <SEC> sin 347
 $ rec
 #+end_src
+
+- file options happen before
+- effect options happen after
 
 * videos
 - https://www.youtube.com/watch?v=_lS1HFFwyD0
