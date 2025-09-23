@@ -1,3 +1,4 @@
+- Playlist ML System Design https://www.youtube.com/playlist?list=PLlvnxKilk3aKx0oFua-HTtFf-d_inQ8Qn
 - channel system design https://www.youtube.com/@ByteByteGo/videos
 
 - https://github.com/checkcheckzz/system-design-interview
@@ -1516,3 +1517,212 @@ complex to understand and slow to run
 ** 23 MapReduce
 ** 24 Security and HTTPS
 ** 25 API Design
+
+* Book: System Design Interview V2
+
+- Understand the problem, establish scope
+- Requirements
+  - Functional
+  - No-functional: latency, privacy, availability, scalability, accuracy, responsiveness
+    - db scalability: sharding, replicas
+    - cache
+
+- Back-of-the-Envelope estimations
+  - Estimate DAU (Daily Active Users)
+  - Calculate QPS
+
+- High-Level design
+  - API Design
+  - Data Model:
+    - read/write ratio
+    - data schema: which tables
+  - Architecture Diagram of:
+    - services
+    - other components
+      - service/server discovery: using consistent hashing
+      - lb: draining, scaling of stateful servers
+      - dbs: sharding, replicas
+  - Algorithms
+
+** 1 Proximity Service
+
+- GET /v1/search/nearby
+  - Params: latitude, longitude, radius
+  - Response:
+    - total: 1, businesses: [{}]
+    - paginated?
+- GET    /v1/businesses/:id
+- POST   /v1/businesses
+- PUT    /v1/businesses/:id
+- DELETE /v1/businesses/:id
+
+- Algorithm:
+  - +naive 2D (lat/long) lookup and indexing gives poor results+
+  - We divide the map in smaller areas and build indexes for fast search
+    - Hash: even grid, *geohash*, cartesian tiers
+      - even grid: even across the map, but unevenly distributes information
+      - Geohash: divide the map in 4, use 2 bits to identify each quadrant, repeat on each...
+        - uses base32 representation (eg: "9q8zn")
+        - length 12
+        - usually use 4-6 length
+    - Tree: *quadtree*, *Google S2*, RTree
+      - Quadtree:
+        - in memory datastructure solution, not db
+        - recursively subdivide data (not map) in 4, until we met a criteria to stop.
+        - nodes can be internal (with 4 pointers) or leafs (with actual data)
+        - the result is some map areas have more nodes in the QT and some less.
+        - good for "nearest" queries
+      - Google S2 Geometry library
+        - in memory datastructure solution, not db
+        - it maps a sphere to a 1D index, based on the Hilbert curve
+        - great for =geofencing= (an arbitrary defined perimeter)
+
+- Deep dive
+  - Location based services
+  - Cache:
+    - list of business ids in a geohash in a kv db (Redis)
+      - on each geohash precision
+    - business data
+  - Data Model:
+    - business table:
+      - use sharding by business id
+    - geospatial_index table:
+      - with geohash/bid entries
+      - have replicas of it
+        - sharding is a bad option: data is not large
+
+** 2 Nearby Friends
+
+- More dynamic problem than storing business locations
+- Requirements
+  - F:
+    - see list of nearby (5miles) friends, with distance and timestamp
+    - updated every few (30) seconds
+  - NF:
+    - Low latency
+    - *reliable* overall, with some aceptable loss
+    - second old *consistency* is accepted
+
+- High-Level Design
+  - Common Backend
+    - receives locations
+    - pushes locations to relevant friends
+    - updates relevant list
+  - HTTP Servers: websockets, REST
+  - Redis pub/sub
+    - scaled horizontally
+    - server discovery through etc/zookeeper
+    - use of _Consistent Hashing_ with uid to pick a server from list of servers in a hash-ring
+  - Cache: Redis TTL current location
+    - uid -> lat,long,timestamp
+    - sharding by uid
+  - Db: user profile
+  - Db: long term history storage
+    - sharding, by uid
+    - write heavy
+    - uid,lat,long,timestamp
+
+- API
+  - Websocket
+    - WS Initialization, sends location, receives friends locations.
+    - Periodic location updates
+    - Receive location updates
+    - Subscribe to a new friend. (from WS?)
+    - Unsubscribe to a friend. (from WS?)
+
+- Deep Dive
+  - Websocket servers
+    - are _stateful_
+    - connections must be drain before removal of node
+    - Action Steps
+      1) updates *client* location in cache
+      2) saves location in memory
+      3) loads *client's friends* list from db
+      4) gets friends current location from cache
+      5) if in client's radius, send friend to *client*
+      6) subscribe to ALL friends
+      7) send *client* location to channel
+
+- Extra
+  - Nearby Random Person
+    - Have a channel per geohash, instead of per uid
+    - Each client subscribe to
+      - his own geohash
+      - 8 geohash channels surrounding him
+
+** TODO 3 Google Maps
+
+- PAGE 76
+
+- 1B DAU
+- Features:
+  - NF: accuracy, smooth navigation/rendering, low battery usage
+  - F
+    - mobile app
+    - location update
+    - map rendering
+    - navigation
+      - ETA
+        - consider different types of transport
+        - consider traffic conditions
+
+- Algorithm for Routing
+  - we subdivide into =Routing Tiles= (like for geohashing)
+  - we convert the routes to graphs
+  - solution is a variation of Dijsktra's or A* pathfinding.
+  - for long distances, computation will require different sizes of Routing Tiles
+
+
+- Storage
+  - Map of the world:
+    - the map tiles, at x21 there are 4.3 Trillon tiles
+    - ~67PB in .png at all zoom levels
+  - Metadata
+  - Road info: TB+, to be converted to =Routing Tiles=
+
+** TODO 7 Hotel Booking/Reservation
+
+- eg: Airbnb, flight reservations, movie tickets
+
+** Links
+
+- Service Discovery:
+  - Features:
+    - https://www.toptal.com/big-data/consistent-hashing
+    - keep list of servers of a service
+    - ability for clients (infrastructure) to subscribe to changes on it.
+  - https://etcd.io/
+  - https://zookeeper.apache.org/
+
+- REST
+  - Pagination https://developer.atlassian.com/server/confluence/pagination-in-the-rest-api/
+
+- Redis Pub/Sub https://redis.io/docs/latest/develop/pubsub/
+  - +1M channels/topics per server
+  - ~100k QPS (CPU bounded)
+  - stateless, in the sense that messages are neither stored in memory nor disk
+  - https://jameshfisher.com/2017/03/01/redis-pubsub-under-the-hood/
+
+- Maps
+  - https://kousiknath.medium.com/system-design-design-a-geo-spatial-index-for-real-time-location-search-10968fe62b9c
+  - Projection, eg https://en.wikipedia.org/wiki/Web_Mercator_projection
+  - Geohashing = area->hash
+  - Geocoding  https://en.wikipedia.org/wiki/Address_geocoding
+    - Geocode = address->coordinate
+    - Reverse Geocode = coordinate->address
+  - Algorithm
+    - Redis https://redis.io/docs/latest/commands/geohash/
+      https://www.youtube.com/watch?v=cSFWlF96Sds
+    - Posgres Extension https://postgis.net/
+    - http://s2geometry.io/
+      - https://en.wikipedia.org/wiki/Hilbert_curve
+        http://bit-player.org/extras/hilbert/hilbert-mapping.html
+      - https://en.wikipedia.org/wiki/Geofence
+    - https://en.wikipedia.org/wiki/Geohash
+    - https://en.wikipedia.org/wiki/Quadtree
+      http://web.archive.org/web/20160213104717/http://engblog.yext.com:80/post/geolocation-caching
+  - Tiles
+    - https://maps.stamen.com/#watercolor/12/37.7706/-122.3782
+    - https://openmaptiles.org/
+  - Data
+    - https://www.openstreetmap.org/about
