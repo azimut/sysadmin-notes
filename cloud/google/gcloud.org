@@ -1,0 +1,210 @@
+https://cloud.google.com/sdk/gcloud
+https://www.youtube.com/watch?v=oTIK9OvQBxQ&list=PLIivdWyY5sqIij_cgINUHZDMnGjVx3rxi&index=16
+https://cloud.google.com/shell/docs/
+https://www.youtube.com/watch?v=hBMcAKzGt3w
+
+* cli
+
+#+begin_src sh
+  $ echo $GOOGLE_CLOUD_PROJECT # PROJECT_ID
+
+  export ZONE=$(gcloud config get compute/zone)
+  export REGION=$(gcloud config get compute/region)
+
+  export PROJECT_ID="$(gcloud config get-value project)"
+  export PROJECT_NUMBER="$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')"
+
+  gcloud -h
+  gcloud help config
+  gcloud components list
+
+  gcloud auth list
+  gcloud auth activate-service-account --key-file credentials.json
+  gcloud auth print-access-token
+
+  gcloud pubsub topics publish cf-demo --message="Cloud Function Gen2"
+  gcloud pubsub topics publish MyTopic --message "Hello"
+
+  gcloud iam service-accounts create my-natlang-sa --display-name "my natural language service account"
+  gcloud iam service-accounts keys create ~/key.json --iam-account my-natlang-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+
+  gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com --role=roles/storage.admin
+  gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com --role=roles/dataproc.worker
+
+  gcloud dataproc clusters create example-cluster --worker-boot-disk-size 500 --worker-machine-type=e2-standard-4 --master-machine-type=e2-standard-4
+#+end_src
+
+** config
+
+#+begin_src sh
+  gcloud config --help
+  gcloud config list
+  gcloud config list --all
+  gcloud config list project
+  gcloud config set run/region REGION # Cloud Run
+  gcloud config set dataproc/region REGION
+  gcloud config set compute/region REGION
+  gcloud config set compute/zone   ZONE
+  gcloud config get-value compute/region
+  gcloud config get-value compute/zone
+  gcloud config get-value core/project
+  gcloud config get-value project
+#+end_src
+
+** logging
+
+#+begin_src sh
+  gcloud logging logs list
+  gcloud logging logs list --filter="compute"
+  gcloud logging read "resource.type=gce_instance" --limit 5
+  gcloud logging read "resource.type=gce_instance AND labels.instance_name='gcelab2'" --limit 5
+#+end_src
+
+** services
+
+#+begin_src sh
+  gcloud beta services identify create --service=dataprep.googleapis.com
+  gcloud services enable dataproc.googleapis.com
+  gcloud services disable appengineflex.googleapis.com
+  gcloud services disable dataproc.googleapis.com --force
+  gcloud services disable dataflow.googleapis.com --project $PID --force
+  gcloud services enable dataflow.googleapis.com --project $PID
+#+end_src
+
+** storage
+
+#+begin_src sh
+  gcloud storage buckets create gs://<BUCKETNAME>
+  gcloud storage cp ada.jpg gs://<BUCKET_NAME>
+  gcloud storage cp -r gs://<BUCKET>/ada.jpg
+  gcloud storage cp gc://<BUCKET>/ada.jpg gs://<BUCKET>/image-folder/
+  gcloud storage ls gs://<BUCKET>
+  gcloud storage rm gs://<BUCKET>/ada.jpg
+#+end_src
+
+** functions
+
+#+begin_src sh
+  gcloud functions deploy node-js-pubsub-function \
+    -gen2 \
+    --runtime=nodejs20 \
+    --region=REGION \
+    --source=. \
+    --entry-point=helloPubSub \
+    --trigger-topic cf-demo \
+    --stage-bucket PROJECT_ID-bucket \
+    --service-account cloudfunctions@PROJECT_ID.iam.gserviceaccount.com \
+    --allow-unauthenticated
+  gcloud functions describe nodejs-pubsub-function --region=REGION
+  gcloud functions logs read nodejs-pubsub-function --region=$REGION
+#+end_src
+
+** container
+
+#+begin_src sh
+  gcloud container clusters create --machine-type=e2-medium --zone $ZONE lab-cluster
+  gcloud container clusters get-credentials lab-cluster
+  gcloud container clusters delete lab-cluster
+#+end_src
+
+** compute
+
+#+begin_src sh
+  gcloud compute      health-checks create http http-basic-check --port 80
+  gcloud compute http-health-checks create basic-check # legacy HTTP health check
+
+  gcloud compute addresses create network-lb-ip-1 --region REGION # new external address for an LB
+  gcloud compute addresses create lb-ipv4-1 --ip-version=IPV4 --global
+  gcloud compute addresses describe lb-ipv4-1 --format="get(address)" --global
+
+  gcloud compute project-info describe --project $(gcloud config get-value project)
+
+  # --tags= --image-family= --image-project= --metadata=foo='bar'
+  gcloud compute instances delete testinstance
+  gcloud compute instances create gcelab2 --machine-type e2-medium --zone $ZONE
+  gcloud compute instances create --help
+  gcloud compute instances list
+  gcloud compute instances list --filter="name=('gcelab2')"
+  gcloud compute instances list --filter=name:gcelab2 --format='value(EXTERNAL_IP'
+  gcloud compute instances add-tags gcelab2 --tags http-server,https-servers
+
+  gcloud compute instance-templates create lb-backend-template \
+         --region=$REGION \
+         --network=default \
+         --subnet=default \
+         --tags=allow-health-check \
+         --machine-type=e2-medium \
+         --image-family=debian-11 \
+         --image-project=debian-cloud \
+         --metadata=startup-script='#!/bin/bash
+           apt-get update
+           apt-get install apache2 -y
+           a2ensite default-ssl
+           a2enmod ssl
+           vm_hostname="$(curl -H "Metadata-Flavor:Google" http://169.254.169.254/computeMetadata/v1/instance/name)"
+           echo "Page served from: $vm_hostname" | \
+             tee /var/www/html/index.html
+           systemctl restart apache2'
+
+  gcloud compute instance-groups managed create lb-backend-group \
+         --template=lb-backend-template \
+         --size=2 \
+         --zone=$ZONE
+
+  # --load-balancing-scheme internal
+  gcloud compute backend-services create \
+         web-backend-service \
+         --protocol=HTTP \
+         --port-name=http \
+         --health-checks=http-basic-check \
+         --global
+  gcloud compute backend-services add-backend \
+         web-backend-service \
+         --instance-group=lb-backend-group \
+         --instance-group-zone=$ZONE \
+         --global
+
+
+  # --format='json'
+  gcloud compute forwarding-rules describe www-rule --region $REGION
+  # --load-balancing-scheme internal
+  # --backend-service prime-service
+  gcloud compute forwarding-rules create www-rule \
+         --region $REGION \
+         --ports 80 \
+         --address network-lb-ip-1 \
+         --target-pool www-pool
+
+  gcloud compute networks create privatenet --subnet-mode=custom
+  gcloud compute networks subnets create privatesubnet-1 --network=privatenet --region=Region_1 --range=172.16.0.0/24
+  gcloud compute networks subnets update default --region=REGION --enable-private-ip-google-access
+  gcloud compute networks list
+
+  gcloud compute url-maps create web-map-http --default-service web-backend-service
+
+  gcloud compute target-http-proxies create http-lb-proxy --url-map web-map-http
+
+  gcloud compute target-pools create www-pool --region $REGION --http-health-check basic-check
+  gcloud compute target-pools add-instances www-pool --instances www1,www2,www3
+
+  gcloud compute firewall-rules list
+  gcloud compute firewall-rules list --sort-by=NETWORK
+  gcloud compute firewall-rules list --filter="network='default'"
+  gcloud compute firewall-rules list --filter="NETWORK:'default' AND ALLOW:'icmp'"
+  gcloud compute firewall-rules list --filter=ALLOW:'80'
+  gcloud compute firewall-rules create www-firewall-network-lb --target-tags network-lb-tag --alow tcp:80
+  gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp=22,tcp:3389 --source-ranges=0.0.0.0/0
+  gcloud compute firewall-rules create default-allow-http --direction=INGRESS --priority=100 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+  gcloud compute ssh gcelab --zone $ZONE
+#+end_src
+
+** app
+
+#+begin_src sh
+  # App Engine
+  gcloud app deploy # asks for zone
+  gcloud app logs tail -s default # stream logs
+  gcloud app browse # view in browser
+#+end_src
+

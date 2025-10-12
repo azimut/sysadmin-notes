@@ -1,0 +1,5 @@
+
+* language
+
+https://developer.gimp.org/resource/writing-a-plug-in/tutorial-script-fu/
+https://script-fu.github.io/funky/hub/tutorials/folder/

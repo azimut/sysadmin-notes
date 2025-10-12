@@ -1,0 +1,7 @@
+- https://cloud.google.com/storage/docs/gsutil
+
+#+begin_src sh
+  gsutil acl ch -u AllUsers:R gs://<BUCKET>/ada.jpg
+  gsutil acl ch -d AllUsers gs://<BUCKET>/ada.jpg
+  gsutil mb gs://$BUCKET_NAME/
+#+end_src
