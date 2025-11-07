@@ -198,7 +198,20 @@ https://ffmpeg.org/ffmpeg-filters.html
 ** Filter: geq
 
 - Generates video from expression
-- values from 0-255 (?
+- 0,0 at top left
+- output values from 0-255 (?
+- variables
+  - N = frame, from 0
+  - T = time of current frame, in seconds
+  - X,Y = current sample coordinates
+  - W,H = input dimensions
+- functions
+  - p(x,y) - lookup value at given coordinates of current plane
+  - r(x,y) g(x,y) b(x,y) - "
+  - alpha(x,y) - " of alpha plane
+  - lum(x,y) - " of luma plane
+  - cb(x,y) - " of blue-difference chroma plane
+  - cr(x,y) - " of red-difference chroma plane
 
 ** Filter: avalsrc
 

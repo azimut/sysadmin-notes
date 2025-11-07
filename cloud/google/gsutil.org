@@ -3,5 +3,5 @@
 #+begin_src sh
   gsutil acl ch -u AllUsers:R gs://<BUCKET>/ada.jpg
   gsutil acl ch -d AllUsers gs://<BUCKET>/ada.jpg
-  gsutil mb gs://$BUCKET_NAME/
+  gsutil mb gs://$BUCKET/
 #+end_src

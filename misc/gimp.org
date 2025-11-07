@@ -1,5 +1,7 @@
 
 * language
 
+https://www.blogbyben.com/2008/02/earning-my-script-fu-blackbelt.html
+https://docs.gimp.org/3.0/en/gimp-using-script-fu-tutorial.html
 https://developer.gimp.org/resource/writing-a-plug-in/tutorial-script-fu/
 https://script-fu.github.io/funky/hub/tutorials/folder/

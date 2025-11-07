@@ -67,14 +67,13 @@ https://imagemagick.org/script/color.php
 
 ** -draw / MVG
 
-- command https://usage.imagemagick.org/draw/
-- language: [[https://imagemagick.org/script/magick-vector-graphics.php][Magick Vector Graphics]]
-  - has no concept of containers or sets of commands
-  - instead i uses the concept of "Graphics Contexts"
-- Since version 7, supports fx() inline in the form of:
-  #+begin_src sh
-    %[fx:w*.9]
-  #+end_src
+- Command: https://usage.imagemagick.org/draw/
+- Language: [[https://imagemagick.org/script/magick-vector-graphics.php][Magick Vector Graphics]]
+  - no concept of containers or sets of commands
+  - uses the concept of "Graphics Contexts"
+  - ignores whitespace between commands
+  - no loops / no control flow
+  - .mvg
 
 *** settings
 
@@ -89,8 +88,8 @@ https://imagemagick.org/script/color.php
 - tile
 - box
 
-*** methods
-**** svg path
+*** primitives
+**** path
 https://usage.imagemagick.org/draw/#paths
 |---------+------------------------+-----------------------------------|
 | COMMAND | ARGS                   | DESCRIPTION                       |
@@ -148,6 +147,10 @@ https://usage.imagemagick.org/draw/#paths
   ii=((i*2)-w)/h; jj=((j*2)-h)/h; # centered [-1,+1]
 #+end_src
 
+- Since version 7, supports fx() inline in -draw or other commands, in the form of:
+  #+begin_src sh
+    %[fx:w*.9]
+  #+end_src
 - user variable names:
   - case insensitive
   - more than 1 letter, no numbers

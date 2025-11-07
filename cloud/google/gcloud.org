@@ -6,7 +6,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 * cli
 
 #+begin_src sh
-  $ echo $GOOGLE_CLOUD_PROJECT # PROJECT_ID
+  echo $GOOGLE_CLOUD_PROJECT # PROJECT_ID
 
   export ZONE=$(gcloud config get compute/zone)
   export REGION=$(gcloud config get compute/region)
@@ -22,8 +22,14 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud auth activate-service-account --key-file credentials.json
   gcloud auth print-access-token
 
-  gcloud pubsub topics publish cf-demo --message="Cloud Function Gen2"
+  gcloud pubsub topics list
+  gcloud pubsub topics create myTopic
+  gcloud pubsub topics delete myTopic
+  gcloud pubsub topics list-subscriptions myTopic
+  gcloud pubsub subscriptions delete Test1
+  gcloud pubsub subscriptions create --topic myTopic mySubscription
   gcloud pubsub topics publish MyTopic --message "Hello"
+  gcloud pubsub subscriptions pull MySub --auto-ack
 
   gcloud iam service-accounts create my-natlang-sa --display-name "my natural language service account"
   gcloud iam service-accounts keys create ~/key.json --iam-account my-natlang-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
@@ -85,15 +91,16 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 ** functions
 
 #+begin_src sh
+  # --trigger-bucket= , --trigger-http
   gcloud functions deploy node-js-pubsub-function \
-    -gen2 \
+    --gen2 \
     --runtime=nodejs20 \
-    --region=REGION \
+    --region="${REGION}" \
     --source=. \
     --entry-point=helloPubSub \
     --trigger-topic cf-demo \
-    --stage-bucket PROJECT_ID-bucket \
-    --service-account cloudfunctions@PROJECT_ID.iam.gserviceaccount.com \
+    --stage-bucket ${GOOGLE_CLOUD_PROJECT}-bucket \
+    --service-account cloudfunctions@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com \
     --allow-unauthenticated
   gcloud functions describe nodejs-pubsub-function --region=REGION
   gcloud functions logs read nodejs-pubsub-function --region=$REGION
