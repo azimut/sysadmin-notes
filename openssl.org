@@ -1,0 +1,24 @@
+#+TITLE: openssl
+
+#+begin_src sh
+  openssl COMMAND [OPTION...] [PARAM...]
+#+end_src
+
+* arguments
+|-------------+----------------|
+| -d          | decrypt        |
+| -k PASSWORD |                |
+| -K KEY      | in hexadecimal |
+| -nosalt     |                |
+| -nopad      |                |
+|-------------+----------------|
+* commands
+** standard
+** message digest
+** encryption, decryption, encoding
+
+Aliases to common encodings & ciphers
+
+#+begin_src sh
+  openssl aes-128-ecb -help
+#+end_src
