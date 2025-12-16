@@ -7,6 +7,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 
 #+begin_src sh
   echo $GOOGLE_CLOUD_PROJECT # PROJECT_ID
+  echo $DEVSHELL_PROJECT_ID
 
   export ZONE=$(gcloud config get compute/zone)
   export REGION=$(gcloud config get compute/region)
@@ -19,6 +20,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud components list
 
   gcloud auth list
+  gcloud auth configure-docker
   gcloud auth activate-service-account --key-file credentials.json
   gcloud auth print-access-token
 
@@ -33,11 +35,22 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 
   gcloud iam service-accounts create my-natlang-sa --display-name "my natural language service account"
   gcloud iam service-accounts keys create ~/key.json --iam-account my-natlang-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com
+  gcloud iam service-accounts keys list --iam-account user@email.com
 
   gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com --role=roles/storage.admin
   gcloud projects add-iam-policy-binding $PROJECT_ID --member=serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com --role=roles/dataproc.worker
 
   gcloud dataproc clusters create example-cluster --worker-boot-disk-size 500 --worker-machine-type=e2-standard-4 --master-machine-type=e2-standard-4
+#+end_src
+
+** run
+
+#+begin_src sh
+  gcloud artifacts repositories create quickstart-docker-repo --repository-format=docker --location="REGION" --description="Docker repository"
+  gcloud container images delete gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
+  gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
+  gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld --allow-unauthenticated --region=$LOCATION
+  gcloud run services delete helloworld --region="REGION"
 #+end_src
 
 ** config
@@ -47,6 +60,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud config list
   gcloud config list --all
   gcloud config list project
+  gcloud config set project $PROJECT_ID
   gcloud config set run/region REGION # Cloud Run
   gcloud config set dataproc/region REGION
   gcloud config set compute/region REGION
@@ -70,6 +84,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 
 #+begin_src sh
   gcloud beta services identify create --service=dataprep.googleapis.com
+  gcloud services enable iap.googleapis.com networkmanagement.googleapis.com
   gcloud services enable dataproc.googleapis.com
   gcloud services disable appengineflex.googleapis.com
   gcloud services disable dataproc.googleapis.com --force
@@ -109,6 +124,8 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 ** container
 
 #+begin_src sh
+  # GKE
+  gcloud container images list
   gcloud container clusters create --machine-type=e2-medium --zone $ZONE lab-cluster
   gcloud container clusters get-credentials lab-cluster
   gcloud container clusters delete lab-cluster
@@ -117,6 +134,8 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
 ** compute
 
 #+begin_src sh
+  gcloud compute scp index.html first-vm:index.html --zone=us-east1-c
+
   gcloud compute      health-checks create http http-basic-check --port 80
   gcloud compute http-health-checks create basic-check # legacy HTTP health check
 
@@ -131,6 +150,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud compute instances create gcelab2 --machine-type e2-medium --zone $ZONE
   gcloud compute instances create --help
   gcloud compute instances list
+  gcloud compute instances list --sort-by=ZONE
   gcloud compute instances list --filter="name=('gcelab2')"
   gcloud compute instances list --filter=name:gcelab2 --format='value(EXTERNAL_IP'
   gcloud compute instances add-tags gcelab2 --tags http-server,https-servers
@@ -153,6 +173,11 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
              tee /var/www/html/index.html
            systemctl restart apache2'
 
+  gcloud compute instance-groups managed rolling-action start_update \
+         cymball_supplychain_ig \
+         --version=template=cymball_supplychain_ig_template_${YYMMDD} \
+         --type=proactive \
+         --region=us-central1
   gcloud compute instance-groups managed create lb-backend-group \
          --template=lb-backend-template \
          --size=2 \
@@ -185,6 +210,7 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud compute networks create privatenet --subnet-mode=custom
   gcloud compute networks subnets create privatesubnet-1 --network=privatenet --region=Region_1 --range=172.16.0.0/24
   gcloud compute networks subnets update default --region=REGION --enable-private-ip-google-access
+  gcloud compute networks subnets list --sort-by=NETWORK
   gcloud compute networks list
 
   gcloud compute url-maps create web-map-http --default-service web-backend-service
@@ -202,8 +228,62 @@ https://www.youtube.com/watch?v=hBMcAKzGt3w
   gcloud compute firewall-rules create www-firewall-network-lb --target-tags network-lb-tag --alow tcp:80
   gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp=22,tcp:3389 --source-ranges=0.0.0.0/0
   gcloud compute firewall-rules create default-allow-http --direction=INGRESS --priority=100 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
-
+  gcloud compute firewall-rules create vpc-demo-allow-ssh-icmp --network vpc-demo --allow tcp:22,icmp
   gcloud compute ssh gcelab --zone $ZONE
+
+  gcloud compute regions list
+  gcloud compute snapshots list
+  gcloud compute networks describe vpc-demo
+  gcloud compute networks update vpc-demo --bgp-routing-mode GLOBAL
+#+end_src
+
+** compute VPN/Cloud Router
+
+https://www.skills.google/paths/621/course_templates/178/labs/567827
+
+#+begin_src sh
+  gcloud compute routers describe vpc-demo-router1 --region "REGION"
+  gcloud compute vpn-tunnels list
+  gcloud compute vpn-tunnels describe vpc-demo-tunnel0 --region "REGION"
+
+  gcloud compute vpn-gateways create vpc-demo-vpn-gw1 --network vpc-demo --region=${REGION1}
+  gcloud compute vpn-gateways create on-prem-vpn-gw1 --network on-prem --region=${REGION2}
+  gcloud compute vpn-gateways describe on-prem-vpn-gw1 --region ${REGION2}
+
+  gcloud compute routers create vpc-demo-router1 --network vpc-demo --asn 65001 --region ${REGION1}
+  gcloud compute routers create on-prem-router1 --network on-prem --asn 65002 --region ${REGION2}
+
+  gcloud compute vpn-tunnels create vpc-demo-tunnel0 \
+         --peer-gcp-gateway on-prem-vpn-gw1 \
+         --region "REGION" \
+         --ike-version 2 \
+         --shared-secret [SHARED_SECRET] \
+         --router vpc-demo-router1 \
+         --vpn-gateway vpc-demo-vpn-gw1 \
+         --interface 0
+  gcloud compute vpn-tunnels create vpc-demo-tunnel1 \
+         --peer-gcp-gateway on-prem-vpn-gw1 \
+         --region "REGION" \
+         --ike-version 2 \
+         --shared-secret [SHARED_SECRET] \
+         --router vpc-demo-router1 \
+         --vpn-gateway vpc-demo-vpn-gw1 \
+         --interface 1
+  # ... x2
+
+  gcloud compute routers add-interface vpc-demo-router1 \
+      --interface-name if-tunnel0-to-on-prem \
+      --ip-address 169.254.0.1 \
+      --mask-length 30 \
+      --vpn-tunnel vpc-demo-tunnel0 \
+      --region "REGION"
+  gcloud compute routers add-bgp-peer vpc-demo-router1 \
+      --peer-name bgp-on-prem-tunnel0 \
+      --interface if-tunnel0-to-on-prem \
+      --peer-ip-address 169.254.0.2 \
+      --peer-asn 65002 \
+      --region "REGION"
+  # ... x3
 #+end_src
 
 ** app

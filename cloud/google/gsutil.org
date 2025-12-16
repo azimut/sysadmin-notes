@@ -1,7 +1,27 @@
 - https://cloud.google.com/storage/docs/gsutil
 
 #+begin_src sh
+  # make bucket
+  gsutil mb gs://$BUCKET/
   gsutil acl ch -u AllUsers:R gs://<BUCKET>/ada.jpg
   gsutil acl ch -d AllUsers gs://<BUCKET>/ada.jpg
-  gsutil mb gs://$BUCKET/
+  gsutil acl set private gs://$BUCKET/ada.jpg
+  gsutil rewrite -k gs://$BUCKET/ada.jpg
+  gsutil lifecycle get gs://$BUCKET
+  gsutil lifecycle set life.json gs://$BUCKET
+  gsutil versioning get gs://$BUCKET
+  gsutil versioning set on gs://$BUCKET
+  gsutil rsync -r ./FOLDER gs://$BUCKET/FOLDER
+#+end_src
+
+#+begin_src json
+{
+  "rule":
+  [
+    {
+      "action": {"type": "Delete"},
+      "condition": {"age": 31}
+    }
+  ]
+}
 #+end_src

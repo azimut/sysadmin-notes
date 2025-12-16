@@ -56,12 +56,13 @@ https://imagemagick.org/script/color.php
 - stroke/strokewidth/fill/undercolor
 
 - -draw "text GEOM 'STR'"
+  - fill, font-size
 
 - "label:"
   - creates his own canvas
   - follows -gravity, -background, -fill
 
-- "-annotate GEOM STR"
+- "-annotate GEOMETRY STR/@FILE"
   - draws over the image
   - you can -splice to add space before
 
@@ -81,7 +82,10 @@ https://imagemagick.org/script/color.php
   - fill-opacity
   - fill-rule
 - stroke / strokewidth
-  - opacity dasharray dash linecap linejoin milterlimit
+  - opacity dasharray dash
+  - milterlimit: N
+  - linecap: butt round square
+  - linejoin: milter bevel round
 - font S / pointsize N
 - gravity
 - origin
@@ -91,16 +95,16 @@ https://imagemagick.org/script/color.php
 *** primitives
 **** path
 https://usage.imagemagick.org/draw/#paths
-|---------+------------------------+-----------------------------------|
-| COMMAND | ARGS                   | DESCRIPTION                       |
-|---------+------------------------+-----------------------------------|
-| path    |                        | [[https://www.w3.org/TR/SVG/paths.html#PathDataGeneralInformation][SVG path]] , letters=cmd number=arg |
-|         | M 1,2 l 3,4 l 2,-4     | lowercase commands are relative   |
-|         | M 1,2 L 4,6 L 6,2      | uppercase are absolute            |
-|         | M 1,2   4,6   6,2      | same as above                     |
-|         | M 1,2   4,6   6,2  1,2 | closed path                       |
-|         | M 1,2   4,6   6,2   Z  | closed path                       |
-|---------+------------------------+-----------------------------------|
+|---------+--------------------------+-----------------------------------|
+| COMMAND | ARGS                     | DESCRIPTION                       |
+|---------+--------------------------+-----------------------------------|
+| path    |                          | [[https://www.w3.org/TR/SVG/paths.html#PathDataGeneralInformation][SVG path]] , letters=cmd number=arg |
+|         | 'M 1,2 l 3,4 l 2,-4'     | lowercase commands are relative   |
+|         | 'M 1,2 L 4,6 L 6,2'      | uppercase are absolute            |
+|         | 'M 1,2   4,6   6,2'      | same as above                     |
+|         | 'M 1,2   4,6   6,2  1,2' | closed path                       |
+|         | 'M 1,2   4,6   6,2    Z' | closed path                       |
+|---------+--------------------------+-----------------------------------|
 **** drawing
 |----------------+----------------------+----------------------------------------|
 | COMMAND        | ARGS                 | DESCRIPTION                            |
@@ -321,6 +325,13 @@ https://github.com/ImageMagick/ImageMagick/blob/main/MagickCore/fx.c
 ** Operators: executed in order, and immediately
 
 https://usage.imagemagick.org/basics/#option_stack
+
+|--------+--------+----------------------------------------|
+| extent |  100x0 | outputs exact size given               |
+| crop   |  100x0 | outputs exact size given, and the rest |
+|        | +100+0 | removes from left side                 |
+| shave  |  100x0 | removes from both sides                |
+|--------+--------+----------------------------------------|
 
 1) Creation: add 1 image
    - file.png xc: canvas: logo:
