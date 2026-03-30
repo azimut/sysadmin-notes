@@ -1,1 +1,7 @@
 - https://packages.gentoo.org/categories/net-ftp
+* clients
+** wget
+
+#+begin_src sh
+  wget -m ftp://root:1234@172.16.0.100/../flash/
+#+end_src

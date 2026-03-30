@@ -190,22 +190,30 @@ adb shell am start
 -a android.intent.action.VIEW
 -t application/x-x509-ca-cert
 -d file://"$ca_path_in_phone"
-
-
-|------------------------+-------------------------------------------------+------------------------|
-| shell am start         | -n com.android.certinstaller/.CertInstallerMain | run package            |
-|                        | -a android.intent.action.VIEW                   | (eg: install cert)     |
-|                        | -t application/x-x509-ca-cert                   |                        |
-|                        | -d file:///foo/bar.pem                          |                        |
-| shell getprop          | <PROPNAME>                                      |                        |
-| shell pm list packages |                                                 | -s for system packages |
-| shell pm uninstall     | --user 0 <PCK>                                  |                        |
-| shell dumpsys*         | nfc/window/power                                | screen status          |
-| shell input text       | "some%swacky%stext"                             | input keyboard text    |
-| shell input keyevent   | 66                                              | inputs enter key       |
-| shell input tap        | X Y                                             |                        |
-| shell input swipe      | X1 Y1 X2 Y2 DUR                                 |                        |
-|------------------------+-------------------------------------------------+------------------------|
+|------------------+-------------------------------------------------+----------------------------|
+| am start         | -n com.android.certinstaller/.CertInstallerMain | run package                |
+|                  | -a android.intent.action.VIEW                   | (eg: install cert)         |
+|                  | -t application/x-x509-ca-cert                   |                            |
+|                  | -d file:///foo/bar.pem                          |                            |
+| getprop          | <PROPNAME>                                      |                            |
+| pm list packages |                                                 | -s for system packages     |
+| pm uninstall     | --user 0 <PCK>                                  |                            |
+| dumpsys*         | nfc/window/power                                | screen status              |
+| dumpsys          | package packages                                | detailed packages          |
+| getevent -l      |                                                 |                            |
+| input text       | "some%swacky%stext"                             | input keyboard text        |
+| input keyevent   | 66                                              | inputs enter key           |
+|                  | 26                                              | power off                  |
+|                  |                                                 | see /system/usr/keylayout/ |
+| input tap        | X Y                                             |                            |
+| input swipe      | X1 Y1 X2 Y2 DUR                                 |                            |
+|------------------+-------------------------------------------------+----------------------------|
+- $ adb shell settings put global private_dns_mode hostname
+- $ adb shell settings put global private_dns_mode off
+- $ adb shell settings put global private_dns_mode opportunistic // DHCP
+- $ adb shell settings put global private_dns_specifier dns.google
+- $ adb shell settings put global private_dns_specifier one.one.one.one
+- $ adb shell settings put global private_dns_specifier dns.adguard.com
 - * grep mScreenState=/mDreamingLockscreen/mHolding
 ** error: insufficient permissions for device error
 https://itsfoss.com/fix-error-insufficient-permissions-device/

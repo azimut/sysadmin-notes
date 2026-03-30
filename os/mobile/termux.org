@@ -1,0 +1,11 @@
+- home https://termux.dev/en/
+- wiki https://en.wikipedia.org/wiki/Termux
+- wiki https://wiki.termux.com/wiki/Main_Page
+- source https://github.com/termux/termux-app
+- 2015-
+- Friedrik Fornwall
+- Debian based
+- Packages are crosscompiled with Android NDK
+- Features
+  - grep through your sms inbox
+  - store backups of your contact list

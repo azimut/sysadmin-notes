@@ -246,6 +246,42 @@ https://ffmpeg.org/ffmpeg-filters.html
 - stream to twitch https://corvid.cafe/ffstream.html
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
 
+** glitch
+
+there are 3 types of frames:
+- keyframe
+- bframe (bidirectional)
+- pframe (prediction)
+
+|--------------+---------------------------------------------+------------------|
+| FLAG         | ARGUMENT                                    | DESCRIPTION      |
+|--------------+---------------------------------------------+------------------|
+| -vf          | scale=64x64                                 | downscale        |
+|              | xfade=transition=fade:duration=2.5:offset=5 |                  |
+|              | fps=30                                      |                  |
+|              | blend='hardlight'                           |                  |
+|              | datascope=mode='color'                      |                  |
+|              | displace                                    |                  |
+|              | format=rgb24                                |                  |
+|--------------+---------------------------------------------+------------------|
+| -qp          | 40                                          | quantization     |
+|              |                                             | default: 30      |
+|              |                                             | disable: 0       |
+|--------------+---------------------------------------------+------------------|
+| -c:a         | mp3                                         |                  |
+|--------------+---------------------------------------------+------------------|
+| -c:v         | snow                                        |                  |
+|--------------+---------------------------------------------+------------------|
+| -c:v         | libx264                                     | H264             |
+| -x264-params | keyint=10¦5000                              |                  |
+|              | keyint_min=10¦5000                          |                  |
+|              | bframes=0                                   |                  |
+|--------------+---------------------------------------------+------------------|
+| -pix_fmt     | yuv420p                                     |                  |
+|--------------+---------------------------------------------+------------------|
+| -bsf:v       | noise=amount='3000*not(key)'                | bitstream filter |
+| -bsf:a       | noise=amount='10'                           |                  |
+|--------------+---------------------------------------------+------------------|
 ** from frames
 - ffmpeg -i test-%09d.png foo.mp4
 ** to frames

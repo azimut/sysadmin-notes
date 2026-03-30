@@ -1,0 +1,4 @@
+- aeros.la
+  - https://openqube.io/company/aeros-2/
+  - workshops https://www.youtube.com/@aerosla/streams
+  - 21 video Let's talk: Reducí tus costos migrando a Google Cloud https://www.youtube.com/watch?v=YjKnKAhhjHw
