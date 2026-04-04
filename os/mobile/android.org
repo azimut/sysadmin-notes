@@ -1,3 +1,4 @@
+- a company (03), and OS(08), and OSS, and a development community (a phone?)
 - https://github.com/AlikornSause/Notes-on-QIN-F21-PRO
 - Android on APF build https://www.armadeus.org/wiki/index.php?title=Android
 - CPU to Brand search https://www.kimovil.com/es/
@@ -21,13 +22,10 @@
 - system
   - alexa https://github.com/jvandewiel/no-alexa
 
-- tool: mkbootimg - creates android boot images
-  - https://github.com/osm0sis/mkbootimg
-- tool: abootimg - r/w/u android boot images
-  - requires ramdisk
-  - https://mediawiki.compulab.com/index.php/Android:_Boot_image
-- tool: skales - creates android boot images for qualcommm
-  - EOL 2016 https://git.codelinaro.org/clo/qsdk/oss/tools/skales
+- soft brick: bootloader still works, but not boots fully
+  - fix: wipe data, write new firmware, adb fix
+- hard brick: bootloader is gone, or isn't reached
+  - fix: edl, jtag
 
 * versions
 |----+-------+-------------+------------------------+---------|
@@ -37,6 +35,8 @@
 | 13 | 4.4   | [[https://en.wikipedia.org/wiki/Android_KitKat][KitKat]]      | Introduced secure boot | 3.4     |
 | 10 | 2.2   | [[https://en.wikipedia.org/wiki/Android_Froyo][Froyo]]       |                        |         |
 | 09 | 1.6   | Donut       |                        | 2.6.29  |
+| 09 | 1.5   | Cupcake     |                        |         |
+| 08 | 1.0   | -           |                        |         |
 |----+-------+-------------+------------------------+---------|
 * rooting
 
@@ -104,13 +104,6 @@
 - https://blog.quarkslab.com/reverse-engineering-samsung-s6-sboot-part-i.html
 - https://blog.quarkslab.com/reverse-engineering-samsung-s6-sboot-part-ii.html
 
-** videos
-
-- 15 [[https://www.youtube.com/watch?v=5SQP0qfUDjI][Digging Into Android Startup]] by Dave Smith
-- https://www.youtube.com/watch?v=tqwFgzL5MeU
-  - /init.rc
-- https://www.youtube.com/watch?v=jVp_2uYAEfE
-- https://www.youtube.com/watch?v=JoeT9iX411U
 
 * EDL - Emergency Download *Mode*
 
@@ -130,6 +123,24 @@
 - alternative https://twrp.me/FAQ/ https://en.wikipedia.org/wiki/TWRP_(software)
   - https://www.thecustomdroid.com/download-install-twrp-recovery-android/
 - alternative https://github.com/msm8916-mainline/lk2nd
+
+** Android Recovery
+
+- Menu (From Galaxy J2 Prime) MMB29T.G532MUMU1ASH2
+
+- Menu (From Mediatek's "MXQ PRO" tv box")
+  - Reboot system now
+  - Reboot to bootloader
+  - Apply update from ADB
+    - adb sideload foo.zip (?)
+  - Apply update from =Internal=
+  - Apply update from =External=
+  - Wipe data/factory reset
+  - Wipe cache partition
+  - Mount /system
+  - View recovery logs
+  - Run Graphics Test
+  - Power off
 
 * fastboot *mode*
 
@@ -164,84 +175,6 @@
 - samsung https://en.wikipedia.org/wiki/Odin_(firmware_flashing_software)
   - developed by samsung (leaked)
 
-* adb - android debug bridge
-- https://en.wikipedia.org/wiki/Android_Debug_Bridge
-- tool: https://github.com/T-vK/android-svc
-|------------------------+-----------------------------------------+---------------------------------------|
-|          <c>           |                                         |                                       |
-|          CMD           | ARGS                                    | Desc                                  |
-|------------------------+-----------------------------------------+---------------------------------------|
-|   exec-out screencap   | -p > screen.png                         | pipe to display or feh --scale-down - |
-|        install         | -r some.apk                             | install apk                           |
-|         logcat         | --regex 'containsthiststring' -v color  | tailf of system logs                  |
-|   service call power   | N                                       |                                       |
-|         tcpip          | 5555                                    | wireless pair after usb connected     |
-|       uninstall        | PACKAGE.NAME                            | uninstall apk                         |
-|         reboot         | efex                                    | FEL mode                              |
-|         reboot         | bootloader                              |                                       |
-|        fastboot        | oem unlock                              |                                       |
-|       get-state        | -                                       | device ¦ recovery                     |
-|    backup <foo.adb>    |                                         | -apk -all -system -f                  |
-|------------------------+-----------------------------------------+---------------------------------------|
-** shell
-
-adb shell am start
--n com.android.certinstaller/.CertInstallerMain
--a android.intent.action.VIEW
--t application/x-x509-ca-cert
--d file://"$ca_path_in_phone"
-|------------------+-------------------------------------------------+----------------------------|
-| am start         | -n com.android.certinstaller/.CertInstallerMain | run package                |
-|                  | -a android.intent.action.VIEW                   | (eg: install cert)         |
-|                  | -t application/x-x509-ca-cert                   |                            |
-|                  | -d file:///foo/bar.pem                          |                            |
-| getprop          | <PROPNAME>                                      |                            |
-| pm list packages |                                                 | -s for system packages     |
-| pm uninstall     | --user 0 <PCK>                                  |                            |
-| dumpsys*         | nfc/window/power                                | screen status              |
-| dumpsys          | package packages                                | detailed packages          |
-| getevent -l      |                                                 |                            |
-| input text       | "some%swacky%stext"                             | input keyboard text        |
-| input keyevent   | 66                                              | inputs enter key           |
-|                  | 26                                              | power off                  |
-|                  |                                                 | see /system/usr/keylayout/ |
-| input tap        | X Y                                             |                            |
-| input swipe      | X1 Y1 X2 Y2 DUR                                 |                            |
-|------------------+-------------------------------------------------+----------------------------|
-- $ adb shell settings put global private_dns_mode hostname
-- $ adb shell settings put global private_dns_mode off
-- $ adb shell settings put global private_dns_mode opportunistic // DHCP
-- $ adb shell settings put global private_dns_specifier dns.google
-- $ adb shell settings put global private_dns_specifier one.one.one.one
-- $ adb shell settings put global private_dns_specifier dns.adguard.com
-- * grep mScreenState=/mDreamingLockscreen/mHolding
-** error: insufficient permissions for device error
-https://itsfoss.com/fix-error-insufficient-permissions-device/
-When "adb shell" fails with that error
-$ adb kill-server
-$ sudo adb start-server
-$ adb shell
-** Move data to internal storage
-https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
-  #+begin_src shell
-> adb shell
-> sm list-disks disk:179,128 # HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
-> sm set-force-adoptable true # IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
-> sm partition disk:179,64 mixed 60 # IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
-> sm set-force-adoptable falsep
-#+end_src
-Go to Settings and then Storage.
-Select the microSD card listed at the internal storage section and tap to enter it.
-Inside the above menu browse to the bottom and choose to move all the data to the new card.
-* aapt
-https://developer.android.com/tools/aapt2
-|--------------+---------------------------------------------------------+---|
-| CMD          | ARGS                                                    |   |
-|--------------+---------------------------------------------------------+---|
-| dump badging | some.apk                                                |   |
-| package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
-|              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
-|--------------+---------------------------------------------------------+---|
 * dev
 
 - 2022 | Android From Scratch: Building Your First Android Application
@@ -329,3 +262,17 @@ https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/
   - source (C) https://github.com/dev47apps/droidcam
   - releases https://github.com/dev47apps/droidcam/releases
   - faq https://www.dev47apps.com/droidcam/help/
+
+* apks
+
+- Android Application Package
+- a .zip file
+- content:
+  - AndroidManifest.xml
+    - type: "Android binary XML"
+  - files
+    - classes.dex
+      - aka the source
+    - res/
+      - aka resources
+    - META-INF/

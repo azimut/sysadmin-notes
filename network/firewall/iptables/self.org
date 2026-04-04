@@ -4,7 +4,6 @@
 - wiki arch https://wiki.archlinux.org/title/iptables
 - wiki gentoo https://wiki.gentoo.org/wiki/Iptables
 
-
 - 20 article https://github.com/sammwyy/server-security-guide
 - 21 article https://github.com/sammwyy/ddos-mitigation
 - http://www.moria.de/tech/firewall-architecture/
@@ -14,3 +13,9 @@
 - 09 video |
   https://www.youtube.com/watch?v=b-a-YpPu34w
   https://www.youtube.com/watch?v=Ygej04AcKgQ
+
+* cli
+
+- iptables
+- iptables-save
+- man iptables-extensions

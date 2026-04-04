@@ -1,0 +1,55 @@
+- https://github.com/genymobile/scrcpy
+- https://github.com/0x192/universal-android-debloater/
+
+* reversing (static)
+
+- jadx(-gui)
+- apktool
+- dex2jar
+- mobSF
+  - automated framework
+
+* reversing (dynamic)
+
+- adb
+- radare
+- burp suite
+- objection
+  - rootless
+  - toolkit based on frida (automated?)
+- frida
+  - toolkit for instrumentation, injection
+  - home https://frida.re/
+  - source https://github.com/frida/frida
+
+* emulation
+
+- genymotion
+- android studio memu
+
+* image creation
+
+  - magiskboot
+  - mkbootimg - creates android boot images
+    - https://github.com/osm0sis/mkbootimg
+  - abootimg - r/w/u android boot images
+    - requires ramdisk
+    - https://mediawiki.compulab.com/index.php/Android:_Boot_image
+  - skales - creates android boot images for qualcommm
+    - EOL 2016 https://git.codelinaro.org/clo/qsdk/oss/tools/skales
+
+* apksigner
+
+apksigner verify --print-certs base.apk
+
+* aapt
+
+https://developer.android.com/tools/aapt2
+|--------------+---------------------------------------------------------+---|
+| CMD          | ARGS                                                    |   |
+|--------------+---------------------------------------------------------+---|
+| dump badging | some.apk                                                |   |
+| dump xmltree | some.apk AndroidManifest.xml                            |   |
+| package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
+|              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
+|--------------+---------------------------------------------------------+---|

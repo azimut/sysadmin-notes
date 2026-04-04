@@ -1,0 +1,113 @@
+#+TITLE: Apps
+
+https://www.reddit.com/r/AndroidTVApps/
+https://www.reddit.com/r/AndroidTVApps/comments/1g9pin6/randroidtvapps_megathread/
+
+
+- Google Alternatives
+  - Google Play (alternative) https://f-droid.org/en/
+  - Google Play (equal) https://auroraoss.com/aurora-store
+  - Google Play Services https://github.com/microg/GmsCore/wiki
+
+- File Explorer
+  - Solid Explorer File Manager
+  - MixPlorer
+- Keyboard
+  - BIG com.ndcsolution.androidtv.leankeykeyboard
+- Launcher https://www.reddit.com/r/AndroidTV/comments/1gbnhff/lets_compile_a_list_of_android_tv_launchers_that/
+  - H3Q Launcher (?
+  - UVLauncher (?
+  - Projectivity
+  - Launcher Manager
+  - ATV Launcher
+  - =Flauncher=
+    - minimal
+    - https://gitlab.com/flauncher/flauncher/-/releases
+
+
+- Downloader (browser, apk downloader by code)
+  - Unlinked
+
+* games
+
+- video prueba emus https://www.youtube.com/watch?v=RgzEjac9OV4
+
+- bundles
+  - Retro Arch https://play.google.com/store/apps/details?id=com.retroarch&hl=en
+  - lemuroid
+  - dig
+
+- dolphin (Gamecube, Wii)
+- Flycast (Dreamcast)
+- redream (Dreamcast)
+- Pizza Boy (GBA)
+- My Boy! (GBA)
+- Neo.emu
+- NES.emu
+- N64oid
+- m64plus fz
+- DraStic (DS)
+- ePSXe
+- ppsspp https://play.google.com/store/apps/details?id=org.ppsspp.ppsspp&hl=es_419
+- Aether SX2 (PS2)
+- Yuzu (Nintendo Switch)
+- +DamonPS2+
+- +EggNS+
+- +APS3e+
+
+* rooting
+
+https://topjohnwu.github.io/Magisk/tools.html
+- magisk: rooting?
+- magiskSU: gives root to apps
+
+- zygisk: runs code in all processes ???
+
+- supersu: rooting?
+- kingoroot
+- odin?
+- greenify https://play.google.com/store/apps/details?id=com.oasisfeng.greenify
+  - hibernate apps
+- xposed installer: install system modules (?
+- twrp: teamwin
+- redream
+- dig
+
+- rootbooster: cpu scaling mode?
+- cleanup apps from boot/disk
+  - rootesentials
+  - bootmanager
+
+
+* media
+
+- SportsFire
+- MxPlayer
+- IPVanish (VPN)
+- FlixVision
+- SmartTube (youtube free ad)
+- ADB TV (uninstall apps)
+- CinemaHD
+- JellyFin
+- Stremio/WuPlay
+  - https://www.stremio.com/
+  - https://torrentio.strem.fun/configure
+  - $$$ http://real-debrid.com/?id=7913336
+  - argentina tv https://848b3516657c-argentinatv.baby-beamup.club/
+  - https://bootstrapper.stremaddon.net/
+  - guides
+    - https://fmhy.net/
+    - https://www.reddit.com/r/StremioEnEspanol/comments/1mqmy1v/guia_preguntas_frecuentes/
+    - https://guides.viren070.me/stremio/setup#general-addons
+    - https://gist.github.com/DryKillLogic/48278f97f4ed0c1bd4bc0eed2558c874
+    - https://www.reddit.com/r/argentina/comments/1dvr42u/stremio_mira_la_television_argentina_gratis/
+  - AIOStreams
+  - Addons based stremio-addons.com
+      - thepiratebay  torrentio   streaming catalogs    aiostream
+    - remove: youtube, watchhub (legal streaming sites), public domain movies
+    - add: streaming catalogs, opensubtitle pro
+    - torrentio, torbox
+- Local Send, Send Files to TV
+- Plex
+- MagisTV (free, dead)
+  - XuperTV (paid $$$)

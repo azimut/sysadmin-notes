@@ -1,0 +1,111 @@
+#+TITLE: adb - android debug bridge
+
+- https://en.wikipedia.org/wiki/Android_Debug_Bridge
+- tool: https://github.com/T-vK/android-svc
+|--------------------+----------------------------------------+---------------------------------------|
+|        <c>         |                                        |                                       |
+|        CMD         | ARGS                                   | Desc                                  |
+|--------------------+----------------------------------------+---------------------------------------|
+| exec-out screencap | -p > screen.png                        | pipe to display or feh --scale-down - |
+|      install       | -r some.apk                            | install apk                           |
+|       logcat       | --regex 'containsthiststring' -v color | tailf of system logs                  |
+| service call power | N                                      |                                       |
+|       tcpip        | 5555                                   | wireless pair after usb connected     |
+|     uninstall      | PACKAGE.NAME                           | uninstall apk                         |
+|       reboot       | efex                                   | FEL mode                              |
+|                    | bootloader                             |                                       |
+|                    | recovery                               | "Android Recovery"                    |
+|      fastboot      | oem unlock                             |                                       |
+|     get-state      | -                                      | device ¦ recovery                     |
+|  backup <foo.adb>  |                                        | -apk -all -system -f                  |
+|--------------------+----------------------------------------+---------------------------------------|
+
+* shell
+
+adb shell am start
+-n com.android.certinstaller/.CertInstallerMain
+-a android.intent.action.VIEW
+-t application/x-x509-ca-cert
+-d file://"$ca_path_in_phone"
+|----------------+-------------------------------------------------+----------------------------|
+| am start       | -n com.android.certinstaller/.CertInstallerMain | run package                |
+|                | -a android.intent.action.VIEW                   | (eg: install cert)         |
+|                | -t application/x-x509-ca-cert                   |                            |
+|                | -d file:///foo/bar.pem                          |                            |
+| getprop        | <PROPNAME>                                      |                            |
+| pm install     | foo.apk                                         |                            |
+| pm list        | packages                                        | -s for system packages     |
+|                |                                                 | -f for paths               |
+|                |                                                 | -u for uninstalled         |
+| pm uninstall   | --user 0 <PCK>                                  |                            |
+| dumpsys        | nfc                                             |                            |
+|                | window                                          | screen status              |
+|                | power                                           |                            |
+|                | package packages                                | detailed packages          |
+|                | activity services                               |                            |
+| getevent -l    |                                                 |                            |
+| input text     | "some%swacky%stext"                             | input keyboard text        |
+| input keyevent | 66                                              | inputs enter key           |
+|                | 26                                              | power off                  |
+|                |                                                 | see /system/usr/keylayout/ |
+| input tap      | X Y                                             |                            |
+| input swipe    | X1 Y1 X2 Y2 DUR                                 |                            |
+| appops         | get <PKG>                                       |                            |
+|----------------+-------------------------------------------------+----------------------------|
+
+- $ adb shell settings put global private_dns_mode hostname
+- $ adb shell settings put global private_dns_mode off
+- $ adb shell settings put global private_dns_mode opportunistic // DHCP
+- $ adb shell settings put global private_dns_specifier dns.google
+- $ adb shell settings put global private_dns_specifier one.one.one.one
+- $ adb shell settings put global private_dns_specifier dns.adguard.com
+- * grep mScreenState=/mDreamingLockscreen/mHolding
+
+* troubleshoot
+** error: insufficient permissions for device error
+https://itsfoss.com/fix-error-insufficient-permissions-device/
+When "adb shell" fails with that error
+$ adb kill-server
+$ sudo adb start-server
+$ adb shell
+** Move data to internal storage
+https://simpleit.rocks/android/how-to-use-microsd-as-internal-storage/
+  #+begin_src shell
+> adb shell
+> sm list-disks disk:179,128 # HERE YOU GET YOUR DISK ID, SOMETHING LIKE "disk:179,64" - REMEMBER THOSE NUMBERS
+> sm set-force-adoptable true # IN NEXT LINE, SIMPLY PUT THOSE NUMBERS AFTER "disk:" AND ALSO AFTER WORD "mixed" TYPE PERCENTAGE OF SPACE LEFT AS EXTERNAL, SO IN MY CASE:
+> sm partition disk:179,64 mixed 60 # IT TAKES TIME. BE PATIENT. WITH THIS LINE I TRANSFORMED WHOLE EXTERNAL SD INTO 40% OF INTERNAL AND 60% OF EXTERNAL
+> sm set-force-adoptable falsep
+#+end_src
+Go to Settings and then Storage.
+Select the microSD card listed at the internal storage section and tap to enter it.
+Inside the above menu browse to the bottom and choose to move all the data to the new card.
+
+* snippets
+
+https://gist.github.com/Pulimet/5013acf2cd5b28e55036c82c91bd56d8
+
+** enumeration
+
+#+begin_src sh
+  set -xe
+  ADBNAME="$(adb shell getprop ro.build.product)"
+  mkdir "${ADBNAME}"
+  cd "${ADBNAME}"
+  adb shell 'pm list packages' >pm-list-packages.txt
+  adb shell 'getprop' >getprop.txt
+  adb shell 'dumpsys package packages' >dumpsys-package-packages.txt
+  adb bugreport  >bugreport.txt
+  adb shell 'lsmod'>lsmod.txt
+  adb shell 'dmesg'>dmesg.txt
+  adb shell 'iptables -nL'>iptables-nL.txt
+  adb shell 'iptables-save'>iptables-save.txt
+#+end_src
+
+** tcpdump DNS
+
+needs ROOT
+
+#+begin_src sh
+  adb exec-out 'tcpdump -nni wlan0 udp and port 53'
+#+end_src
