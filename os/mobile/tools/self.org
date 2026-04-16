@@ -1,3 +1,4 @@
+- backup https://github.com/jb2170/better-adb-sync
 - https://github.com/genymobile/scrcpy
 - https://github.com/0x192/universal-android-debloater/
 

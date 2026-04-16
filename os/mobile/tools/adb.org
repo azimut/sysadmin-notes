@@ -33,7 +33,9 @@ adb shell am start
 |                | -t application/x-x509-ca-cert                   |                            |
 |                | -d file:///foo/bar.pem                          |                            |
 | getprop        | <PROPNAME>                                      |                            |
+| pm trim-caches |                                                 | delete apps cache          |
 | pm install     | foo.apk                                         |                            |
+| pm list        | features                                        |                            |
 | pm list        | packages                                        | -s for system packages     |
 |                |                                                 | -f for paths               |
 |                |                                                 | -u for uninstalled         |
@@ -43,6 +45,7 @@ adb shell am start
 |                | power                                           |                            |
 |                | package packages                                | detailed packages          |
 |                | activity services                               |                            |
+|                | bluetooth_manager                               |                            |
 | getevent -l    |                                                 |                            |
 | input text     | "some%swacky%stext"                             | input keyboard text        |
 | input keyevent | 66                                              | inputs enter key           |
@@ -51,6 +54,8 @@ adb shell am start
 | input tap      | X Y                                             |                            |
 | input swipe    | X1 Y1 X2 Y2 DUR                                 |                            |
 | appops         | get <PKG>                                       |                            |
+| settings get   | global <KEY>                                    |                            |
+| settings put   | global <KEY> <VALUE>                            |                            |
 |----------------+-------------------------------------------------+----------------------------|
 
 - $ adb shell settings put global private_dns_mode hostname

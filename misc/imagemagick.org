@@ -167,7 +167,9 @@ https://usage.imagemagick.org/draw/#paths
     - on each =channel= (set by -channel)
 - no user defined functions
 - ; statement (? does not return a value
-- conditional: if(COND,S1,S2), COND ? S1 : S2
+- conditional:
+  - if(COND,S1,S2)
+  - ternary operator - COND ? S1 : S2
 - iterators: while(COND,S) do(S,COND) for(INIT,COND,S)
 - constants: E, Epsilon, Opaque, Phi, Pi, QuantumRange, QuantumScale, Transparent
 - pixels:

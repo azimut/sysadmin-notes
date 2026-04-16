@@ -4,6 +4,8 @@ https://www.reddit.com/r/AndroidTVApps/
 https://www.reddit.com/r/AndroidTVApps/comments/1g9pin6/randroidtvapps_megathread/
 
 
+- DeGoogle https://github.com/vitordematos/de-google-android_ADB_Tutorial
+
 - Google Alternatives
   - Google Play (alternative) https://f-droid.org/en/
   - Google Play (equal) https://auroraoss.com/aurora-store

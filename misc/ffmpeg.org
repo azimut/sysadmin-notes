@@ -50,6 +50,17 @@
 - truthy: non-zero
 - color range: 0-255
 
+** colors
+
+https://ffmpeg.org/ffmpeg-utils.html#color-syntax
+
+- [0x|#]RRGGBB[AA]
+- some defined color names (case insensitive)
+  - "random"
+- alpha
+  - 0 transparent
+  - 1 opaque
+
 ** expressions
 
 - manual https://www.ffmpeg.org/ffmpeg-all.html#Expression-Evaluation
@@ -245,6 +256,12 @@ https://ffmpeg.org/ffmpeg-filters.html
 - dropshadow https://stackoverflow.com/questions/70368647/how-to-use-ffmpeg-to-add-a-drop-shadow
 - stream to twitch https://corvid.cafe/ffstream.html
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
+
+** expression to overlay at center
+
+#+begin_src
+overlay=W/2-w/2:H/2-h/2
+#+end_src
 
 ** glitch
 

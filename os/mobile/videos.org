@@ -6,6 +6,7 @@
 - 25 [[https://www.youtube.com/watch?v=JoeT9iX411U][Android Boot Process Explained | From Power On to Launcher]]
 - 18 [[https://www.youtube.com/watch?v=ywoMSwvxZo4][Securing the Linux boot process]]
 - 20 [[https://www.youtube.com/watch?v=-V3VhP-MUwE][UEFI boot explained (for Linux users)]]
+
 * ekoparty
 
 - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZNnwxlBSMUAz5ikoKJ_r-Hn][2025]] - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZOxp1diN84JPYJcpIopD2Sw][2024]] - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZMlI-bSTKGYKlzGBaRtFOTn][2023]] - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZO7A9JUhDryzM8aHvn2ogfX][2021]] - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZNduu4NzfG7E-EdAygfk4oP][2020]] - [[https://www.youtube.com/playlist?list=PLaIv9WEAzYZOeR50Fn-rtdEae-DJhMvsi][20XX]]
