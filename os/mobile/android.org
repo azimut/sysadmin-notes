@@ -16,6 +16,7 @@
   https://gist.github.com/ktnr74/60ac7bcc2cd17b43f2cb
   https://stackoverflow.com/questions/35275828/is-there-a-way-to-check-if-android-device-screen-is-locked-via-adb
   https://ktnr74.blogspot.com/2014/09/calling-android-services-from-adb-shell.html
+- development https://nisrulz.com/android-tips-tricks/introduction.html
 - x86
   - wiki https://en.wikipedia.org/wiki/Android-x86
   - home https://www.android-x86.org/
@@ -256,6 +257,7 @@ https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/
 - DE https://phosh.mobi/ https://en.wikipedia.org/wiki/Phosh
 
 * webcam
+
 - .deb for ubuntu https://iriun.com/
   - closed source
 - driodam
@@ -265,14 +267,17 @@ https://chromium.googlesource.com/aosp/platform/system/core/+/refs/heads/master/
 
 * apks
 
+- Android PacKage Format
 - Android Application Package
 - a .zip file
-- content:
-  - AndroidManifest.xml
-    - type: "Android binary XML"
-  - files
-    - classes.dex
-      - aka the source
-    - res/
-      - aka resources
-    - META-INF/
+
+#+CAPTION: content
+|---------------------+------------------------------------------|
+| AndroidManifest.xml | in binary (?                             |
+|                     | name, version, permissions, components   |
+| classes.dex         | compiled bytecode in dalvik              |
+| /META-INF/          | metadata                                 |
+| /lib/               | native (compiled) libraries              |
+| /res/               | resources (aka: images, layouts, styles) |
+| resources.arsc      | compiled /res/                           |
+|---------------------+------------------------------------------|

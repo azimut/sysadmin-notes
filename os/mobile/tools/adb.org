@@ -1,7 +1,14 @@
 #+TITLE: adb - android debug bridge
 
 - https://en.wikipedia.org/wiki/Android_Debug_Bridge
-- tool: https://github.com/T-vK/android-svc
+- tools:
+  - backup/restore cli https://github.com/mrrfv/open-android-backup
+  - wrapper cli https://github.com/ashishb/adb-enhanced
+    - more readable output (?)
+  - wrapper TUI https://github.com/ASHWIN990/ADB-Toolkit
+    - for security?
+    - screenshoot, record, dump data
+  - service calls wrapper https://github.com/T-vK/android-svc
 |--------------------+----------------------------------------+---------------------------------------|
 |        <c>         |                                        |                                       |
 |        CMD         | ARGS                                   | Desc                                  |

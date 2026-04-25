@@ -6,6 +6,7 @@
 - tool https://www.scenedetect.com/
 - tool (dead) https://zackoverflow.dev/writing/ffmpeg-guide
 - tool https://evanhahn.github.io/ffmpeg-buddy/
+- tool https://ffstudio.app/
 - tool: web UI
   source https://github.com/antiboredom/ffmpeg-explorer
   ui https://lav.io/notes/ffmpeg-explorer/
@@ -21,6 +22,7 @@
 - tool https://github.com/richardpl/lavfi-preview
 - tool models for arnndn https://github.com/GregorR/rnnoise-models
 
+- tutorial https://github.com/talwrii/ffmpeg-cookbook
 - tutorial https://github.com/leandromoreira/ffmpeg-libav-tutorial
 - guide https://trac.ffmpeg.org/wiki/Encode/H.264
 - examples https://hhsprings.bitbucket.io/docs/programming/examples/ffmpeg/index.html
@@ -153,6 +155,7 @@ taylor(expr, x, idx)
 ** simple filters      (-vf/-af/-filter:v/-filter:a)
 
 https://ffmpeg.org/ffmpeg-filters.html
+(+metadata) https://trac.ffmpeg.org/wiki/FilteringGuide
 
 #+begin_src sh
   $ ffmpeg -h filter=<FILTER> # show help for FILTER

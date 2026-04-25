@@ -1,3 +1,20 @@
+* Security
+
+- 26 How to hack Android Phones https://www.youtube.com/watch?v=hmfGUlcrG-c
+- 25 Three ways to hack android apps https://www.youtube.com/watch?v=QwwLSyRzNwo
+- 24 Learn Android Hacking https://www.youtube.com/watch?v=fPt6fJDjKKM
+- 24 Android App Bug Bounty Secrets https://www.youtube.com/watch?v=nxlm7pIvMdg
+
+* intigrity
+
+https://www.youtube.com/playlist?list=PLmqenIp2RQcjBWzwMZQbIkbuVDmkYi_KF
+
+- 23 Intro to Android Hacking https://www.youtube.com/watch?v=niRooMwDUPU
+  - app hacking
+    1) Static: source code review, apk patching, permission analysis
+       - dex -> smali -> java
+    2) Dynamic: behaviour analysis, traffic interception (SSL pinning), api testing
+
 * boot
 
 - 15 [[https://www.youtube.com/watch?v=5SQP0qfUDjI][Digging Into Android Startup]] by Dave Smith

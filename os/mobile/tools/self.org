@@ -1,29 +1,70 @@
-- backup https://github.com/jb2170/better-adb-sync
+- agent skill https://github.com/DragonJAR/Android-Pentesting-Skill
+- vuln app https://github.com/satishpatnayak/AndroGoat
+- https://github.com/jb2170/better-adb-sync
 - https://github.com/genymobile/scrcpy
+
+* exploiting
+
+- https://github.com/mesquidar/adbsploit
+- https://github.com/prbhtkumr/PhoneSploit
+- https://github.com/mesquidar/adbsploit
+- https://github.com/EntySec/Ghost
+- https://github.com/jxroot/adbwebkit
+- https://github.com/0x1CA3/AdbNet
+
+* debloat
+
+- https://github.com/seun-novodev/android-tv-debloat-toolkit
 - https://github.com/0x192/universal-android-debloater/
+- https://github.com/Universal-Debloater-Alliance/universal-android-debloater-next-generation
 
 * reversing (static)
 
-- jadx(-gui)
-- apktool
+- [[https://developer.android.com/tools/aapt2][aapt]] compile apks
+  |--------------+---------------------------------------------------------+---|
+  | dump badging | some.apk                                                |   |
+  | dump xmltree | some.apk AndroidManifest.xml                            |   |
+  | package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
+  |              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
+  |--------------+---------------------------------------------------------+---|
+- apktool: de/compile apks
 - dex2jar
+- jadx(-gui): decompile apks
 - mobSF
+  - includes runtime/traffic analysis
   - automated framework
 
 * reversing (dynamic)
 
 - adb
+- drozer: assessment of security
+  - has an agent (apk) part
+  - has a docker container (due outdated deps)
+    #+begin_src sh
+      adb forward tcp:31415 tcp:31415
+      docker pull fsecurelabs/drozer
+      docker run -ti fsecurelabs/drozer
+      drozer console connect --server host.docker.internal
+      drz> run app.package.list
+      drz> run app.package.attacksurface owasp.sat.agoat
+      drz> run app.activity.info -a owasp.sat.agoat
+      drz> run app.activity.start --component owasp.sat.agoat owasp.sat.agoat.SplashActivity
+    #+end_src
 - radare
 - burp suite
 - objection
   - rootless
   - toolkit based on frida (automated?)
 - frida
-  - toolkit for instrumentation, injection
+  - video https://www.youtube.com/watch?v=iMNs8YAy6pk
   - home https://frida.re/
   - source https://github.com/frida/frida
+  - toolkit for live instrumentation
+    - like a debugger
+    - injection of .js code in native apps
+      - windows, macos, linux, ios, android
 
-* emulation
+** emulation
 
 - genymotion
 - android studio memu
@@ -42,15 +83,3 @@
 * apksigner
 
 apksigner verify --print-certs base.apk
-
-* aapt
-
-https://developer.android.com/tools/aapt2
-|--------------+---------------------------------------------------------+---|
-| CMD          | ARGS                                                    |   |
-|--------------+---------------------------------------------------------+---|
-| dump badging | some.apk                                                |   |
-| dump xmltree | some.apk AndroidManifest.xml                            |   |
-| package      | -f -F temp.pk -I .../android.jar -M AndroidManifest.xml |   |
-|              | -S res/ -A assets/ -v --target-sdk-version 32           |   |
-|--------------+---------------------------------------------------------+---|
