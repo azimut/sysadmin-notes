@@ -30,7 +30,7 @@
 
 * colors
 
-https://imagemagick.org/script/color.php
+https://imagemagick.org/color/
 
 #+begin_src bash
   #0f0
@@ -112,8 +112,8 @@ https://usage.imagemagick.org/draw/#paths
 | color          | x,y point            |                                        |
 | point          | x,y                  |                                        |
 | rectangle      | x,y x,y              |                                        |
-| roundrectangle | x,y x,y x,y          |                                        |
-| arc            | x,y x,y s,e          | an ellipse, inside the given rectangle |
+| roundrectangle | x,y x,y wc,hc        | width/height of rounding circumference |
+| arc            | x,y x,y sa,ea        | an ellipse, inside the given rectangle |
 |----------------+----------------------+----------------------------------------|
 | circle         | xc,yc xe,ye [s,e]    | given a center an edge, optional angle |
 | ellipse        | xc,yc xe,ye [s,e]    | given a center an edge, optional angle |
