@@ -336,9 +336,8 @@ https://usage.imagemagick.org/basics/#option_stack
 |--------+--------+----------------------------------------|
 
 1) Creation: add 1 image
-   - file.png xc: canvas: logo:
-     rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
-   - xc: X Constant image
+   - file.png xc: canvas: logo: rose: gradient: radial-gradient: plasma: tile: pattern: label: caption: text:
+     - xc: X Constant image
 
 2) Simple Image Processing:
    - they modify ALL images in memory, separately

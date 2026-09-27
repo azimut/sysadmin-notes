@@ -2,14 +2,15 @@
 #+DATE: <2025-08-08 vie>
 #+KEYWORDS: sox, sound exchange, cheatsheet, quick reference
 
+- SoX = Sound eXchange
+- 1991
+- by Chris Bagwell (past Lance Norskog)
+
 - source [[https://sourceforge.net/p/sox/code/ci/master/tree/][sourceforge]] [[https://github.com/chirlu/sox][github]]
 - home https://sourceforge.net/projects/sox/
 - wiki https://en.wikipedia.org/wiki/SoX
 - faq https://web.archive.org/web/20210413230247/http://sox.sourceforge.net/Docs/FAQ
 - effects https://codeberg.org/sox_ng/Effects-Explained/wiki
-- SoX = Sound eXchange
-- 1991
-- by Chris Bagwell (past Lance Norskog)
 
 #+CAPTION: Processing Chain
 #+begin_src
@@ -27,9 +28,189 @@ $ rec
 - file options happen before
 - effect options happen after
 
+** flags
+*** global
+|-----+-------------------------------+------+---------------------------------------------------|
+|     | --buffer BYTES                | 8192 | input, effects and output processing              |
+|     | --input-buffer BYTES          | 8192 | input processing                                  |
+|     | --[no-]clobber                |    y | overwrite already existing file                   |
+|     | --combine                     |      | input file combining method                       |
+|     |                               |      | concatenate/merge/mix/mix-power/multiply/sequence |
+| -D  | --no-dither                   |      | disable automatic dither                          |
+|     | --efects-file FILENAME        |      |                                                   |
+| -G  | --guard                       |      | invoke =gain= effect to guard against clipping    |
+|     | --help-effect NAME            |      |                                                   |
+|     | --help-format NAME            |      | show information about file format                |
+| --i | --info                        |      | behave as =soxi=                                  |
+| -m  | --combine mix                 |      |                                                   |
+| -M  | --combine merge               |      |                                                   |
+|     | --magic                       |      | enable libmagic                                   |
+|     | --multi-threaded              |      | maybe also use a bigger buffer size               |
+|     | --single-threaded             |      | by default                                        |
+|     | --norm[=dB-level]             |      | invoke =gain= effect to guard against clipping    |
+|     | --play-rate-arg ARG           |      | quality ARG for =rate= effect                     |
+|     | --plot gnuplot/octave/off     |      |                                                   |
+| -q  | --no-show-progress            |      |                                                   |
+| -S  | --show-progress               |      |                                                   |
+| -R  |                               |      | run in repeatable mode                            |
+|     | --replay-gain track/album/off |      |                                                   |
+| -T  |                               |      | equivalent to =--combine multiple=                |
+|     | --temp DIR                    |      |                                                   |
+|     | -V [01234]                    |      | sets verbosity                                    |
+|-----+-------------------------------+------+---------------------------------------------------|
+* language
+** parameters
+|------------+-----+------+-------------------------|
+| center     |     | k    |                         |
+| frequency  |     | k    |                         |
+| gain       |     |      | a power gain dB         |
+| position   | +-= |      |                         |
+| width      |     | hkoq | hz khz octaves q-factor |
+| hh:mm:ss.f |     | t    |                         |
+| samples    |     | es   | nr of samples           |
+|------------+-----+------+-------------------------|
+** effects
+*** VCO synth
+
+- [-j KEY] - turns on *just intonation* KEY semitones relative to A
+- [-n]
+- [len [off [ph [p1 [p2 [p3]]]]]]
+- {[type] [combine] [[0%]freq[k][:|+|/|-[0%]freq2[k]]] [off [ph [p1 [p2 [p3]]]]]}
+  - type:
+    - sine, square, triangle, sawtooth, trapezium, exp
+    - [white]noise, tpdfnoise, pinknoise, brownnoise
+    - pluck
+  - combine:
+    - create, mix, amod (amplitud modulation), fmod(frequency modulation)
+  - freq1/freq2
+    - separated by either [:+/-]
+      - : for linear change
+      - + for square, a second-order function to change the tone
+      - / for exponential, a fixed nr of semitones per second
+      - - for exponential, but initial phase is 0 and less smooth freq changes
+    - frequencies at the beginning and the end of synth
+      - in Hz
+      - %in semitones relative to A (440Mhz)
+      - E2
+  - off, is the bias (DC-offset) of the signal in percent (default 0)
+  - ph, is the phase shift in percentage of 1 cycle (default 0)
+  - p1, percentage of each cycle that is on or rising (default=50/10/40)
+  - p2, percentage through each cycle at which falling beings
+  - p3, percentage through each cycle at which falling ends
+
+*** VCF filters
+- supported by --plot
+|------------+-------------------+-----------------------------------+------------------------------------------------------|
+| allpass    |                   | f w                               | two-pole all pass filter                             |
+| band       | [-n]              | f [w]                             | band-pass filter                                     |
+| bandpass   | [-c]              | f w                               | two-pole Butterworth band-pass filter                |
+| bandreject | [-c]              | f w                               | two-pole Butterworth band-reject filter              |
+| bass       |                   | g [f w]                           | two-pole shelving filter aka shelving EQ             |
+| treble     |                   | g [f w]                           | "                                                    |
+| biquad     |                   | b0 b1 b2 a0 a1 a2                 | biquad IIR filter                                    |
+| deemph     |                   |                                   | de-emphasis aka trebble attenuation shelving filter  |
+| equalizer  |                   | f w g                             | two-pole peaking EQ                                  |
+| fir        |                   | [coefs-file / coefs]              | use FFT convolution w/given FIR filter coefficients  |
+| highpass   | [-1/-2]           | f w                               | filter w/3 dB point frequency                        |
+| lowpas     | [-1/-2]           | f w                               | -1 single-pole   -2 double-pole                      |
+| hilbert    | [-n taps]         |                                   | odd-tap Hilbert transform filter, phase shifting 90° |
+| riaa       |                   |                                   | vinyl playback EQ                                    |
+| sinc       | [-a att/-b beta]  | freqHP [-freqLP [-t tbw/-n taps]] | kaiser-windowed low/high/band-pass/-reject           |
+|            | [-p phase/-M-I-L] |                                   |                                                      |
+|            | [-t tbw/-n taps]  |                                   |                                                      |
+|------------+-------------------+-----------------------------------+------------------------------------------------------|
+*** modulation
+they have an LFO inducing movement
+|---------+----------------------------------------------------+--------------------------------------------------------------------|
+| chorus  | gain-in gain-out <delay decay speed depth -t -s>   | echo with short modulated delay                                    |
+| flanger | [delay depth regen width speed shape phase interp] | 0-30 0-10 -95-95 0-100 0.1-10 sine/triangle 0-100 linear/quadratic |
+| phaser  | gain-in gain-out delay decay speed [-s/-t]         | 0.1<decay<0.5                                                      |
+| tremolo | speed [depth(40)]                                  | tremolo=low freq amplitud modulation                               |
+|---------+----------------------------------------------------+--------------------------------------------------------------------|
+*** spatial
+|----------+---------------------------------------------+-------------------------------------------------------------|
+| channels | nchannels                                   |                                                             |
+| remix    | [-a/-m/-p] <out-spec>                       | select input channels and mix into output channels          |
+|          | out-spec = in-spec{,in-spec} / 0            | where "-" performs a mix-down of all input channels to mono |
+|          | _in-spec = [in-chan][-[in-chan2]][vol-spec] | -p volume scale by 1/sqrt(n)                                |
+|          | vol-spec = p/i/v[volume]                    | -a keeps the 1/n volume scaling                             |
+|          |                                             | -m disables all volume scaling                              |
+| swap     |                                             | swap stereo chanels                                         |
+|----------+---------------------------------------------+-------------------------------------------------------------|
+*** edit (cut&paste)
+|---------+---------------------------------------------+--------------------------------------------------------------------------|
+| pad     | { length[@position(=)] }                    | pad the audio w/silence, length=amount                                   |
+| repeat  | [count(1)/-]                                | repeat the entire audio *count* times or ONCE                            |
+| silence | [-l] above-periods [duration threshold[d/%] |                                                                          |
+| splice  |                                             |                                                                          |
+| trim    | {position(+)}                               | cuts portions out of the audio                                           |
+| vad     |                                             | Voice Activity Detector. Trim silence and background sounds from speech. |
+|         | [below-periods duration threshold[d/%]]     | removes silence from the beginning, middle, end                          |
+|---------+---------------------------------------------+--------------------------------------------------------------------------|
+*** time
+|--------+--------------------------------------------------------+----------------------------------------|
+| delay  | {[+]position(=)[s]}                                    |                                        |
+| echo   | gain-in gain-out <delay decay>                         | delay in ms, decay relative to gain-in |
+| echos  | gain-in gain-out <delay decay>                         | chain echos                            |
+| reverb | [-w/--wet-only]                                        |                                        |
+|        | [reverberance(50%) [HF-damp(50%) [room-scale(100%)     |                                        |
+|        | [stereo-depth(100%) [predelay(0ms) [wetgain(0dB)]]]]]] |                                        |
+|--------+--------------------------------------------------------+----------------------------------------|
+*** pitch
+|---------+-----------------------------------------------------+------------------------------------------|
+| pitch   | [-q] shift [segment [search [overlap]]]             |                                          |
+| speed   | factor[c]                                           | adjusts pitch+tempo together             |
+| stretch | factor [window fade shift fading]                   | change audio duration (NOT PITCH) ~tempo |
+| tempo   | [-q] [-m/-s/-l] factor [segment [search [overlap]]] | change audio speed but not pitch         |
+|---------+-----------------------------------------------------+------------------------------------------|
+*** analysis
+|-------------+----------------------------------------|
+| spectrogram | creates a PNG spectrogram of the audio |
+| stat        |                                        |
+| stats       |                                        |
+|-------------+----------------------------------------|
+*** ?
+|------------+--------------------------------------------------+--------------------------------------------------------------------------|
+| bend       | -f rate -o osample { start_pos, cents, end_pos } | changes pitch by cents at given times                                    |
+| compand    | [attack, decay...][                              | compress or expand the dynamic range                                     |
+| contrast   | [ammount=75]                                     | compression-like, louder, 0-100                                          |
+| dcshift    | shift [limitergain]                              | limitergain<1, reduces headroom/volume                                   |
+| dither     | -S -s -f filter -a -p precision                  | adds small noise to mask quantization                                    |
+|            |                                                  | none TPDF triangular white noise                                         |
+|            |                                                  | -s noise shaping                                                         |
+|            |                                                  | -S sloped to high freqs TPDF                                             |
+|            |                                                  | -a only when neededn                                                     |
+|            |                                                  | -f lipshitz / f-weighted / modified-e-weighted                           |
+|            |                                                  | -f improved-e-weighted / gesemann / shibata                              |
+|            |                                                  | -f low-shibata / high-shibata                                            |
+| downsample | [factor(2)]                                      | retains only the first of each "factor" samples                          |
+| earwax     |                                                  | easier to listen on headphones                                           |
+| fade       | [type] fade-in-len [stop-pos(=)] [fade-out-len]  | apply at beginning, end or both                                          |
+|            |                                                  | type = q quarter of a sine wave                                          |
+|            |                                                  | type = h for half a sine wave                                            |
+|            |                                                  | type = t for linear triangular slope                                     |
+|            |                                                  | type = l for logarithmic                                                 |
+|            |                                                  | type = p for inverted parabola                                           |
+| gain       | [-e/-B/-b/-r] [-n] [-l/-h] [gain-dB]             | eBbr require disk storage                                                |
+| ladspa     | [-l/-r] module [plugin] [args...]                |                                                                          |
+| loudness   | [gain [reference]]                               | similar to *gain* but provides EQ for the human auditory system          |
+| mcompand   | ?????????                                        | multiband compand                                                        |
+| noiseprof  | [profile-file]                                   |                                                                          |
+| noisered   | [profile-file [amount]]                          | reduce noise from a given *noiseprof* file ran                           |
+| norm       | [dB-level]                                       | normalise the audio (aka gain -n)                                        |
+| oops       |                                                  | out of phase stereo effect, stereo->mono = left-right = remix 1,2i 1,2i  |
+| overdrive  | [gain(20) [colour(20)]]                          | non linear distortion, colour=amount of even harmonic content            |
+| rate       | [-q/-l/-m/-h/-v] [override-options] RATE         | qlmhv are quality flags                                                  |
+| reverse    |                                                  | requires file disk                                                       |
+| upsample   | factor                                           | adds zero-value samples between each pair of input sampls                |
+| vol        | g type limitergain                               | type = [amplitude,power,dB]                                              |
+|------------+--------------------------------------------------+--------------------------------------------------------------------------|
 * videos
+
 - https://www.youtube.com/watch?v=_lS1HFFwyD0
 - 24 [[https://www.youtube.com/watch?v=FKFTpIfTtZY][SoX Tutorial Compilation 2024]]
+
 * articles
+
 - https://github.com/madskjeldgaard/sox-tricks
 - 18 [[https://blog.benjojo.co.uk/post/encoding-data-into-dubstep-drops][Encoding data in dubstep drops]]
