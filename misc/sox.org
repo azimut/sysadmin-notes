@@ -108,16 +108,16 @@ $ rec
 | bass       |                   | g [f w]                           | two-pole shelving filter aka shelving EQ             |
 | treble     |                   | g [f w]                           | "                                                    |
 | biquad     |                   | b0 b1 b2 a0 a1 a2                 | biquad IIR filter                                    |
-| deemph     |                   |                                   | de-emphasis aka trebble attenuation shelving filter  |
 | equalizer  |                   | f w g                             | two-pole peaking EQ                                  |
 | fir        |                   | [coefs-file / coefs]              | use FFT convolution w/given FIR filter coefficients  |
 | highpass   | [-1/-2]           | f w                               | filter w/3 dB point frequency                        |
-| lowpas     | [-1/-2]           | f w                               | -1 single-pole   -2 double-pole                      |
+| lowpass    | [-1/-2]           | f w                               | -1 single-pole   -2 double-pole                      |
 | hilbert    | [-n taps]         |                                   | odd-tap Hilbert transform filter, phase shifting 90° |
-| riaa       |                   |                                   | vinyl playback EQ                                    |
 | sinc       | [-a att/-b beta]  | freqHP [-freqLP [-t tbw/-n taps]] | kaiser-windowed low/high/band-pass/-reject           |
 |            | [-p phase/-M-I-L] |                                   |                                                      |
 |            | [-t tbw/-n taps]  |                                   |                                                      |
+| riaa       |                   |                                   | vinyl playback EQ                                    |
+| deemph     |                   |                                   | de-emphasis aka trebble attenuation shelving filter  |
 |------------+-------------------+-----------------------------------+------------------------------------------------------|
 *** modulation
 they have an LFO inducing movement
@@ -128,15 +128,16 @@ they have an LFO inducing movement
 | tremolo | speed [depth(40)]                                  | tremolo=low freq amplitud modulation                               |
 |---------+----------------------------------------------------+--------------------------------------------------------------------|
 *** spatial
-|----------+---------------------------------------------+-------------------------------------------------------------|
-| channels | nchannels                                   |                                                             |
-| remix    | [-a/-m/-p] <out-spec>                       | select input channels and mix into output channels          |
-|          | out-spec = in-spec{,in-spec} / 0            | where "-" performs a mix-down of all input channels to mono |
-|          | _in-spec = [in-chan][-[in-chan2]][vol-spec] | -p volume scale by 1/sqrt(n)                                |
-|          | vol-spec = p/i/v[volume]                    | -a keeps the 1/n volume scaling                             |
-|          |                                             | -m disables all volume scaling                              |
-| swap     |                                             | swap stereo chanels                                         |
-|----------+---------------------------------------------+-------------------------------------------------------------|
+|----------+---------------------------------------------+-------------------------------------------------------------------------|
+| channels | nchannels                                   |                                                                         |
+| remix    | [-a/-m/-p] <out-spec>                       | select input channels and mix into output channels                      |
+|          | out-spec = in-spec{,in-spec} / 0            | where "-" performs a mix-down of all input channels to mono             |
+|          | _in-spec = [in-chan][-[in-chan2]][vol-spec] | -p volume scale by 1/sqrt(n)                                            |
+|          | vol-spec = p/i/v[volume]                    | -a keeps the 1/n volume scaling                                         |
+|          |                                             | -m disables all volume scaling                                          |
+| oops     |                                             | out of phase stereo effect, stereo->mono = left-right = remix 1,2i 1,2i |
+| swap     |                                             | swap stereo chanels                                                     |
+|----------+---------------------------------------------+-------------------------------------------------------------------------|
 *** edit (cut&paste)
 |---------+---------------------------------------------+--------------------------------------------------------------------------|
 | pad     | { length[@position(=)] }                    | pad the audio w/silence, length=amount                                   |
@@ -169,6 +170,19 @@ they have an LFO inducing movement
 | stat        |                                        |
 | stats       |                                        |
 |-------------+----------------------------------------|
+*** amplitude
+|----------+-------------------------------------------------+-----------------------------------------------------------------|
+| gain     | [-e/-B/-b/-r] [-n] [-l/-h] [gain-dB]            | eBbr require disk storage                                       |
+| fade     | [type] fade-in-len [stop-pos(=)] [fade-out-len] | apply at beginning, end or both                                 |
+|          |                                                 | type = q quarter of a sine wave                                 |
+|          |                                                 | type = h for half a sine wave                                   |
+|          |                                                 | type = t for linear triangular slope                            |
+|          |                                                 | type = l for logarithmic                                        |
+|          |                                                 | type = p for inverted parabola                                  |
+| loudness | [gain [reference]]                              | similar to *gain* but provides EQ for the human auditory system |
+| norm     | [dB-level]                                      | normalise the audio (aka gain -n)                               |
+| vol      | g type limitergain                              | type = [amplitude,power,dB]                                     |
+|----------+-------------------------------------------------+-----------------------------------------------------------------|
 *** ?
 |------------+--------------------------------------------------+--------------------------------------------------------------------------|
 | bend       | -f rate -o osample { start_pos, cents, end_pos } | changes pitch by cents at given times                                    |
@@ -185,25 +199,14 @@ they have an LFO inducing movement
 |            |                                                  | -f low-shibata / high-shibata                                            |
 | downsample | [factor(2)]                                      | retains only the first of each "factor" samples                          |
 | earwax     |                                                  | easier to listen on headphones                                           |
-| fade       | [type] fade-in-len [stop-pos(=)] [fade-out-len]  | apply at beginning, end or both                                          |
-|            |                                                  | type = q quarter of a sine wave                                          |
-|            |                                                  | type = h for half a sine wave                                            |
-|            |                                                  | type = t for linear triangular slope                                     |
-|            |                                                  | type = l for logarithmic                                                 |
-|            |                                                  | type = p for inverted parabola                                           |
-| gain       | [-e/-B/-b/-r] [-n] [-l/-h] [gain-dB]             | eBbr require disk storage                                                |
 | ladspa     | [-l/-r] module [plugin] [args...]                |                                                                          |
-| loudness   | [gain [reference]]                               | similar to *gain* but provides EQ for the human auditory system          |
 | mcompand   | ?????????                                        | multiband compand                                                        |
 | noiseprof  | [profile-file]                                   |                                                                          |
 | noisered   | [profile-file [amount]]                          | reduce noise from a given *noiseprof* file ran                           |
-| norm       | [dB-level]                                       | normalise the audio (aka gain -n)                                        |
-| oops       |                                                  | out of phase stereo effect, stereo->mono = left-right = remix 1,2i 1,2i  |
 | overdrive  | [gain(20) [colour(20)]]                          | non linear distortion, colour=amount of even harmonic content            |
 | rate       | [-q/-l/-m/-h/-v] [override-options] RATE         | qlmhv are quality flags                                                  |
 | reverse    |                                                  | requires file disk                                                       |
 | upsample   | factor                                           | adds zero-value samples between each pair of input sampls                |
-| vol        | g type limitergain                               | type = [amplitude,power,dB]                                              |
 |------------+--------------------------------------------------+--------------------------------------------------------------------------|
 * videos
 
