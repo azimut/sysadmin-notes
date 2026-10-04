@@ -260,6 +260,14 @@ https://ffmpeg.org/ffmpeg-filters.html
 - stream to twitch https://corvid.cafe/ffstream.html
 - video stabilizer https://gist.github.com/maxogden/43219d6dcb9006042849
 
+** Filter: drawtext
+
+https://ffmpeg.org/ffmpeg-filters.html#drawtext-1
+- drawtext=text='%{expr\:sin(t*PI*440)}'
+- $ ffplay -autoexit
+  -f lavfi
+  -i "aevalsrc='(440+5*sin(2*PI*5*t))*2*PI*t', volume=0.1 [out1]; color=white,drawtext=text='%{expr\:(440+5*sin(2*PI*5*t))*2*PI*t}'"
+
 ** expression to overlay at center
 
 #+begin_src

@@ -212,6 +212,25 @@ they have an LFO inducing movement
 
 - https://www.youtube.com/watch?v=_lS1HFFwyD0
 - 24 [[https://www.youtube.com/watch?v=FKFTpIfTtZY][SoX Tutorial Compilation 2024]]
+* snippets
+** plot spectrogram (frequency)
+
+#+begin_src sh
+  $ play -n synth 1 sine A3 spectrogram # creates spectrogram
+#+end_src
+
+** plot sound (amplitude)
+
+#+begin_src sh
+  $ sox -n -t dat - synth 1 sine A3 fade .3 .6 .1 | tail -n+3 | gnuplot -e 'plot "-" with lines' -p
+#+end_src
+
+** plot filter
+
+#+begin_src sh
+  $ play --plot gnuplot -n lowpass 1k 100 | gnuplot -p
+  $ play --plot gnuplot -n lowpass 1k 100 | sed '/grid/d' | GNUTERM=dumb gnuplot -p
+#+end_src
 
 * articles
 
