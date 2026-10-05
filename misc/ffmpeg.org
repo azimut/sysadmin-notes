@@ -263,6 +263,7 @@ https://ffmpeg.org/ffmpeg-filters.html
 ** Filter: drawtext
 
 https://ffmpeg.org/ffmpeg-filters.html#drawtext-1
+- use "|" to separate different chanels
 - drawtext=text='%{expr\:sin(t*PI*440)}'
 - $ ffplay -autoexit
   -f lavfi
