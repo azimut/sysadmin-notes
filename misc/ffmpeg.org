@@ -107,8 +107,7 @@ gt/2  gte/2 lt/2  lte/2
 
 *** control flow
 
-if/2  if/3  ifnot/2  ifnot/3
-while/2
+if/[23] ifnot/[23] while/2
 
 *** math / numbers
 
